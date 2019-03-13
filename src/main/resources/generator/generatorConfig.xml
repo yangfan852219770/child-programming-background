@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <!-- 引入jdbc配置文件 -->
+    <!-- 指定数据连接驱动jar地址 -->
+    <classPathEntry
+            location="D:\mysql-connector-java-5.1.39.jar" />
+
+
+    <context id="oaContext" targetRuntime="MyBatis3"
+             defaultModelType="flat">
+
+        <property name="suppressDate" value="true" />
+        <property name="suppressAllComments" value="true" />
+        <property name="beginningDelimiter" value="'" />
+        <property name="endingDelimiter" value="'" />
+        <!--数据库链接URL 用户名 密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/child_programming"
+                        userId="root" password="root">
+
+        </jdbcConnection>
+        <!-- 生成模型的包名和位置 -->
+        <javaModelGenerator targetPackage="com.child.programming.base.model"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="false" />
+            <!-- 是否针对string类型的字段在set的时候进行trim调用 -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- 生成映射文件的包名和位置 -->
+        <sqlMapGenerator targetPackage="mappers"
+                         targetProject="src\main\resources">
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <!-- 生成DAO的包名和位置 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.child.programming.base.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+
+        <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
+
+        <table tableName="classroom" domainObjectName="TbClassroomDto" enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true">
+        </table>
+
+        <table tableName="collection_work" domainObjectName="TbCollectionWorkDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="course" domainObjectName="TbCourseDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="experience_course" domainObjectName="TbExperienceCourseDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="grade" domainObjectName="TbGradeDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="material_type" domainObjectName="TbMaterialTypeDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="material" domainObjectName="TbMaterialDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="payment_record" domainObjectName="TbPaymentRecordDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="role" domainObjectName="TbRoleDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="school" domainObjectName="TbSchoolDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="share_circle" domainObjectName="TbShareCircleDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="sign_up_experience_course" domainObjectName="TbSignUpExperienceCourseDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="student" domainObjectName="TbStudentDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="student_course_schedule" domainObjectName="TbStudentCourseScheduleDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="student_sign_up" domainObjectName="TbStudentSignUpDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="student_work" domainObjectName="TbStudentWorkDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="suggestion" domainObjectName="TbSuggestionDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="teacher" domainObjectName="TbTeacherDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+
+       <table tableName="teacher_course_schedule" domainObjectName="TbTeacherCourseScheduleDto" enableCountByExample="true"
+              enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+              selectByExampleQueryId="true">
+       </table>
+    </context>
+</generatorConfiguration>
