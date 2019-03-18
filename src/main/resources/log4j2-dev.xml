@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <properties>
+        <property name="PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t-%L] %-5level %logger{36} %L %M - %msg%xEx%n</property>
+    </properties>
+    <Appenders>
+        <!--添加一个控制台追加器-->
+        <Console name="ConsoleLog" target="SYSTEM_OUT" follow="true">
+            <!--只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY" />
+            <!--输出日志的格式，引用自定义模板 PATTERN -->
+            <PatternLayout pattern="${PATTERN}" />
+
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="ConsoleLog" />
+        </Root>
+    </Loggers>
+</Configuration>

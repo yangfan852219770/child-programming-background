@@ -5,9 +5,9 @@ package com.child.programming.base.util;
  * @Author：yangfan
  **/
 public class ResponseUtil {
-    public final static int SUCCESS_200 = 200; //正常返回
+    public final static short SUCCESS_200 = 200; //正常返回
 
-    public final static int INTERNAL_ERROR_500 = 500; //服务器处理有问题
+    public final static short INTERNAL_ERROR_500 = 500; //服务器处理有问题
 
     public final static String SUCCESS_MSG = "操作成功";
 

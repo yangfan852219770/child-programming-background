@@ -14,7 +14,7 @@ public class ResultPojo {
 
     @Getter
     @Setter
-    private Integer status; //返回状态
+    private short status; //返回状态
 
     @Getter
     @Setter
@@ -26,12 +26,12 @@ public class ResultPojo {
 
     public ResultPojo(){}
 
-    public ResultPojo(Integer status, String msg) {
+    public ResultPojo(short status, String msg) {
         this.status = status;
         this.msg = msg;
     }
 
-    public ResultPojo(Integer status, String msg, Object data) {
+    public ResultPojo(short status, String msg, Object data) {
         this.status = status;
         this.msg = msg;
         this.data = data;
