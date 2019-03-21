@@ -39,6 +39,15 @@ public class ResultPojo {
 
     /**
      * 成功返回对象
+     * @return
+     */
+    public static ResultPojo success(){
+        return  new ResultPojo(ResponseUtil.SUCCESS_200,
+                ResponseUtil.SUCCESS_MSG);
+    }
+
+    /**
+     * 成功返回对象
      * @param o
      * @return
      */
@@ -46,6 +55,7 @@ public class ResultPojo {
         return  new ResultPojo(ResponseUtil.SUCCESS_200,
                 ResponseUtil.SUCCESS_MSG, o);
     }
+
 
     /**
      * 失败返回对象

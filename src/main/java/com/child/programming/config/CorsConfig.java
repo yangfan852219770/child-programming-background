@@ -17,6 +17,7 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 //请求类型
                 .allowedMethods("GET", "POST")
+                .allowCredentials(true) //cookie跨域
                 //允许跨域网址
                 .allowedOrigins("http://localhost:8000");
     }

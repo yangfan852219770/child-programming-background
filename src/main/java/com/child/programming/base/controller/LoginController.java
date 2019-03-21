@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -26,7 +27,7 @@ public class LoginController {
      * @return
      */
     //TODO 目前并不完整
-    @RequestMapping("web/login")
+    @RequestMapping(value = "web/login/account", method = RequestMethod.POST)
     @ResponseBody
     public ResultPojo webLogin(HttpSession session,
                                @RequestBody WebLoginInfoPojo webLoginInfoPojo){
