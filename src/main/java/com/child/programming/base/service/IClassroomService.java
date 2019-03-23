@@ -1,8 +1,10 @@
 package com.child.programming.base.service;
 
 import com.child.programming.base.model.TbClassroomDto;
+import com.child.programming.education.manage.pojo.ClassroomInfoPojo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description：
@@ -12,11 +14,11 @@ public interface IClassroomService {
 
     /**
      * 查询教室
-     * @param schoolId 校区id
+     * @param map 校区id map
      * @return
      */
     // TODO 无分页
-    List<TbClassroomDto> getList(Integer schoolId);
+    List<ClassroomInfoPojo> getList(Map<String, Integer> map);
 
     /**
      * 新增、编辑

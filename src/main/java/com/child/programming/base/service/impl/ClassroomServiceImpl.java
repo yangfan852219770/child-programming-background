@@ -1,15 +1,18 @@
 package com.child.programming.base.service.impl;
 
+import com.child.programming.base.mapper.ClassroomCustomMapper;
 import com.child.programming.base.mapper.TbClassroomDtoMapper;
 import com.child.programming.base.model.TbClassroomDto;
 import com.child.programming.base.model.TbClassroomDtoExample;
 import com.child.programming.base.service.IClassroomService;
 import com.child.programming.base.util.EmptyUtil;
+import com.child.programming.education.manage.pojo.ClassroomInfoPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description：
@@ -20,19 +23,13 @@ import java.util.List;
 public class ClassroomServiceImpl implements IClassroomService {
     @Autowired
     private TbClassroomDtoMapper classroomDtoMapper;
+    @Autowired
+    private ClassroomCustomMapper classroomCustomMapper;
+
 
     @Override
-    public List<TbClassroomDto> getList(Integer schoolId) {
-        TbClassroomDtoExample example = new TbClassroomDtoExample();
-
-        example.setOrderByClause("create_time desc");
-        TbClassroomDtoExample.Criteria criteria = example.createCriteria();
-        if (null != schoolId)
-            criteria.andStatusEqualTo(Byte.valueOf("1")).andSchoolIdEqualTo(schoolId);
-        else
-            criteria.andStatusEqualTo(Byte.valueOf("1"));
-
-        return classroomDtoMapper.selectByExample(example);
+    public List<ClassroomInfoPojo> getList(Map<String, Integer> map) {
+        return classroomCustomMapper.getListOrBySchoolId(map);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.child.programming.base.pojo.ResultPojo;
 import com.child.programming.base.service.IClassroomService;
 import com.child.programming.base.util.HttpSessionUtil;
 import com.child.programming.base.util.ResponseUtil;
+import com.child.programming.education.manage.pojo.ClassroomInfoPojo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description：
@@ -27,15 +30,16 @@ public class ClassroomController {
     @Autowired
     private IClassroomService iClassroomService;
 
-
     /**
      * 查询
      * @return
      */
     @RequestMapping(value = "getList", method = RequestMethod.GET)
     @ResponseBody
-    public List<TbClassroomDto> getList(@RequestParam(value = "schoolId", required = false) Integer schoolId){
-        return iClassroomService.getList(schoolId);
+    public List<ClassroomInfoPojo> getList(@RequestParam(value = "schoolId", required = false) Integer schoolId){
+        Map<String, Integer> map = new HashMap<>();
+        map.put("schoolId",schoolId);
+        return iClassroomService.getList(map);
     }
 
 

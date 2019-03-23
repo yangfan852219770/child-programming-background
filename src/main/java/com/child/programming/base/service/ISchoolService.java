@@ -29,9 +29,8 @@ public interface ISchoolService {
     /**
      * 单个、批量删除
      * @param idArray 删除id集合
-     * @param lastUpdateId
+     * @param userId
      * @return
      */
     Boolean delete(String[] idArray, Integer userId);
-
 }

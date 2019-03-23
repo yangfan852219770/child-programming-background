@@ -74,4 +74,5 @@ public class SchoolServiceImpl implements ISchoolService {
 
         return result == idArray.length;
     }
+
 }
