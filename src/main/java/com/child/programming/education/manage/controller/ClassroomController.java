@@ -1,9 +1,9 @@
 package com.child.programming.education.manage.controller;
 
-import com.child.programming.base.model.TbSchoolDto;
+import com.child.programming.base.model.TbClassroomDto;
 import com.child.programming.base.pojo.LoginedUserInfoPojo;
 import com.child.programming.base.pojo.ResultPojo;
-import com.child.programming.base.service.ISchoolService;
+import com.child.programming.base.service.IClassroomService;
 import com.child.programming.base.util.HttpSessionUtil;
 import com.child.programming.base.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -21,39 +21,38 @@ import java.util.List;
  **/
 
 @Controller
-@RequestMapping("/school")
+@RequestMapping("/classroom")
 @Slf4j
-public class SchoolController {
+public class ClassroomController {
     @Autowired
-    private ISchoolService iSchoolService;
+    private IClassroomService iClassroomService;
+
 
     /**
-     * 查询校区
+     * 查询
      * @return
      */
     @RequestMapping(value = "getList", method = RequestMethod.GET)
     @ResponseBody
-    public List<TbSchoolDto> getList(@RequestParam(value = "name", required = false) String name){
-        List<TbSchoolDto> schoolDtoList = iSchoolService.getList(name);
-
-        return schoolDtoList;
+    public List<TbClassroomDto> getList(@RequestParam(value = "schoolId", required = false) Integer schoolId){
+        return iClassroomService.getList(schoolId);
     }
 
 
     /**
      * 新增和编辑保存
-     * @param schoolDto
+     * @param classroomDto
      * @param session
      * @return
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
-    public ResultPojo save(HttpSession session, @RequestBody TbSchoolDto schoolDto){
+    public ResultPojo save(HttpSession session, @RequestBody TbClassroomDto classroomDto){
         LoginedUserInfoPojo userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
-        if (null != userInfoPojo && null != schoolDto){
-            boolean result = iSchoolService.save(schoolDto,userInfoPojo.getId());
+        if (null != userInfoPojo && null != classroomDto){
+            boolean result = iClassroomService.save(classroomDto,userInfoPojo.getId());
             if (result)
-                return ResultPojo.success(schoolDto);
+                return ResultPojo.success(classroomDto);
         }
 
         return ResultPojo.error(ResponseUtil.ERROR_MSG);
@@ -74,7 +73,7 @@ public class SchoolController {
         LoginedUserInfoPojo userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && !StringUtils.isEmpty(idsStr)) {
             String[] idArray = idsStr.split(",");
-            boolean result = iSchoolService.delete(idArray, userInfoPojo.getId());
+            boolean result = iClassroomService.delete(idArray, userInfoPojo.getId());
             if (result)
                 return ResultPojo.success(idsStr);
         }

@@ -1,7 +1,6 @@
 package com.child.programming.base.service;
 
 import com.child.programming.base.model.TbSchoolDto;
-import com.child.programming.base.pojo.LoginedUserInfoPojo;
 
 import java.util.List;
 
@@ -22,10 +21,10 @@ public interface ISchoolService {
     /**
      * 插入、更新
      * @param schoolDto
-     * @param createId
+     * @param userId
      * @return
      */
-    Boolean save(TbSchoolDto schoolDto, Integer createId);
+    Boolean save(TbSchoolDto schoolDto, Integer userId);
 
     /**
      * 单个、批量删除
@@ -33,6 +32,6 @@ public interface ISchoolService {
      * @param lastUpdateId
      * @return
      */
-    Boolean delete(String[] idArray, Integer lastUpdateId);
+    Boolean delete(String[] idArray, Integer userId);
 
 }
