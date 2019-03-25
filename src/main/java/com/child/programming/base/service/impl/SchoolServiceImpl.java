@@ -1,10 +1,12 @@
 package com.child.programming.base.service.impl;
 
-import com.child.programming.base.mapper.TbSchoolDtoMapper;
-import com.child.programming.base.model.TbSchoolDto;
-import com.child.programming.base.model.TbSchoolDtoExample;
+import com.child.programming.base.mapper.TbSchoolDoMapper;
+import com.child.programming.base.model.TbSchoolDo;
+import com.child.programming.base.model.TbSchoolDoExample;
 import com.child.programming.base.service.ISchoolService;
 import com.child.programming.base.util.EmptyUtil;
+import com.child.programming.base.util.ListUtil;
+import com.child.programming.education.manage.dto.SchoolInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,38 +21,42 @@ import java.util.List;
 @Service
 public class SchoolServiceImpl implements ISchoolService {
     @Autowired
-    private TbSchoolDtoMapper tbSchoolDtoMapper;
+    private TbSchoolDoMapper tbSchoolDoMapper;
 
     @Override
-    public List<TbSchoolDto> getList(String name) {
-        TbSchoolDtoExample schoolDtoExample = new TbSchoolDtoExample();
-        TbSchoolDtoExample.Criteria criteria = schoolDtoExample.createCriteria();
+    public List<SchoolInfoDto> getList(String name) {
+        TbSchoolDoExample schoolDoExample = new TbSchoolDoExample();
+        TbSchoolDoExample.Criteria criteria = schoolDoExample.createCriteria();
 
-        schoolDtoExample.setOrderByClause("create_time desc");
+        schoolDoExample.setOrderByClause("create_time desc");
         if (!StringUtils.isEmpty(name))
             criteria.andStatusEqualTo(Byte.valueOf("1")).andNameLike("%" + name + "%");
         else
             criteria.andStatusEqualTo(Byte.valueOf("1"));
 
-        return tbSchoolDtoMapper.selectByExample(schoolDtoExample);
+        List<TbSchoolDo> schoolDoList = tbSchoolDoMapper.selectByExample(schoolDoExample);
+        if (!EmptyUtil.listIsEmpty(schoolDoList))
+            return ListUtil.convertElement(schoolDoList, SchoolInfoDto.class);
+        else
+            return null;
     }
 
     @Override
-    public Boolean save(TbSchoolDto schoolDto, Integer userId) {
-        if (null == schoolDto)
+    public Boolean save(TbSchoolDo schoolDo, Integer userId) {
+        if (null == schoolDo)
             return false;
 
         //插入
-        if (null == schoolDto.getId()){
-            schoolDto.setCreateId(userId);
-            schoolDto.setCreateTime(new Date());
-            schoolDto.setStatus(Byte.valueOf("1"));
-            return tbSchoolDtoMapper.insert(schoolDto) > 0 ? true : false;
+        if (null == schoolDo.getId()){
+            schoolDo.setCreateId(userId);
+            schoolDo.setCreateTime(new Date());
+            schoolDo.setStatus(Byte.valueOf("1"));
+            return tbSchoolDoMapper.insert(schoolDo) > 0 ? true : false;
         } else{
             //更新
-            schoolDto.setLastUpdateId(userId);
-            schoolDto.setLastUpdateTime(new Date());
-            return tbSchoolDtoMapper.updateByPrimaryKeySelective(schoolDto) > 0 ? true : false;
+            schoolDo.setLastUpdateId(userId);
+            schoolDo.setLastUpdateTime(new Date());
+            return tbSchoolDoMapper.updateByPrimaryKeySelective(schoolDo) > 0 ? true : false;
         }
     }
 
@@ -63,12 +69,12 @@ public class SchoolServiceImpl implements ISchoolService {
         int result = 0;
         for (String str:idArray
              ) {
-            TbSchoolDto schoolDto = tbSchoolDtoMapper.selectByPrimaryKey(Integer.parseInt(str));
-            if (null != schoolDto){
-                schoolDto.setStatus(Byte.valueOf("0"));
-                schoolDto.setLastUpdateId(userId);
-                schoolDto.setLastUpdateTime(new Date());
-                result += tbSchoolDtoMapper.updateByPrimaryKeySelective(schoolDto);
+            TbSchoolDo schoolDo = tbSchoolDoMapper.selectByPrimaryKey(Integer.parseInt(str));
+            if (null != schoolDo){
+                schoolDo.setStatus(Byte.valueOf("0"));
+                schoolDo.setLastUpdateId(userId);
+                schoolDo.setLastUpdateTime(new Date());
+                result += tbSchoolDoMapper.updateByPrimaryKeySelective(schoolDo);
             }
         }
 

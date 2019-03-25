@@ -1,10 +1,10 @@
 package com.child.programming.base.controller;
 
-import com.child.programming.base.pojo.LoginedUserInfoPojo;
-import com.child.programming.base.pojo.ResultPojo;
-import com.child.programming.base.pojo.WebLoginInfoPojo;
+import com.child.programming.base.dto.LoginedUserInfoDto;
+import com.child.programming.base.dto.ResultDto;
+import com.child.programming.base.dto.WebLoginInfoDto;
 import com.child.programming.base.util.ConstDataUtil;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
  * @Author：yangfan
  **/
 @Controller
-@Slf4j
+@Log4j2
 public class LoginController {
 
 
@@ -29,12 +29,12 @@ public class LoginController {
     //TODO 目前并不完整
     @RequestMapping(value = "web/login/account", method = RequestMethod.POST)
     @ResponseBody
-    public ResultPojo webLogin(HttpSession session,
-                               @RequestBody WebLoginInfoPojo webLoginInfoPojo){
+    public ResultDto webLogin(HttpSession session,
+                              @RequestBody WebLoginInfoDto webLoginInfoDto){
 
-        log.info(webLoginInfoPojo + "登陆");
+        log.info(webLoginInfoDto + "登陆");
 
-        LoginedUserInfoPojo userInfoPojo = new LoginedUserInfoPojo();
+        LoginedUserInfoDto userInfoPojo = new LoginedUserInfoDto();
 
         userInfoPojo.setId(1);
         userInfoPojo.setLoginId("123465");
@@ -43,6 +43,6 @@ public class LoginController {
 
         session.setAttribute(ConstDataUtil.CURRENT_USER, userInfoPojo);
 
-        return ResultPojo.success(userInfoPojo);
+        return ResultDto.success(userInfoPojo);
     }
 }

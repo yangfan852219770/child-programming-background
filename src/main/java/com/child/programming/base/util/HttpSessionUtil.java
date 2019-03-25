@@ -1,6 +1,6 @@
 package com.child.programming.base.util;
 
-import com.child.programming.base.pojo.LoginedUserInfoPojo;
+import com.child.programming.base.dto.LoginedUserInfoDto;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,7 +15,7 @@ public class HttpSessionUtil {
      * @param session
      * @return
      */
-    public static LoginedUserInfoPojo getLoginedUserInfo(HttpSession session){
-        return (LoginedUserInfoPojo)session.getAttribute(ConstDataUtil.CURRENT_USER);
+    public static LoginedUserInfoDto getLoginedUserInfo(HttpSession session){
+        return (LoginedUserInfoDto)session.getAttribute(ConstDataUtil.CURRENT_USER);
     }
 }

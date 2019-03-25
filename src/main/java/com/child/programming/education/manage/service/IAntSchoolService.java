@@ -1,6 +1,6 @@
 package com.child.programming.education.manage.service;
 
-import com.child.programming.education.manage.pojo.AntSchoolInfoSelectPojo;
+import com.child.programming.education.manage.dto.SchoolInfoSelectDto;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ import java.util.List;
  **/
 public interface IAntSchoolService {
 
-    List<AntSchoolInfoSelectPojo> getSchoolInfoSelectList();
+    List<SchoolInfoSelectDto> getSchoolInfoSelectList();
 }

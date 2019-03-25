@@ -1,12 +1,11 @@
 package com.child.programming.base.service.impl;
 
 import com.child.programming.base.mapper.ClassroomCustomMapper;
-import com.child.programming.base.mapper.TbClassroomDtoMapper;
-import com.child.programming.base.model.TbClassroomDto;
-import com.child.programming.base.model.TbClassroomDtoExample;
+import com.child.programming.base.mapper.TbClassroomDoMapper;
+import com.child.programming.base.model.TbClassroomDo;
 import com.child.programming.base.service.IClassroomService;
 import com.child.programming.base.util.EmptyUtil;
-import com.child.programming.education.manage.pojo.ClassroomInfoPojo;
+import com.child.programming.education.manage.dto.ClassroomInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,29 +21,29 @@ import java.util.Map;
 @Service
 public class ClassroomServiceImpl implements IClassroomService {
     @Autowired
-    private TbClassroomDtoMapper classroomDtoMapper;
+    private TbClassroomDoMapper classroomDoMapper;
     @Autowired
     private ClassroomCustomMapper classroomCustomMapper;
 
 
     @Override
-    public List<ClassroomInfoPojo> getList(Map<String, Integer> map) {
+    public List<ClassroomInfoDto> getList(Map<String, Integer> map) {
         return classroomCustomMapper.getListOrBySchoolId(map);
     }
 
     @Override
-    public Boolean save(TbClassroomDto classroomDto, Integer userId) {
-        if (null == classroomDto)
+    public Boolean save(TbClassroomDo classroomDo, Integer userId) {
+        if (null == classroomDo)
             return false;
-        if (null == classroomDto.getId()){
-            classroomDto.setStatus(Byte.valueOf("1"));
-            classroomDto.setCreateId(userId);
-            classroomDto.setCreateTime(new Date());
-            return classroomDtoMapper.insert(classroomDto) > 0 ? true : false;
+        if (null == classroomDo.getId()){
+            classroomDo.setStatus(Byte.valueOf("1"));
+            classroomDo.setCreateId(userId);
+            classroomDo.setCreateTime(new Date());
+            return classroomDoMapper.insert(classroomDo) > 0 ? true : false;
         } else {
-            classroomDto.setLastUpdateId(userId);
-            classroomDto.setLastUpdateTime(new Date());
-            return classroomDtoMapper.updateByPrimaryKeySelective(classroomDto) > 0 ? true : false;
+            classroomDo.setLastUpdateId(userId);
+            classroomDo.setLastUpdateTime(new Date());
+            return classroomDoMapper.updateByPrimaryKeySelective(classroomDo) > 0 ? true : false;
         }
     }
 
@@ -56,12 +55,12 @@ public class ClassroomServiceImpl implements IClassroomService {
         int result = 0;
         for (String str:idArray
         ) {
-            TbClassroomDto classroomDto = classroomDtoMapper.selectByPrimaryKey(Integer.parseInt(str));
-            if (null != classroomDto){
-                classroomDto.setStatus(Byte.valueOf("0"));
-                classroomDto.setLastUpdateId(userId);
-                classroomDto.setLastUpdateTime(new Date());
-                result += classroomDtoMapper.updateByPrimaryKeySelective(classroomDto);
+            TbClassroomDo classroomDo = classroomDoMapper.selectByPrimaryKey(Integer.parseInt(str));
+            if (null != classroomDo){
+                classroomDo.setStatus(Byte.valueOf("0"));
+                classroomDo.setLastUpdateId(userId);
+                classroomDo.setLastUpdateTime(new Date());
+                result += classroomDoMapper.updateByPrimaryKeySelective(classroomDo);
             }
         }
 

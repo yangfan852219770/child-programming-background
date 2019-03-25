@@ -1,6 +1,6 @@
 package com.child.programming.base.mapper;
 
-import com.child.programming.education.manage.pojo.ClassroomInfoPojo;
+import com.child.programming.education.manage.dto.ClassroomInfoDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,6 +19,6 @@ public interface ClassroomCustomMapper {
      * @param params
      * @return
      */
-    List<ClassroomInfoPojo> getListOrBySchoolId(Map<String, Integer> params);
+    List<ClassroomInfoDto> getListOrBySchoolId(Map<String, Integer> params);
 
 }

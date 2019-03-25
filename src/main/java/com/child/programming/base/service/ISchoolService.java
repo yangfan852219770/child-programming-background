@@ -1,6 +1,7 @@
 package com.child.programming.base.service;
 
-import com.child.programming.base.model.TbSchoolDto;
+import com.child.programming.base.model.TbSchoolDo;
+import com.child.programming.education.manage.dto.SchoolInfoDto;
 
 import java.util.List;
 
@@ -16,15 +17,15 @@ public interface ISchoolService {
      * @return
      */
     //TODO 目前没有分页
-    List<TbSchoolDto> getList(String name);
+    List<SchoolInfoDto> getList(String name);
 
     /**
      * 插入、更新
-     * @param schoolDto
+     * @param schoolDo
      * @param userId
      * @return
      */
-    Boolean save(TbSchoolDto schoolDto, Integer userId);
+    Boolean save(TbSchoolDo schoolDo, Integer userId);
 
     /**
      * 单个、批量删除

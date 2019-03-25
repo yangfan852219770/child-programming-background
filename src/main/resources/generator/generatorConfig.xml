@@ -42,97 +42,97 @@
 
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
 
-        <table tableName="classroom" domainObjectName="TbClassroomDto" enableCountByExample="true"
+        <table tableName="classroom" domainObjectName="TbClassroomDo" enableCountByExample="true"
                enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true">
         </table>
 
-        <table tableName="collection_work" domainObjectName="TbCollectionWorkDto" enableCountByExample="true"
+        <table tableName="collection_work" domainObjectName="TbCollectionWorkDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="course" domainObjectName="TbCourseDto" enableCountByExample="true"
+       <table tableName="course" domainObjectName="TbCourseDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="experience_course" domainObjectName="TbExperienceCourseDto" enableCountByExample="true"
+       <table tableName="experience_course" domainObjectName="TbExperienceCourseDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="grade" domainObjectName="TbGradeDto" enableCountByExample="true"
+       <table tableName="grade" domainObjectName="TbGradeDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="material_type" domainObjectName="TbMaterialTypeDto" enableCountByExample="true"
+       <table tableName="material_type" domainObjectName="TbMaterialTypeDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="material" domainObjectName="TbMaterialDto" enableCountByExample="true"
+       <table tableName="material" domainObjectName="TbMaterialDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="payment_record" domainObjectName="TbPaymentRecordDto" enableCountByExample="true"
+       <table tableName="payment_record" domainObjectName="TbPaymentRecordDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="role" domainObjectName="TbRoleDto" enableCountByExample="true"
+       <table tableName="role" domainObjectName="TbRoleDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="school" domainObjectName="TbSchoolDto" enableCountByExample="true"
+       <table tableName="school" domainObjectName="TbSchoolDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="share_circle" domainObjectName="TbShareCircleDto" enableCountByExample="true"
+       <table tableName="share_circle" domainObjectName="TbShareCircleDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="sign_up_experience_course" domainObjectName="TbSignUpExperienceCourseDto" enableCountByExample="true"
+       <table tableName="sign_up_experience_course" domainObjectName="TbSignUpExperienceCourseDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="student" domainObjectName="TbStudentDto" enableCountByExample="true"
+       <table tableName="student" domainObjectName="TbStudentDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="student_course_schedule" domainObjectName="TbStudentCourseScheduleDto" enableCountByExample="true"
+       <table tableName="student_course_schedule" domainObjectName="TbStudentCourseScheduleDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="student_sign_up" domainObjectName="TbStudentSignUpDto" enableCountByExample="true"
+       <table tableName="student_sign_up" domainObjectName="TbStudentSignUpDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="student_work" domainObjectName="TbStudentWorkDto" enableCountByExample="true"
+       <table tableName="student_work" domainObjectName="TbStudentWorkDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="suggestion" domainObjectName="TbSuggestionDto" enableCountByExample="true"
+       <table tableName="suggestion" domainObjectName="TbSuggestionDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="teacher" domainObjectName="TbTeacherDto" enableCountByExample="true"
+       <table tableName="teacher" domainObjectName="TbTeacherDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>
 
-       <table tableName="teacher_course_schedule" domainObjectName="TbTeacherCourseScheduleDto" enableCountByExample="true"
+       <table tableName="teacher_course_schedule" domainObjectName="TbTeacherCourseScheduleDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>

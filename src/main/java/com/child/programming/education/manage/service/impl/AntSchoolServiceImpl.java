@@ -1,10 +1,10 @@
 package com.child.programming.education.manage.service.impl;
 
-import com.child.programming.base.mapper.TbSchoolDtoMapper;
-import com.child.programming.base.model.TbSchoolDto;
-import com.child.programming.base.model.TbSchoolDtoExample;
+import com.child.programming.base.mapper.TbSchoolDoMapper;
+import com.child.programming.base.model.TbSchoolDo;
+import com.child.programming.base.model.TbSchoolDoExample;
 import com.child.programming.base.util.EmptyUtil;
-import com.child.programming.education.manage.pojo.AntSchoolInfoSelectPojo;
+import com.child.programming.education.manage.dto.SchoolInfoSelectDto;
 import com.child.programming.education.manage.service.IAntSchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,27 +20,27 @@ import java.util.List;
 @Service
 public class AntSchoolServiceImpl implements IAntSchoolService {
     @Autowired
-    private TbSchoolDtoMapper schoolDtoMapper;
+    private TbSchoolDoMapper tbSchoolDoMapper;
 
     @Override
-    public List<AntSchoolInfoSelectPojo> getSchoolInfoSelectList() {
-        TbSchoolDtoExample example = new TbSchoolDtoExample();
-        TbSchoolDtoExample.Criteria criteria = example.createCriteria();
+    public List<SchoolInfoSelectDto> getSchoolInfoSelectList() {
+        TbSchoolDoExample example = new TbSchoolDoExample();
+        TbSchoolDoExample.Criteria criteria = example.createCriteria();
         criteria.andStatusEqualTo(Byte.valueOf("1"));
 
-        List<TbSchoolDto> schoolDtoList = schoolDtoMapper.selectByExample(example);
+        List<TbSchoolDo> schoolDtoList = tbSchoolDoMapper.selectByExample(example);
         if (!EmptyUtil.listIsEmpty(schoolDtoList)){
-            List<AntSchoolInfoSelectPojo> antSchoolInfoSelectPojoList = new ArrayList<>();
-            for (TbSchoolDto tbSchoolDto:schoolDtoList
+            List<SchoolInfoSelectDto> schoolInfoSelectDtoList = new ArrayList<>();
+            for (TbSchoolDo tbSchoolDo:schoolDtoList
                  ) {
-                AntSchoolInfoSelectPojo antSchoolInfoSelectPojo = new AntSchoolInfoSelectPojo();
+                SchoolInfoSelectDto schoolInfoSelectDto = new SchoolInfoSelectDto();
 
-                antSchoolInfoSelectPojo.setKey(tbSchoolDto.getId());
-                antSchoolInfoSelectPojo.setValue(tbSchoolDto.getName());
+                schoolInfoSelectDto.setKey(tbSchoolDo.getId());
+                schoolInfoSelectDto.setValue(tbSchoolDo.getName());
 
-                antSchoolInfoSelectPojoList.add(antSchoolInfoSelectPojo);
+                schoolInfoSelectDtoList.add(schoolInfoSelectDto);
             }
-            return antSchoolInfoSelectPojoList;
+            return schoolInfoSelectDtoList;
         }
         return null;
     }

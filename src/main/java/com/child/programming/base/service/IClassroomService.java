@@ -1,7 +1,7 @@
 package com.child.programming.base.service;
 
-import com.child.programming.base.model.TbClassroomDto;
-import com.child.programming.education.manage.pojo.ClassroomInfoPojo;
+import com.child.programming.base.model.TbClassroomDo;
+import com.child.programming.education.manage.dto.ClassroomInfoDto;
 
 import java.util.List;
 import java.util.Map;
@@ -18,15 +18,15 @@ public interface IClassroomService {
      * @return
      */
     // TODO 无分页
-    List<ClassroomInfoPojo> getList(Map<String, Integer> map);
+    List<ClassroomInfoDto> getList(Map<String, Integer> map);
 
     /**
      * 新增、编辑
-     * @param classroomDto
+     * @param classroomDo
      * @param userId
      * @return
      */
-    Boolean save(TbClassroomDto classroomDto, Integer userId);
+    Boolean save(TbClassroomDo classroomDo, Integer userId);
 
     /**
      * 单个、批量删除

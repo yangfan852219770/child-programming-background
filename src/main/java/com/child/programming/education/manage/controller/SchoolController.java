@@ -1,13 +1,15 @@
 package com.child.programming.education.manage.controller;
 
-import com.child.programming.base.model.TbSchoolDto;
-import com.child.programming.base.pojo.LoginedUserInfoPojo;
-import com.child.programming.base.pojo.ResultPojo;
+import com.child.programming.base.dto.LoginedUserInfoDto;
+import com.child.programming.base.dto.ResultDto;
+import com.child.programming.base.model.TbSchoolDo;
 import com.child.programming.base.service.ISchoolService;
 import com.child.programming.base.util.HttpSessionUtil;
 import com.child.programming.base.util.ResponseUtil;
-import com.child.programming.education.manage.pojo.AntSchoolInfoSelectPojo;
+import com.child.programming.education.manage.dto.SchoolInfoDto;
+import com.child.programming.education.manage.dto.SchoolInfoSelectDto;
 import com.child.programming.education.manage.service.IAntSchoolService;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/school")
-@Slf4j
+@Log4j2
 public class SchoolController {
     @Autowired
     private ISchoolService iSchoolService;
@@ -37,30 +39,28 @@ public class SchoolController {
      */
     @RequestMapping(value = "getList", method = RequestMethod.GET)
     @ResponseBody
-    public List<TbSchoolDto> getList(@RequestParam(value = "name", required = false) String name){
-        List<TbSchoolDto> schoolDtoList = iSchoolService.getList(name);
-
-        return schoolDtoList;
+    public List<SchoolInfoDto> getList(@RequestParam(value = "name", required = false) String name){
+        return iSchoolService.getList(name);
     }
 
 
     /**
      * 新增和编辑保存
-     * @param schoolDto
+     * @param schoolDo
      * @param session
      * @return
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
-    public ResultPojo save(HttpSession session, @RequestBody TbSchoolDto schoolDto){
-        LoginedUserInfoPojo userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
-        if (null != userInfoPojo && null != schoolDto){
-            boolean result = iSchoolService.save(schoolDto,userInfoPojo.getId());
+    public ResultDto save(HttpSession session, @RequestBody TbSchoolDo schoolDo){
+        LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
+        if (null != userInfoPojo && null != schoolDo){
+            boolean result = iSchoolService.save(schoolDo,userInfoPojo.getId());
             if (result)
-                return ResultPojo.success(schoolDto);
+                return ResultDto.success();
         }
 
-        return ResultPojo.error(ResponseUtil.ERROR_MSG);
+        return ResultDto.error(ResponseUtil.ERROR_MSG);
     }
 
     /**
@@ -71,18 +71,18 @@ public class SchoolController {
      */
     @RequestMapping(value = "delete", method = RequestMethod.GET)
     @ResponseBody
-    public ResultPojo delete(@RequestParam(value = "idsStr", required = true)String idsStr,
-                             HttpSession session) {
+    public ResultDto delete(@RequestParam(value = "idsStr", required = true)String idsStr,
+                            HttpSession session) {
         log.info(idsStr + "删除");
 
-        LoginedUserInfoPojo userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
+        LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && !StringUtils.isEmpty(idsStr)) {
             String[] idArray = idsStr.split(",");
             boolean result = iSchoolService.delete(idArray, userInfoPojo.getId());
             if (result)
-                return ResultPojo.success(idsStr);
+                return ResultDto.success();
         }
-        return ResultPojo.error(ResponseUtil.ERROR_MSG);
+        return ResultDto.error(ResponseUtil.ERROR_MSG);
     }
 
     /**
@@ -91,7 +91,7 @@ public class SchoolController {
      */
     @RequestMapping("getSchoolInfoSelect")
     @ResponseBody
-    public List<AntSchoolInfoSelectPojo> getSchoolInfoSelect(){
+    public List<SchoolInfoSelectDto> getSchoolInfoSelect(){
         return iAntSchoolService.getSchoolInfoSelectList();
     }
 }

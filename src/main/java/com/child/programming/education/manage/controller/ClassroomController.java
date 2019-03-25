@@ -1,13 +1,13 @@
 package com.child.programming.education.manage.controller;
 
-import com.child.programming.base.model.TbClassroomDto;
-import com.child.programming.base.pojo.LoginedUserInfoPojo;
-import com.child.programming.base.pojo.ResultPojo;
+import com.child.programming.base.dto.LoginedUserInfoDto;
+import com.child.programming.base.dto.ResultDto;
+import com.child.programming.base.model.TbClassroomDo;
 import com.child.programming.base.service.IClassroomService;
 import com.child.programming.base.util.HttpSessionUtil;
 import com.child.programming.base.util.ResponseUtil;
-import com.child.programming.education.manage.pojo.ClassroomInfoPojo;
-import lombok.extern.slf4j.Slf4j;
+import com.child.programming.education.manage.dto.ClassroomInfoDto;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -25,7 +25,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/classroom")
-@Slf4j
+@Log4j2
 public class ClassroomController {
     @Autowired
     private IClassroomService iClassroomService;
@@ -36,7 +36,7 @@ public class ClassroomController {
      */
     @RequestMapping(value = "getList", method = RequestMethod.GET)
     @ResponseBody
-    public List<ClassroomInfoPojo> getList(@RequestParam(value = "schoolId", required = false) Integer schoolId){
+    public List<ClassroomInfoDto> getList(@RequestParam(value = "schoolId", required = false) Integer schoolId){
         Map<String, Integer> map = new HashMap<>();
         map.put("schoolId",schoolId);
         return iClassroomService.getList(map);
@@ -45,21 +45,21 @@ public class ClassroomController {
 
     /**
      * 新增和编辑保存
-     * @param classroomDto
+     * @param classroomDo
      * @param session
      * @return
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
-    public ResultPojo save(HttpSession session, @RequestBody TbClassroomDto classroomDto){
-        LoginedUserInfoPojo userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
-        if (null != userInfoPojo && null != classroomDto){
-            boolean result = iClassroomService.save(classroomDto,userInfoPojo.getId());
+    public ResultDto save(HttpSession session, @RequestBody TbClassroomDo classroomDo){
+        LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
+        if (null != userInfoPojo && null != classroomDo){
+            boolean result = iClassroomService.save(classroomDo,userInfoPojo.getId());
             if (result)
-                return ResultPojo.success(classroomDto);
+                return ResultDto.success();
         }
 
-        return ResultPojo.error(ResponseUtil.ERROR_MSG);
+        return ResultDto.error(ResponseUtil.ERROR_MSG);
     }
 
     /**
@@ -70,17 +70,17 @@ public class ClassroomController {
      */
     @RequestMapping(value = "delete", method = RequestMethod.GET)
     @ResponseBody
-    public ResultPojo delete(@RequestParam(value = "idsStr", required = true)String idsStr,
-                             HttpSession session) {
+    public ResultDto delete(@RequestParam(value = "idsStr", required = true)String idsStr,
+                            HttpSession session) {
         log.info(idsStr + "删除");
 
-        LoginedUserInfoPojo userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
+        LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && !StringUtils.isEmpty(idsStr)) {
             String[] idArray = idsStr.split(",");
             boolean result = iClassroomService.delete(idArray, userInfoPojo.getId());
             if (result)
-                return ResultPojo.success(idsStr);
+                return ResultDto.success();
         }
-        return ResultPojo.error(ResponseUtil.ERROR_MSG);
+        return ResultDto.error(ResponseUtil.ERROR_MSG);
     }
 }
