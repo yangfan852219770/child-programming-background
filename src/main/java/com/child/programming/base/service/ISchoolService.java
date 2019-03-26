@@ -1,7 +1,8 @@
 package com.child.programming.base.service;
 
+import com.child.programming.base.dto.SchoolInfoDto;
 import com.child.programming.base.model.TbSchoolDo;
-import com.child.programming.education.manage.dto.SchoolInfoDto;
+import com.child.programming.education.manage.dto.SchoolInfoSelectDto;
 
 import java.util.List;
 
@@ -34,4 +35,10 @@ public interface ISchoolService {
      * @return
      */
     Boolean delete(String[] idArray, Integer userId);
+
+    /**
+     * ant 校区下拉框
+     * @return
+     */
+    List<SchoolInfoSelectDto> getSchoolInfoSelectList();
 }

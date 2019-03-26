@@ -1,12 +1,12 @@
 package com.child.programming.base.service.impl;
 
+import com.child.programming.base.dto.TeacherInfoDto;
 import com.child.programming.base.mapper.TbTeacherDoMapper;
 import com.child.programming.base.model.TbTeacherDo;
 import com.child.programming.base.model.TbTeacherDoExample;
 import com.child.programming.base.service.ITeacherService;
 import com.child.programming.base.util.EmptyUtil;
 import com.child.programming.base.util.ListUtil;
-import com.child.programming.education.manage.dto.TeacherInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

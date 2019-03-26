@@ -1,4 +1,4 @@
-package com.child.programming.education.manage.dto;
+package com.child.programming.base.dto;
 
 import lombok.Data;
 

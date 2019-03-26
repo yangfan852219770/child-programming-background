@@ -1,16 +1,18 @@
 package com.child.programming.base.service.impl;
 
+import com.child.programming.base.dto.SchoolInfoDto;
 import com.child.programming.base.mapper.TbSchoolDoMapper;
 import com.child.programming.base.model.TbSchoolDo;
 import com.child.programming.base.model.TbSchoolDoExample;
 import com.child.programming.base.service.ISchoolService;
 import com.child.programming.base.util.EmptyUtil;
 import com.child.programming.base.util.ListUtil;
-import com.child.programming.education.manage.dto.SchoolInfoDto;
+import com.child.programming.education.manage.dto.SchoolInfoSelectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -81,4 +83,26 @@ public class SchoolServiceImpl implements ISchoolService {
         return result == idArray.length;
     }
 
+    @Override
+    public List<SchoolInfoSelectDto> getSchoolInfoSelectList() {
+        TbSchoolDoExample example = new TbSchoolDoExample();
+        TbSchoolDoExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusEqualTo(Byte.valueOf("1"));
+
+        List<TbSchoolDo> schoolDtoList = tbSchoolDoMapper.selectByExample(example);
+        if (!EmptyUtil.listIsEmpty(schoolDtoList)){
+            List<SchoolInfoSelectDto> schoolInfoSelectDtoList = new ArrayList<>();
+            for (TbSchoolDo tbSchoolDo:schoolDtoList
+            ) {
+                SchoolInfoSelectDto schoolInfoSelectDto = new SchoolInfoSelectDto();
+
+                schoolInfoSelectDto.setKey(tbSchoolDo.getId());
+                schoolInfoSelectDto.setValue(tbSchoolDo.getName());
+
+                schoolInfoSelectDtoList.add(schoolInfoSelectDto);
+            }
+            return schoolInfoSelectDtoList;
+        }
+        return null;
+    }
 }

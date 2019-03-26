@@ -1,7 +1,7 @@
 package com.child.programming.base.service;
 
+import com.child.programming.base.dto.ClassroomInfoDto;
 import com.child.programming.base.model.TbClassroomDo;
-import com.child.programming.education.manage.dto.ClassroomInfoDto;
 
 import java.util.List;
 import java.util.Map;

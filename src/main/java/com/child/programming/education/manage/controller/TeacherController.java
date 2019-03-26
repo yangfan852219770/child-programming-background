@@ -2,11 +2,11 @@ package com.child.programming.education.manage.controller;
 
 import com.child.programming.base.dto.LoginedUserInfoDto;
 import com.child.programming.base.dto.ResultDto;
+import com.child.programming.base.dto.TeacherInfoDto;
 import com.child.programming.base.model.TbTeacherDo;
 import com.child.programming.base.service.ITeacherService;
 import com.child.programming.base.util.HttpSessionUtil;
 import com.child.programming.base.util.ResponseUtil;
-import com.child.programming.education.manage.dto.TeacherInfoDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

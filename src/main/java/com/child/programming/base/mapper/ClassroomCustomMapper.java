@@ -1,6 +1,6 @@
 package com.child.programming.base.mapper;
 
-import com.child.programming.education.manage.dto.ClassroomInfoDto;
+import com.child.programming.base.dto.ClassroomInfoDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

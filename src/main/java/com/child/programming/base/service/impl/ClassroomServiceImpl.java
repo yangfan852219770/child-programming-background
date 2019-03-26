@@ -1,11 +1,11 @@
 package com.child.programming.base.service.impl;
 
+import com.child.programming.base.dto.ClassroomInfoDto;
 import com.child.programming.base.mapper.ClassroomCustomMapper;
 import com.child.programming.base.mapper.TbClassroomDoMapper;
 import com.child.programming.base.model.TbClassroomDo;
 import com.child.programming.base.service.IClassroomService;
 import com.child.programming.base.util.EmptyUtil;
-import com.child.programming.education.manage.dto.ClassroomInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

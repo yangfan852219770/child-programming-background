@@ -2,15 +2,13 @@ package com.child.programming.education.manage.controller;
 
 import com.child.programming.base.dto.LoginedUserInfoDto;
 import com.child.programming.base.dto.ResultDto;
+import com.child.programming.base.dto.SchoolInfoDto;
 import com.child.programming.base.model.TbSchoolDo;
 import com.child.programming.base.service.ISchoolService;
 import com.child.programming.base.util.HttpSessionUtil;
 import com.child.programming.base.util.ResponseUtil;
-import com.child.programming.education.manage.dto.SchoolInfoDto;
 import com.child.programming.education.manage.dto.SchoolInfoSelectDto;
-import com.child.programming.education.manage.service.IAntSchoolService;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -30,8 +28,6 @@ import java.util.List;
 public class SchoolController {
     @Autowired
     private ISchoolService iSchoolService;
-    @Autowired
-    private IAntSchoolService iAntSchoolService;
 
     /**
      * 查询校区
@@ -92,6 +88,6 @@ public class SchoolController {
     @RequestMapping("getSchoolInfoSelect")
     @ResponseBody
     public List<SchoolInfoSelectDto> getSchoolInfoSelect(){
-        return iAntSchoolService.getSchoolInfoSelectList();
+        return iSchoolService.getSchoolInfoSelectList();
     }
 }
