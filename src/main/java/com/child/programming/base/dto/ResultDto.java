@@ -53,9 +53,8 @@ public class ResultDto {
      * @param msg
      * @return
      */
-    public static ResultDto success(String msg) {
-        return  new ResultDto(ResponseUtil.SUCCESS_200,
-                msg);
+    public static ResultDto success(Object o, String msg) {
+        return  new ResultDto(ResponseUtil.SUCCESS_200, msg, o);
     }
 
 
