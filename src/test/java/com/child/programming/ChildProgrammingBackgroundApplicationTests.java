@@ -1,7 +1,7 @@
 package com.child.programming;
 
-import com.child.programming.base.mapper.TbClassroomDtoMapper;
-import com.child.programming.base.model.TbClassroomDto;
+import com.child.programming.base.mapper.TbClassroomDoMapper;
+import com.child.programming.base.model.TbClassroomDo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.annotation.MapperScan;
@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @SpringBootTest
 public class ChildProgrammingBackgroundApplicationTests {
     @Autowired
-    private TbClassroomDtoMapper classroomDtoMapper;
+    private TbClassroomDoMapper classroomDoMapper;
 
     @Test
     public void contextLoads() {
-        TbClassroomDto classroomDto = new TbClassroomDto();
+        TbClassroomDo classroomDto = new TbClassroomDo();
         classroomDto.setCode(123);
         classroomDto.setStatus(Byte.valueOf("1"));
-        classroomDtoMapper.insert(classroomDto);
+        classroomDoMapper.insert(classroomDto);
         System.out.println("test");
     }
 

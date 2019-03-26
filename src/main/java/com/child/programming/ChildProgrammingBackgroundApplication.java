@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan("com.child.programming.base.mapper")
-public class ChildProgrammingBackgroundApplication {
+public class  ChildProgrammingBackgroundApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ChildProgrammingBackgroundApplication.class, args);
