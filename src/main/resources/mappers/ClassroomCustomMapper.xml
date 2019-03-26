@@ -4,10 +4,10 @@
     <select id="getListOrBySchoolId" parameterType="java.util.Map" resultType="com.child.programming.base.dto.ClassroomInfoDto">
         select c.id, c.code, c.max_capacity as maxCapacity, c.comment, c.create_time as createTime,
         s.id as schoolId, s.name as schoolName
-        from classroom c
+        from classroom as c
         LEFT JOIN school as s
-        where c.school_id=s.id
-        and c.status=1 and s.status=1
+        on c.school_id=s.id
+        where c.status=1 and s.status=1
         <if test="schoolId !=null">
             and s.id=#{schoolId}
         </if>
