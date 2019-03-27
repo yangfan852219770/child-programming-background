@@ -50,7 +50,7 @@ public class StudentAppController {
     @RequestMapping("getOpenId")
     public ResultDto getOpenId(String code){
         if (StringUtils.isEmpty(code)) {
-            return new ResultDto(ResponseUtil.ERROR_0,"code为空");
+            return new ResultDto(ResponseUtil.FAIL_0,"code为空");
         }
         Object openId = null;
         String params = "appid=" + wxAppid + "&secret=" + wxSecret + "&js_code=" + code + "&grant_type=authorization_code";
@@ -64,7 +64,7 @@ public class StudentAppController {
         if (openId!=null){
             return ResultDto.success(openId);
         }
-        return new ResultDto(ResponseUtil.ERROR_0,"获取openId失败");
+        return new ResultDto(ResponseUtil.FAIL_0,"获取openId失败");
     }
 
 
@@ -94,7 +94,7 @@ public class StudentAppController {
                 return ResultDto.success(studentDto);
             }
         }
-        return new ResultDto(ResponseUtil.ERROR_0,"添加用户失败");
+        return new ResultDto(ResponseUtil.FAIL_0,"添加用户失败");
     }
 
     @RequestMapping("addStudentInfo")
@@ -125,21 +125,21 @@ public class StudentAppController {
                 }
             }
         } catch (Exception e) {
-            return new ResultDto(ResponseUtil.ERROR_0,"添加用户信息失败");
+            return new ResultDto(ResponseUtil.FAIL_0,"添加用户信息失败");
         }
-        return new ResultDto(ResponseUtil.ERROR_0,"添加用户信息失败");
+        return new ResultDto(ResponseUtil.FAIL_0,"添加用户信息失败");
     }
 
     @RequestMapping("getStudentByOpenId")
     public ResultDto getUserByOpenId(String openId){
         if (StringUtils.isEmpty(openId)) {
-            return new ResultDto(ResponseUtil.ERROR_0,"openId为空");
+            return new ResultDto(ResponseUtil.FAIL_0,"openId为空");
         }
         TbStudentDo studentDto = iStudentService.getStudentByOpenId(openId);
         if (studentDto!=null){
             return ResultDto.success(studentDto);
         }
-        return new ResultDto(ResponseUtil.ERROR_0,"获取用户失败");
+        return new ResultDto(ResponseUtil.FAIL_0,"获取用户失败");
     }
 
     public String getAccessToken(){
