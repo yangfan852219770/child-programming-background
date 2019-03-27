@@ -35,4 +35,12 @@ public interface ITeacherService {
      * @return
      */
     Boolean delete(String[] idArray, Integer userId);
+
+    /**
+     * 重置密码
+     * @param teacherId 老师id
+     * @param userId 操作者id
+     * @return
+     */
+    Boolean resetPassword(Integer teacherId, Integer userId);
 }

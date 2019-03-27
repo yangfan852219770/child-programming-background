@@ -77,4 +77,19 @@ public class TeacherController {
         }
         return ResultDto.fail();
     }
+
+    @RequestMapping(value = "resetPassword", method = RequestMethod.GET)
+    public ResultDto resetPassword(@RequestParam(value = "teacherId", required = true)Integer teacherId
+            ,HttpSession session) {
+        LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
+        if (null == userInfoPojo)
+            return ResultDto.fail();
+
+        boolean result = iTeacherService.resetPassword(teacherId, userInfoPojo.getId());
+        if (result){
+            log.warn(userInfoPojo.getUserName() + "将老师id为:" + teacherId + "重置默认密码");
+            return ResultDto.success();
+        }
+        return ResultDto.fail();
+    }
 }

@@ -5,8 +5,10 @@ import com.child.programming.base.mapper.TbTeacherDoMapper;
 import com.child.programming.base.model.TbTeacherDo;
 import com.child.programming.base.model.TbTeacherDoExample;
 import com.child.programming.base.service.ITeacherService;
+import com.child.programming.base.util.ConstDataUtil;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
+import com.child.programming.base.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,7 @@ public class TeacherServiceImpl implements ITeacherService {
 
         //插入
         if (null == teacherDo.getId()){
+            teacherDo.setPassword(MD5Util.MD5Encode(ConstDataUtil.DEFAULT_PASSWORD));
             teacherDo.setStatus(Byte.valueOf("1"));
             teacherDo.setCreateId(userId);
             teacherDo.setCreateTime(new Date());
@@ -77,5 +80,15 @@ public class TeacherServiceImpl implements ITeacherService {
         }
 
         return result == idArray.length;
+    }
+
+    @Override
+    public Boolean resetPassword(Integer teacherId, Integer userId) {
+        TbTeacherDo tbTeacherDo = new TbTeacherDo();
+        tbTeacherDo.setPassword(MD5Util.MD5Encode(ConstDataUtil.DEFAULT_PASSWORD));
+        tbTeacherDo.setId(teacherId);
+        tbTeacherDo.setLastUpdateId(userId);
+        tbTeacherDo.setLastUpdateTime(new Date());
+        return tbTeacherDoMapper.updateByPrimaryKeySelective(tbTeacherDo) > 0 ? true : false;
     }
 }
