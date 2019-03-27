@@ -13,7 +13,7 @@ public interface IStudentService {
 
     TbStudentDo getStudentByOpenId(String openid);
 
-    int updateStudent(TbStudentDo studentDto);
+    int updateStudentByOpenId(TbStudentDo studentDto);
 
     int addStudent(TbStudentDo studentDto);
 

@@ -36,7 +36,7 @@ public class StudentServiceImpl  implements IStudentService{
     }
 
     @Override
-    public int updateStudent(TbStudentDo studentDto) {
+    public int updateStudentByOpenId(TbStudentDo studentDto) {
         TbStudentDoExample example = new TbStudentDoExample();
         TbStudentDoExample.Criteria criteria = example.createCriteria();
         criteria.andOpenidEqualTo(studentDto.getOpenid());

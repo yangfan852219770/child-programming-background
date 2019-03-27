@@ -19,7 +19,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("app/web/student")
-public class StudentController {
+public class StudentAppController {
 
     @Value("${wx.appid}")
     private String wxAppid;
@@ -52,49 +52,42 @@ public class StudentController {
         if (StringUtils.isEmpty(code)) {
             return new ResultDto(ResponseUtil.ERROR_0,"code为空");
         }
-        //请求参数
+        Object openId = null;
         String params = "appid=" + wxAppid + "&secret=" + wxSecret + "&js_code=" + code + "&grant_type=authorization_code";
         //发送请求
         String  returnvalue= WeChatUtil.sendGet(WeChatUtil.getOpenIdURL,params);
         //解析相应内容（转换成json对象）
         JSONObject json = JSONObject.parseObject(returnvalue);
-        System.out.println(json);
-        System.out.println("return openid is ："+(String)json.get("openid"));
-        Object openId = json.get("openid");
-        String session_key = (String)json.get("session_key");
-        int expires_in = (int)json.get("expires_in");
-        System.out.println(session_key +"------"+expires_in);
-        if (!StringUtils.isEmpty(openId)){
+        if (!json.isEmpty()){
+            openId = json.get("openid");
+        }
+        if (openId!=null){
             return ResultDto.success(openId);
         }
         return new ResultDto(ResponseUtil.ERROR_0,"获取openId失败");
     }
+
 
     @RequestMapping("addStudent")
     public ResultDto addUser(TbStudentDo studentDto){
         TbStudentDo studentDtoOld = iStudentService.getStudentByOpenId(studentDto.getOpenid());
         WXTokenUtil wxTokenUtil = new WXTokenUtil();
         TokenDto tokenDto = new TokenDto();
+        studentDto.setId(studentDtoOld.getId());
+        studentDto.setOpenid(studentDtoOld.getOpenid());
+        tokenDto.setAccessToken(getAccessToken());
+        String token = wxTokenUtil.generateToken(tokenDto);
+        studentDto.setAccentToken(token);
+//        根据openId判断
         if (studentDtoOld!=null){
             //更新
-            studentDto.setOpenid(studentDtoOld.getOpenid());
-            tokenDto.setAccessToken(getAccessToken());
-            String token = wxTokenUtil.generateToken(tokenDto);
-            System.out.println(token);
-            studentDto.setAccentToken(token);
             studentDto.setLastUpdateTime(new Date());
-            int result = iStudentService.updateStudent(studentDto);
+            int result = iStudentService.updateStudentByOpenId(studentDto);
             if (result>0){
                 return ResultDto.success(studentDto);
             }
         }else{
             //添加
-            //Token
-            tokenDto.setOpenId(studentDto.getOpenid());
-            tokenDto.setAccessToken(getAccessToken());
-            String token = wxTokenUtil.generateToken(tokenDto);
-            System.out.println(token);
-            studentDto.setAccentToken(token);
             studentDto.setCreateTime(new Date());
             int result = iStudentService.addStudent(studentDto);
             if (result>0){
@@ -124,7 +117,7 @@ public class StudentController {
             if (result){
                 //2、把前端输入信息，包括图片的url保存到数据库
                 studentDto.setPhotoUrl(baseUrl+filePath+"/"+newName);
-                int updateStudentResult = iStudentService.updateStudent(studentDto);
+                int updateStudentResult = iStudentService.updateStudentByOpenId(studentDto);
                 System.out.println(updateStudentResult);
                 if (updateStudentResult>0){
                     TbStudentDo studentDtoOld = iStudentService.getStudentByOpenId(studentDto.getOpenid());
