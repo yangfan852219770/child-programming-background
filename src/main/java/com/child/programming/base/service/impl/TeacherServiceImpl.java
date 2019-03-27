@@ -5,11 +5,10 @@ import com.child.programming.base.mapper.TbTeacherDoMapper;
 import com.child.programming.base.model.TbTeacherDo;
 import com.child.programming.base.model.TbTeacherDoExample;
 import com.child.programming.base.service.ITeacherService;
-import com.child.programming.base.util.EmptyUtil;
+import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -31,12 +30,12 @@ public class TeacherServiceImpl implements ITeacherService {
         TbTeacherDoExample.Criteria criteria = example.createCriteria();
 
         example.setOrderByClause("create_time desc");
-        if (!StringUtils.isEmpty(name))
+        if (!EmptyUtils.stringIsEmpty(name))
             criteria.andStatusEqualTo(Byte.valueOf("1")).andNameLike("%" + name + "%");
         else
             criteria.andStatusEqualTo(Byte.valueOf("1"));
         List<TbTeacherDo> teacherDoList = tbTeacherDoMapper.selectByExample(example);
-        if (!EmptyUtil.listIsEmpty(teacherDoList))
+        if (!EmptyUtils.listIsEmpty(teacherDoList))
             return ListUtil.convertElement(teacherDoList, TeacherInfoDto.class);
         else
             return null;
@@ -62,7 +61,7 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public Boolean delete(String[] idArray, Integer userId) {
-        if (EmptyUtil.arrayIsEmpty(idArray))
+        if (EmptyUtils.arrayIsEmpty(idArray))
             return false;
 
         int result = 0;

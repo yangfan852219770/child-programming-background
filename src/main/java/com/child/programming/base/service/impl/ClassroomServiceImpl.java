@@ -5,7 +5,7 @@ import com.child.programming.base.mapper.ClassroomCustomMapper;
 import com.child.programming.base.mapper.TbClassroomDoMapper;
 import com.child.programming.base.model.TbClassroomDo;
 import com.child.programming.base.service.IClassroomService;
-import com.child.programming.base.util.EmptyUtil;
+import com.child.programming.base.util.EmptyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +49,7 @@ public class ClassroomServiceImpl implements IClassroomService {
 
     @Override
     public Boolean delete(String[] idArray, Integer userId) {
-        if (EmptyUtil.arrayIsEmpty(idArray))
+        if (EmptyUtils.arrayIsEmpty(idArray))
             return false;
 
         int result = 0;

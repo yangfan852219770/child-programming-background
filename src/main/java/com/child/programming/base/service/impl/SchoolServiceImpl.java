@@ -5,12 +5,11 @@ import com.child.programming.base.mapper.TbSchoolDoMapper;
 import com.child.programming.base.model.TbSchoolDo;
 import com.child.programming.base.model.TbSchoolDoExample;
 import com.child.programming.base.service.ISchoolService;
-import com.child.programming.base.util.EmptyUtil;
+import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
 import com.child.programming.education.manage.dto.SchoolInfoSelectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,13 +30,13 @@ public class SchoolServiceImpl implements ISchoolService {
         TbSchoolDoExample.Criteria criteria = schoolDoExample.createCriteria();
 
         schoolDoExample.setOrderByClause("create_time desc");
-        if (!StringUtils.isEmpty(name))
+        if (!EmptyUtils.stringIsEmpty(name))
             criteria.andStatusEqualTo(Byte.valueOf("1")).andNameLike("%" + name + "%");
         else
             criteria.andStatusEqualTo(Byte.valueOf("1"));
 
         List<TbSchoolDo> schoolDoList = tbSchoolDoMapper.selectByExample(schoolDoExample);
-        if (!EmptyUtil.listIsEmpty(schoolDoList))
+        if (!EmptyUtils.listIsEmpty(schoolDoList))
             return ListUtil.convertElement(schoolDoList, SchoolInfoDto.class);
         else
             return null;
@@ -65,7 +64,7 @@ public class SchoolServiceImpl implements ISchoolService {
 
     @Override
     public Boolean delete(String[] idArray, Integer userId) {
-        if (EmptyUtil.arrayIsEmpty(idArray))
+        if (EmptyUtils.arrayIsEmpty(idArray))
             return false;
 
         int result = 0;
@@ -90,7 +89,7 @@ public class SchoolServiceImpl implements ISchoolService {
         criteria.andStatusEqualTo(Byte.valueOf("1"));
 
         List<TbSchoolDo> schoolDtoList = tbSchoolDoMapper.selectByExample(example);
-        if (!EmptyUtil.listIsEmpty(schoolDtoList)){
+        if (!EmptyUtils.listIsEmpty(schoolDtoList)){
             List<SchoolInfoSelectDto> schoolInfoSelectDtoList = new ArrayList<>();
             for (TbSchoolDo tbSchoolDo:schoolDtoList
             ) {

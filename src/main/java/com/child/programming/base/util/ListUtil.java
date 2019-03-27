@@ -22,7 +22,7 @@ public class ListUtil {
      * @return
      */
     public static <T> List<T> convertElement(List sourceList, Class<T> targetClazz){
-       if (!EmptyUtil.listIsEmpty(sourceList)){
+       if (!EmptyUtils.listIsEmpty(sourceList)){
            List<T> targetList = new ArrayList<>();
 
            for (Object sourceObject:sourceList
