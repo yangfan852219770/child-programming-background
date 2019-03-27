@@ -1,6 +1,6 @@
 package com.child.programming.education.manage.controller;
 
-import com.child.programming.base.dto.ClassroomInfoDto;
+import com.child.programming.base.dto.ClassroomDetailInfoDto;
 import com.child.programming.base.dto.LoginedUserInfoDto;
 import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.model.TbClassroomDo;
@@ -9,7 +9,6 @@ import com.child.programming.base.util.HttpSessionUtil;
 import com.child.programming.base.util.ResponseUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,7 @@ import java.util.Map;
  * @Author：yangfan
  **/
 
-@Controller
+@RestController
 @RequestMapping("/classroom")
 @Log4j2
 public class ClassroomController {
@@ -35,8 +34,7 @@ public class ClassroomController {
      * @return
      */
     @RequestMapping(value = "getList", method = RequestMethod.GET)
-    @ResponseBody
-    public List<ClassroomInfoDto> getList(@RequestParam(value = "schoolId", required = false) Integer schoolId){
+    public List<ClassroomDetailInfoDto> getList(@RequestParam(value = "schoolId", required = false) Integer schoolId){
         Map<String, Integer> map = new HashMap<>();
         map.put("schoolId",schoolId);
         return iClassroomService.getList(map);
@@ -50,7 +48,6 @@ public class ClassroomController {
      * @return
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
-    @ResponseBody
     public ResultDto save(HttpSession session, @RequestBody TbClassroomDo classroomDo){
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && null != classroomDo){
@@ -59,7 +56,7 @@ public class ClassroomController {
                 return ResultDto.success();
         }
 
-        return ResultDto.error(ResponseUtil.ERROR_MSG);
+        return ResultDto.fail();
     }
 
     /**
@@ -69,7 +66,6 @@ public class ClassroomController {
      * @return
      */
     @RequestMapping(value = "delete", method = RequestMethod.GET)
-    @ResponseBody
     public ResultDto delete(@RequestParam(value = "idsStr", required = true)String idsStr,
                             HttpSession session) {
         log.info(idsStr + "删除");
@@ -81,6 +77,6 @@ public class ClassroomController {
             if (result)
                 return ResultDto.success();
         }
-        return ResultDto.error(ResponseUtil.ERROR_MSG);
+        return ResultDto.fail();
     }
 }

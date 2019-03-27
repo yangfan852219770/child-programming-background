@@ -53,7 +53,7 @@ public class StudentController {
                 return ResultDto.success();
         }
 
-        return ResultDto.error(ResponseUtil.ERROR_MSG);
+        return ResultDto.fail();
     }
 
     /**
@@ -73,6 +73,6 @@ public class StudentController {
             if (result)
                 return ResultDto.success();
         }
-        return ResultDto.error(ResponseUtil.ERROR_MSG);
+        return ResultDto.fail();
     }
 }

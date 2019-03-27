@@ -59,11 +59,40 @@ public class ResultDto {
 
 
     /**
-     * 失败返回对象
+     * 内部服务器错误
      * @param msg
      * @return
      */
     public static ResultDto error(String msg){
         return new ResultDto(ResponseUtil.INTERNAL_ERROR_500, msg);
     }
+
+
+    /**
+     * 操作失败
+     * @return
+     */
+    public static ResultDto fail(){
+        return new ResultDto(ResponseUtil.FAIL_0, ResponseUtil.FAIL_MSG);
+    }
+
+    /**
+     * 操作失败
+     * @param msg
+     * @return
+     */
+    public static ResultDto fail(String msg){
+        return new ResultDto(ResponseUtil.FAIL_0, msg);
+    }
+
+    /**
+     * 操作失败
+     * @param msg
+     * @param o
+     * @return
+     */
+    public static ResultDto fail(String msg, Object o) {
+        return new ResultDto(ResponseUtil.FAIL_0, msg, o);
+    }
+
 }

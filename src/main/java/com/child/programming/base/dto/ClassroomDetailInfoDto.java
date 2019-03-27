@@ -10,7 +10,7 @@ import java.util.Date;
  **/
 
 @Data
-public class ClassroomInfoDto {
+public class ClassroomDetailInfoDto {
 
     private Integer id;  //主键id
 

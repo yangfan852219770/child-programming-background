@@ -21,7 +21,7 @@ import java.util.List;
  * @Author：yangfan
  **/
 
-@Controller
+@RestController
 @RequestMapping("/teacher")
 @Log4j2
 public class TeacherController {
@@ -34,7 +34,6 @@ public class TeacherController {
      * @return
      */
     @RequestMapping(value = "getList", method = RequestMethod.GET)
-    @ResponseBody
     public List<TeacherInfoDto> getList(@RequestParam(value = "name", required = false) String name){
         return iTeacherService.getList(name);
     }
@@ -47,7 +46,6 @@ public class TeacherController {
      * @return
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
-    @ResponseBody
     public ResultDto save(HttpSession session, @RequestBody TbTeacherDo teacherDo){
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && null != teacherDo){
@@ -55,8 +53,8 @@ public class TeacherController {
             if (result)
                 return ResultDto.success();
         }
+        return ResultDto.fail();
 
-        return ResultDto.error(ResponseUtil.ERROR_MSG);
     }
 
     /**
@@ -66,7 +64,6 @@ public class TeacherController {
      * @return
      */
     @RequestMapping(value = "delete", method = RequestMethod.GET)
-    @ResponseBody
     public ResultDto delete(@RequestParam(value = "idsStr", required = true)String idsStr,
                             HttpSession session) {
         log.info(idsStr + "删除");
@@ -78,6 +75,6 @@ public class TeacherController {
             if (result)
                 return ResultDto.success();
         }
-        return ResultDto.error(ResponseUtil.ERROR_MSG);
+        return ResultDto.fail();
     }
 }

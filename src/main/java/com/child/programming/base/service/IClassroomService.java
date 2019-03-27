@@ -1,7 +1,8 @@
 package com.child.programming.base.service;
 
-import com.child.programming.base.dto.ClassroomInfoDto;
+import com.child.programming.base.dto.ClassroomDetailInfoDto;
 import com.child.programming.base.model.TbClassroomDo;
+import com.child.programming.education.manage.dto.ValidateClassroomInfoDto;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public interface IClassroomService {
      * @return
      */
     // TODO 无分页
-    List<ClassroomInfoDto> getList(Map<String, Integer> map);
+    List<ClassroomDetailInfoDto> getList(Map<String, Integer> map);
 
     /**
      * 新增、编辑
@@ -35,4 +36,10 @@ public interface IClassroomService {
      * @return
      */
     Boolean delete(String[] idArray, Integer userId);
+
+    /**
+     * 删除学校时，校验是否还有教室归属删除学校
+     * @return
+     */
+    List<ValidateClassroomInfoDto> validateSchoolId(String[] schoolIdArray);
 }

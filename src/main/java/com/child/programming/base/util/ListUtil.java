@@ -42,4 +42,25 @@ public class ListUtil {
        return null;
 
     }
+
+    /**
+     * 将string数组转化为Integer的list
+     * @return
+     */
+    public static List<Integer> stringArrayToIntegerList(String[] strings){
+        if (EmptyUtils.arrayIsEmpty(strings))
+            return null;
+        List<Integer> list = new ArrayList<>();
+        for (String str:strings
+             ) {
+            try{
+                list.add(Integer.parseInt(str));
+            }catch (Exception e){
+                e.printStackTrace();
+                log.error("There are some errors in converting String to Integer");
+                return null;
+            }
+        }
+        return list;
+    }
 }

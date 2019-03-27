@@ -1,15 +1,18 @@
 package com.child.programming.base.service.impl;
 
-import com.child.programming.base.dto.ClassroomInfoDto;
+import com.child.programming.base.dto.ClassroomDetailInfoDto;
 import com.child.programming.base.mapper.ClassroomCustomMapper;
 import com.child.programming.base.mapper.TbClassroomDoMapper;
 import com.child.programming.base.model.TbClassroomDo;
 import com.child.programming.base.service.IClassroomService;
 import com.child.programming.base.util.EmptyUtils;
+import com.child.programming.base.util.ListUtil;
+import com.child.programming.education.manage.dto.ValidateClassroomInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +30,7 @@ public class ClassroomServiceImpl implements IClassroomService {
 
 
     @Override
-    public List<ClassroomInfoDto> getList(Map<String, Integer> map) {
+    public List<ClassroomDetailInfoDto> getList(Map<String, Integer> map) {
         return classroomCustomMapper.getListOrBySchoolId(map);
     }
 
@@ -65,5 +68,19 @@ public class ClassroomServiceImpl implements IClassroomService {
         }
 
         return result == idArray.length;
+    }
+
+    @Override
+    public List<ValidateClassroomInfoDto> validateSchoolId(String[] schoolIdArray) {
+        if (EmptyUtils.arrayIsEmpty(schoolIdArray))
+            return null;
+        Map<String, List<Integer>> map = new HashMap<>();
+        List<Integer> schoolIdList = ListUtil.stringArrayToIntegerList(schoolIdArray);
+        if (EmptyUtils.listIsEmpty(schoolIdList))
+            return null;
+        map.put("schoolIdList", schoolIdList);
+        List<ValidateClassroomInfoDto> validateClassroomInfoDtoList = classroomCustomMapper
+                .getValidateClassroomInfoListBySchoolId(map);
+        return validateClassroomInfoDtoList;
     }
 }
