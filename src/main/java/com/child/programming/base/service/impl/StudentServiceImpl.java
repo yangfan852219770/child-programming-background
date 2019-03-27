@@ -24,6 +24,33 @@ public class StudentServiceImpl  implements IStudentService{
     private TbStudentDoMapper tbStudentDoMapper;
 
     @Override
+    public TbStudentDo getStudentByOpenId(String openid) {
+        TbStudentDoExample example = new TbStudentDoExample();
+        TbStudentDoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenidEqualTo(openid);
+        List<TbStudentDo> list = tbStudentDoMapper.selectByExample(example);
+        if (list!=null && list.size()>0){
+            return list.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public int updateStudent(TbStudentDo studentDto) {
+        TbStudentDoExample example = new TbStudentDoExample();
+        TbStudentDoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenidEqualTo(studentDto.getOpenid());
+        int result = tbStudentDoMapper.updateByExampleSelective(studentDto,example);
+        return result;
+    }
+
+    @Override
+    public int addStudent(TbStudentDo studentDto) {
+        int result = tbStudentDoMapper.insert(studentDto);
+        return result;
+    }
+
+    @Override
     public List<StudentInfoDto> getList(String name) {
 
         TbStudentDoExample example= new TbStudentDoExample();

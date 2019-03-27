@@ -10,6 +10,13 @@ import java.util.List;
  * @description: 学生业务逻辑处理
  */
 public interface IStudentService {
+
+    TbStudentDo getStudentByOpenId(String openid);
+
+    int updateStudent(TbStudentDo studentDto);
+
+    int addStudent(TbStudentDo studentDto);
+
     /**
      * @description 查询学生信息
      * @param name 学生姓名
