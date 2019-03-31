@@ -95,4 +95,6 @@ public interface TbCourseDoMapper {
      * @mbggenerated Mon Mar 25 19:37:56 CST 2019
      */
     int updateByPrimaryKey(TbCourseDo record);
+
+    List<TbCourseDo> getClassNowByExample(TbCourseDoExample example);
 }
