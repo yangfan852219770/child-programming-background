@@ -4,17 +4,19 @@ import com.child.programming.base.dto.ClassroomDetailInfoDto;
 import com.child.programming.base.mapper.ClassroomCustomMapper;
 import com.child.programming.base.mapper.TbClassroomDoMapper;
 import com.child.programming.base.model.TbClassroomDo;
+import com.child.programming.base.model.TbClassroomDoExample;
 import com.child.programming.base.service.IClassroomService;
+import com.child.programming.base.service.ISchoolService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
+import com.child.programming.education.manage.dto.CascadeSelectDto;
+import com.child.programming.education.manage.dto.SelectDto;
 import com.child.programming.education.manage.dto.ValidateClassroomInfoDto;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description：
@@ -27,6 +29,9 @@ public class ClassroomServiceImpl implements IClassroomService {
     private TbClassroomDoMapper classroomDoMapper;
     @Autowired
     private ClassroomCustomMapper classroomCustomMapper;
+
+    @Autowired
+    private ISchoolService iSchoolService;
 
 
     @Override
@@ -42,11 +47,11 @@ public class ClassroomServiceImpl implements IClassroomService {
             classroomDo.setStatus(Byte.valueOf("1"));
             classroomDo.setCreateId(userId);
             classroomDo.setCreateTime(new Date());
-            return classroomDoMapper.insert(classroomDo) > 0 ? true : false;
+            return classroomDoMapper.insert(classroomDo) > 0;
         } else {
             classroomDo.setLastUpdateId(userId);
             classroomDo.setLastUpdateTime(new Date());
-            return classroomDoMapper.updateByPrimaryKeySelective(classroomDo) > 0 ? true : false;
+            return classroomDoMapper.updateByPrimaryKeySelective(classroomDo) > 0;
         }
     }
 
@@ -82,5 +87,49 @@ public class ClassroomServiceImpl implements IClassroomService {
         List<ValidateClassroomInfoDto> validateClassroomInfoDtoList = classroomCustomMapper
                 .getValidateClassroomInfoListBySchoolId(map);
         return validateClassroomInfoDtoList;
+    }
+
+    @Override
+    public List<SelectDto> getClassroomSelectBySchoolId(Integer schoolId) {
+        if (!EmptyUtils.intIsEmpty(schoolId)){
+            TbClassroomDoExample example = new TbClassroomDoExample();
+            TbClassroomDoExample.Criteria criteria = example.createCriteria();
+            criteria.andSchoolIdEqualTo(schoolId);
+            List<TbClassroomDo> classroomDoList = classroomDoMapper.selectByExample(example);
+            List<SelectDto> selectDtoList = new ArrayList<>();
+            for (TbClassroomDo classroom:classroomDoList
+                 ) {
+                SelectDto selectDto = new SelectDto();
+                selectDto.setValue(classroom.getId());
+                selectDto.setLabel(String.valueOf(classroom.getCode()));
+                selectDtoList.add(selectDto);
+            }
+            return selectDtoList;
+        }
+        return null;
+    }
+
+    @Override
+    public List<CascadeSelectDto> getClassroomCascadeSelect() {
+        List<SelectDto> schoolList = iSchoolService.getSchoolInfoSelectList();
+        if (EmptyUtils.listIsNotEmpty(schoolList)) {
+            List<CascadeSelectDto> classroomCascadeList = new ArrayList<>();
+            for (SelectDto school:schoolList
+                 ) {
+                CascadeSelectDto cascadeSelectDto = new CascadeSelectDto();
+                //校区信息
+                BeanUtils.copyProperties(school, cascadeSelectDto);
+
+                //教室
+                List<SelectDto> classroomList = getClassroomSelectBySchoolId(school.getValue());
+                if (EmptyUtils.listIsNotEmpty(classroomList)) {
+                    cascadeSelectDto.setChildren(ListUtil.convertElement(classroomList, CascadeSelectDto.class));
+                    //有教室，才添加
+                    classroomCascadeList.add(cascadeSelectDto);
+                }
+            }
+            return classroomCascadeList;
+        }
+        return null;
     }
 }

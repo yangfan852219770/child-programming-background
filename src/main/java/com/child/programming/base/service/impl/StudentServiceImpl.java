@@ -76,12 +76,12 @@ public class StudentServiceImpl  implements IStudentService{
            tbStudentDo.setCreateId(currentUserId);
            tbStudentDo.setCreateTime(new Date());
            tbStudentDo.setStatus(Byte.valueOf("1"));
-           return tbStudentDoMapper.insert(tbStudentDo)>0?true:false;
+           return tbStudentDoMapper.insert(tbStudentDo)>0;
        } else{
            //更新
            tbStudentDo.setLastUpdateId(currentUserId);
            tbStudentDo.setLastUpdateTime(new Date());
-           return tbStudentDoMapper.updateByPrimaryKeySelective(tbStudentDo)>0?true:false;
+           return tbStudentDoMapper.updateByPrimaryKeySelective(tbStudentDo)>0;
        }
     }
 

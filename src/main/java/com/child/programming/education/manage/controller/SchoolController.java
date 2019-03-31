@@ -9,11 +9,10 @@ import com.child.programming.base.service.ISchoolService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.HttpSessionUtil;
 import com.child.programming.base.util.ResponseUtil;
-import com.child.programming.education.manage.dto.SchoolInfoSelectDto;
+import com.child.programming.education.manage.dto.SelectDto;
 import com.child.programming.education.manage.dto.ValidateClassroomInfoDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,7 +93,7 @@ public class SchoolController {
      * @return
      */
     @RequestMapping("getSchoolInfoSelect")
-    public List<SchoolInfoSelectDto> getSchoolInfoSelect(){
+    public List<SelectDto> getSchoolInfoSelect(){
         return iSchoolService.getSchoolInfoSelectList();
     }
 

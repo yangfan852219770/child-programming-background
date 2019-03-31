@@ -7,7 +7,7 @@ import com.child.programming.base.model.TbSchoolDoExample;
 import com.child.programming.base.service.ISchoolService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
-import com.child.programming.education.manage.dto.SchoolInfoSelectDto;
+import com.child.programming.education.manage.dto.SelectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,12 +52,12 @@ public class SchoolServiceImpl implements ISchoolService {
             schoolDo.setCreateId(userId);
             schoolDo.setCreateTime(new Date());
             schoolDo.setStatus(Byte.valueOf("1"));
-            return tbSchoolDoMapper.insert(schoolDo) > 0 ? true : false;
+            return tbSchoolDoMapper.insert(schoolDo) > 0;
         } else{
             //更新
             schoolDo.setLastUpdateId(userId);
             schoolDo.setLastUpdateTime(new Date());
-            return tbSchoolDoMapper.updateByPrimaryKeySelective(schoolDo) > 0 ? true : false;
+            return tbSchoolDoMapper.updateByPrimaryKeySelective(schoolDo) > 0;
         }
     }
 
@@ -83,24 +83,24 @@ public class SchoolServiceImpl implements ISchoolService {
     }
 
     @Override
-    public List<SchoolInfoSelectDto> getSchoolInfoSelectList() {
+    public List<SelectDto> getSchoolInfoSelectList() {
         TbSchoolDoExample example = new TbSchoolDoExample();
         TbSchoolDoExample.Criteria criteria = example.createCriteria();
         criteria.andStatusEqualTo(Byte.valueOf("1"));
 
         List<TbSchoolDo> schoolDtoList = tbSchoolDoMapper.selectByExample(example);
         if (!EmptyUtils.listIsEmpty(schoolDtoList)){
-            List<SchoolInfoSelectDto> schoolInfoSelectDtoList = new ArrayList<>();
+            List<SelectDto> selectDtoList = new ArrayList<>();
             for (TbSchoolDo tbSchoolDo:schoolDtoList
             ) {
-                SchoolInfoSelectDto schoolInfoSelectDto = new SchoolInfoSelectDto();
+                SelectDto selectDto = new SelectDto();
 
-                schoolInfoSelectDto.setKey(tbSchoolDo.getId());
-                schoolInfoSelectDto.setValue(tbSchoolDo.getName());
+                selectDto.setValue(tbSchoolDo.getId());
+                selectDto.setLabel(tbSchoolDo.getName());
 
-                schoolInfoSelectDtoList.add(schoolInfoSelectDto);
+                selectDtoList.add(selectDto);
             }
-            return schoolInfoSelectDtoList;
+            return selectDtoList;
         }
         return null;
     }

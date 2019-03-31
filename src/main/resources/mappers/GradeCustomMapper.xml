@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.child.programming.base.mapper.GradeCustomMapper">
+    <select id="getList" parameterType="java.util.Map" resultType="com.child.programming.base.dto.GradeInfoDto">
+       select gra.id, gra.name, gra.max_capacity as maxCapacity, gra.description,
+       gra.current_period as currentPeriod, gra.period_history as periodHistory,
+       gra.start_date as startDate, gra.end_date as endDate, gra.weekends_schedule as weekendsSchedule,
+       gra.create_time as createTime,
+       cou.id as courseId, cou.name as courseName,
+       tea.id as teacherId, tea.name as teacherName,
+       cla.id as classroomId, cla.code as classroomCode,
+       sch.id as schoolId, sch.name as schoolName
+       from grade gra
+       left join course as cou on gra.course_id=cou.id
+       left join teacher as tea on gra.teacher_id=tea.id
+       left join classroom as cla on gra.classroom_id=cla.id
+       left join school as sch on cla.school_id=sch.id
+       <if test="name != null">
+           where gra.name = #{name}
+       </if>
+       order by gra.create_time desc
+    </select>
+</mapper>

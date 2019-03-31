@@ -2,6 +2,7 @@ package com.child.programming.base.service;
 
 import com.child.programming.base.dto.TeacherInfoDto;
 import com.child.programming.base.model.TbTeacherDo;
+import com.child.programming.education.manage.dto.SelectDto;
 
 import java.util.List;
 
@@ -43,4 +44,10 @@ public interface ITeacherService {
      * @return
      */
     Boolean resetPassword(Integer teacherId, Integer userId);
+
+    /**
+     * 老师选择框信息
+     * @return
+     */
+    List<SelectDto> getTeacherSelectList();
 }

@@ -9,9 +9,11 @@ import com.child.programming.base.util.ConstDataUtil;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
 import com.child.programming.base.util.MD5Util;
+import com.child.programming.education.manage.dto.SelectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -54,11 +56,11 @@ public class TeacherServiceImpl implements ITeacherService {
             teacherDo.setStatus(Byte.valueOf("1"));
             teacherDo.setCreateId(userId);
             teacherDo.setCreateTime(new Date());
-            return tbTeacherDoMapper.insert(teacherDo) > 0 ? true : false;
+            return tbTeacherDoMapper.insert(teacherDo) > 0;
         }else {
             teacherDo.setLastUpdateId(userId);
             teacherDo.setLastUpdateTime(new Date());
-            return tbTeacherDoMapper.updateByPrimaryKeySelective(teacherDo) > 0 ? true : false;
+            return tbTeacherDoMapper.updateByPrimaryKeySelective(teacherDo) > 0;
         }
     }
 
@@ -89,6 +91,26 @@ public class TeacherServiceImpl implements ITeacherService {
         tbTeacherDo.setId(teacherId);
         tbTeacherDo.setLastUpdateId(userId);
         tbTeacherDo.setLastUpdateTime(new Date());
-        return tbTeacherDoMapper.updateByPrimaryKeySelective(tbTeacherDo) > 0 ? true : false;
+        return tbTeacherDoMapper.updateByPrimaryKeySelective(tbTeacherDo) > 0;
+    }
+
+    @Override
+    public List<SelectDto> getTeacherSelectList() {
+        TbTeacherDoExample example = new TbTeacherDoExample();
+        TbTeacherDoExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusEqualTo(Byte.valueOf("1"));
+        List<TbTeacherDo> teacherDoList = tbTeacherDoMapper.selectByExample(example);
+        if (EmptyUtils.listIsNotEmpty(teacherDoList)) {
+            List<SelectDto> teacherSelectInfoList = new ArrayList<>();
+            for (TbTeacherDo teacher:teacherDoList
+                 ) {
+                SelectDto selectDto = new SelectDto();
+                selectDto.setValue(teacher.getId());
+                selectDto.setLabel(teacher.getName());
+                teacherSelectInfoList.add(selectDto);
+            }
+            return teacherSelectInfoList;
+        }
+        return null;
     }
 }
