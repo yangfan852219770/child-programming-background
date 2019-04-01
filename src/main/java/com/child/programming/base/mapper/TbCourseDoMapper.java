@@ -3,6 +3,8 @@ package com.child.programming.base.mapper;
 import com.child.programming.base.model.TbCourseDo;
 import com.child.programming.base.model.TbCourseDoExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -96,5 +98,5 @@ public interface TbCourseDoMapper {
      */
     int updateByPrimaryKey(TbCourseDo record);
 
-    List<TbCourseDo> getClassNowByExample(TbCourseDoExample example);
+    List<TbCourseDo> getClassNowByExample(Map map);
 }

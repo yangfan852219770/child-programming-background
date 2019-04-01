@@ -6,6 +6,7 @@ import com.child.programming.base.service.ICourseService;
 import com.child.programming.base.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +22,10 @@ public class CourseAppController {
 
 
     @RequestMapping("getClassNow")
-    public ResultDto getClassNow(HttpServletRequest request, HttpServletResponse response, int limit, int page){
-        List<TbCourseDo> courseDos = iCourseService.getClassNow(limit,page);
+    public ResultDto getClassNow(HttpServletRequest request, HttpServletResponse response, int limit, int page,
+                                 @RequestParam(value="courseName", required=false) String courseName ){
+        List<TbCourseDo> courseDos = iCourseService.getClassNow(limit,page,courseName);
+        System.out.println(courseName);
         if (courseDos!=null && courseDos.size()>0){
             return ResultDto.success(courseDos);
         }

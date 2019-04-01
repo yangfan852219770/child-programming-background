@@ -431,7 +431,7 @@
 
 
 
-  <select id="getClassNowByExample" parameterType="com.child.programming.base.model.TbCourseDoExample" resultMap="BaseResultMap">
+  <select id="getClassNowByExample" parameterType="Map" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -439,12 +439,6 @@
     'true' as QUERYID,
     <include refid="Base_Column_List" />
     from course
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
     where course.id in (
     SELECT
     DISTINCT(g.course_id) as id
@@ -453,9 +447,13 @@
     WHERE
     NOW() &lt; g.end_date
     )
+    <if test="courseName != null">
+      and course.name like #{courseName}
+    </if>
     <if test="startRow != null and pageSize != null and pageSize != 0">
       limit #{startRow},#{pageSize}
     </if>
+
   </select>
 
 
