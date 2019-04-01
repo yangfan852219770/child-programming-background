@@ -1,0 +1,8 @@
+表名class改为grade
+表student中accent_token 改为varchar(500)
+表course中修改默认值
+  `period_count` int(11) DEFAULT '0' COMMENT '课时数量',
+  `code` varchar(255) DEFAULT '' COMMENT '课程编码',
+  `max_capacity` int(11) DEFAULT '0' COMMENT '最大人数容量',
+  `money` double DEFAULT '0' COMMENT '价格',
+  `telephone` varchar(255) DEFAULT '' COMMENT '联系电话',
