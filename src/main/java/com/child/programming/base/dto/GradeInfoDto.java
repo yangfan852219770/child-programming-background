@@ -51,4 +51,6 @@ public class GradeInfoDto {
 
     private List<GradeWeekendsScheduleDto> weekendsScheduleList; //一周上课安排
 
+    private List schoolAndClassroomId; // 校区和教室id集合
+
 }

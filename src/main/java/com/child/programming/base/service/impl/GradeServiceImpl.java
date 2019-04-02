@@ -12,9 +12,7 @@ import com.child.programming.education.manage.dto.InitGradeInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description：
@@ -35,7 +33,17 @@ public class GradeServiceImpl implements IGradeService {
 
     @Override
     public List<GradeInfoDto> getList(Map map) {
-        return gradeCustomMapper.getList(map);
+        List<GradeInfoDto> gradeInfoDtoList = gradeCustomMapper.getList(map);
+        if (EmptyUtils.listIsNotEmpty(gradeInfoDtoList)){
+            for (GradeInfoDto gradeInfo:gradeInfoDtoList
+            ) {
+                String[] ids = {String.valueOf(gradeInfo.getSchoolId()), String.valueOf(gradeInfo.getClassroomId())};
+                gradeInfo.setSchoolAndClassroomId(Arrays.asList(ids));
+            }
+            return gradeInfoDtoList;
+        }
+
+        return null;
     }
 
     @Override
