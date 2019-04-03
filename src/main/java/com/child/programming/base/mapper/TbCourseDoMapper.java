@@ -98,5 +98,4 @@ public interface TbCourseDoMapper {
      */
     int updateByPrimaryKey(TbCourseDo record);
 
-    List<TbCourseDo> getClassNowByExample(Map map);
 }

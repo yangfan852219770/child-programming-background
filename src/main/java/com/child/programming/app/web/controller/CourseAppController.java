@@ -1,5 +1,6 @@
 package com.child.programming.app.web.controller;
 
+import com.child.programming.app.web.dto.HomePageHeighSerachParam;
 import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.model.TbCourseDo;
 import com.child.programming.base.service.ICourseService;
@@ -22,14 +23,21 @@ public class CourseAppController {
 
 
     @RequestMapping("getClassNow")
-    public ResultDto getClassNow(HttpServletRequest request, HttpServletResponse response, int limit, int page,
-                                 @RequestParam(value="courseName", required=false) String courseName ){
-        List<TbCourseDo> courseDos = iCourseService.getClassNow(limit,page,courseName);
-        System.out.println(courseName);
-        if (courseDos!=null && courseDos.size()>0){
-            return ResultDto.success(courseDos);
+    public ResultDto getClassNow(HomePageHeighSerachParam homePageHeighSerachParam){
+        if (Boolean.valueOf(homePageHeighSerachParam.getHeighSearchFlg())){
+            //高级搜索
+            homePageHeighSerachParam.setCourseName(null);
+        }else{
+            //模糊搜索
+            homePageHeighSerachParam.setSelectSchoolId(null);
+            homePageHeighSerachParam.setTeacherId(null);
+            homePageHeighSerachParam.setLowPrice(null);
+            homePageHeighSerachParam.setHeighPrice(null);
+            homePageHeighSerachParam.setLowDate(null);
+            homePageHeighSerachParam.setHeighDate(null);
         }
-        return new ResultDto(ResponseUtil.FAIL_0,"获取课程列表失败");
+        List<TbCourseDo> courseDos = iCourseService.getClassNow(homePageHeighSerachParam);
+        return ResultDto.success(courseDos);
     }
 
 
