@@ -20,5 +20,6 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowCredentials(true) //cookie跨域
                 //允许跨域网址
                 .allowedOrigins("http://localhost:8000");
-    }
+
+  }
 }
