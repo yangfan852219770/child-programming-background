@@ -1,5 +1,6 @@
 package com.child.programming.base.service.impl;
 
+import com.child.programming.app.web.dto.CourseArrange;
 import com.child.programming.app.web.dto.HomePageHeighSerachParam;
 import com.child.programming.base.mapper.CourseCustomMapper;
 import com.child.programming.base.mapper.TbCourseDoMapper;
@@ -52,6 +53,10 @@ public class CourseServiceImpl implements ICourseService {
         return tbCourseDos;
     }
 
+    @Override
+    public List<CourseArrange> getCourseDetailByCourseId(int courseId) {
+        return courseCustomMapper.getCourseDetailByCourseId(courseId);
+    }
 
 
 }

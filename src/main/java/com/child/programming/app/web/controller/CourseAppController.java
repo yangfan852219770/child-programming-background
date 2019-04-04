@@ -1,5 +1,6 @@
 package com.child.programming.app.web.controller;
 
+import com.child.programming.app.web.dto.CourseArrange;
 import com.child.programming.app.web.dto.HomePageHeighSerachParam;
 import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.model.TbCourseDo;
@@ -38,6 +39,12 @@ public class CourseAppController {
         }
         List<TbCourseDo> courseDos = iCourseService.getClassNow(homePageHeighSerachParam);
         return ResultDto.success(courseDos);
+    }
+
+    @RequestMapping("getCourseDetailByCourseId")
+    public ResultDto getCourseDetailByCourseId(int courseId){
+        List<CourseArrange> courseArranges = iCourseService.getCourseDetailByCourseId(courseId);
+        return ResultDto.success(courseArranges);
     }
 
 

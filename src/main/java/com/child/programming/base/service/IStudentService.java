@@ -2,6 +2,7 @@ package com.child.programming.base.service;
 
 import com.child.programming.base.dto.StudentInfoDto;
 import com.child.programming.base.model.TbStudentDo;
+import com.child.programming.base.model.TbStudentSignUpDo;
 
 import java.util.List;
 
@@ -39,4 +40,6 @@ public interface IStudentService {
      * @return boolean
      */
     Boolean delete(String[] idArray, Integer currentUserId);
+
+    int signUpCourse(TbStudentSignUpDo studentSignUpDo);
 }

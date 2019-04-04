@@ -87,24 +87,6 @@
 
 
   <select id="getClassNowByExample" parameterType="Map" resultMap="BaseResultMap">
-    <!--select
-    <if test="distinct">
-      distinct
-    </if>
-    'true' as QUERYID,
-    <include refid="Base_Column_List" />
-    from course
-    where course.id in (
-    SELECT
-    DISTINCT(g.course_id) as id
-    FROM
-    grade g
-    WHERE
-    NOW() &lt; g.end_date
-    )
-    <if test="courseName != null">
-      and course.name like #{courseName}
-    </if>-->
     SELECT * from course where id IN(
     SELECT
     DISTINCT(co.id)
@@ -142,6 +124,31 @@
       limit #{startRow},#{pageSize}
     </if>
 
+  </select>
+
+
+
+  <select id="getCourseDetailByCourseId" parameterType="Integer" resultType="com.child.programming.app.web.dto.CourseArrange">
+    SELECT
+      g.id as id,
+      s.address as schoolAddress,
+      s.`name` as schoolName,
+      c. CODE as classroomCode,
+      g.`name` as gradeName,
+      t.`name` as teacherName,
+      g.max_capacity as capacity,
+      g.current_period as currentPeriod,
+      g.start_date as startDate,
+      g.end_date as endDate,
+      g.weekends_schedule as weekendsSchedule
+    FROM
+      grade g
+        LEFT JOIN classroom c ON c.id = g.classroom_id and c.`status`=1
+        LEFT JOIN school s ON s.id = c.school_id and s.`status` =1
+        LEFT JOIN teacher t on t.id = g.teacher_id and t.`status`=1
+    WHERE
+      g.`status`=1 AND
+      g.course_id = #{courseId}
   </select>
 
 

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.child.programming.app.web.dto.TokenDto;
 import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.model.TbStudentDo;
+import com.child.programming.base.model.TbStudentSignUpDo;
 import com.child.programming.base.service.IStudentService;
 import com.child.programming.base.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,6 +156,30 @@ public class StudentAppController {
             return (String) json.get("access_token");
         }
         return null;
+    }
+
+    @RequestMapping("signUpCourse")
+    public ResultDto signUpCourse(int gradeId,int studentId,String startDate){
+        TbStudentSignUpDo studentSignUpDo = new TbStudentSignUpDo();
+        studentSignUpDo.setStudentId(studentId);
+        studentSignUpDo.setClassId(gradeId);
+        studentSignUpDo.setSignUpTime(new Date());
+        studentSignUpDo.setIsPayment((byte) 0);
+        try {
+            if (DateUtil.compareDate(DateUtil.StringToDate(startDate,"yyyy-MM-dd"),new Date())>=0){
+                studentSignUpDo.setIsHalfway((byte) 1);
+            }else {
+                studentSignUpDo.setIsHalfway((byte) 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        studentSignUpDo.setStatus((byte) 1);
+        int result = iStudentService.signUpCourse(studentSignUpDo);
+        if (result>0){
+            return ResultDto.success(result);
+        }
+        return new ResultDto(ResponseUtil.FAIL_0,"获取用户失败");
     }
 
 
