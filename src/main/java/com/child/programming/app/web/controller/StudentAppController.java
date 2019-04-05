@@ -159,13 +159,16 @@ public class StudentAppController {
     }
 
     @RequestMapping("signUpCourse")
-    public ResultDto signUpCourse(int gradeId,int studentId,String startDate){
+    public ResultDto signUpCourse(int gradeId,int studentId,String druingDate){
         TbStudentSignUpDo studentSignUpDo = new TbStudentSignUpDo();
         studentSignUpDo.setStudentId(studentId);
         studentSignUpDo.setClassId(gradeId);
         studentSignUpDo.setSignUpTime(new Date());
         studentSignUpDo.setIsPayment((byte) 0);
         try {
+            int index = druingDate.indexOf("~");
+            String startDate = druingDate.substring(0,index);
+            System.out.println(startDate);
             if (DateUtil.compareDate(DateUtil.StringToDate(startDate,"yyyy-MM-dd"),new Date())>=0){
                 studentSignUpDo.setIsHalfway((byte) 1);
             }else {

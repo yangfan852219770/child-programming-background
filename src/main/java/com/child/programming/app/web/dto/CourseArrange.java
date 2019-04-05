@@ -5,15 +5,12 @@ import java.util.Date;
 public class CourseArrange {
 
     private int id;
-    private String schoolAddress;
-    private String schoolName;
-    private int classroomCode;
+    private String gradeAddress;
     private String gradeName;
     private String teacherName;
     private int capacity;
     private int currentPeriod;
-    private Date startDate;
-    private Date endDate;
+    private String druingDate;
     private String weekendsSchedule;
 
     public int getId() {
@@ -24,28 +21,12 @@ public class CourseArrange {
         this.id = id;
     }
 
-    public String getSchoolAddress() {
-        return schoolAddress;
+    public String getGradeAddress() {
+        return gradeAddress;
     }
 
-    public void setSchoolAddress(String schoolAddress) {
-        this.schoolAddress = schoolAddress;
-    }
-
-    public String getSchoolName() {
-        return schoolName;
-    }
-
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
-    }
-
-    public int getClassroomCode() {
-        return classroomCode;
-    }
-
-    public void setClassroomCode(int classroomCode) {
-        this.classroomCode = classroomCode;
+    public void setGradeAddress(String gradeAddress) {
+        this.gradeAddress = gradeAddress;
     }
 
     public String getGradeName() {
@@ -80,20 +61,12 @@ public class CourseArrange {
         this.currentPeriod = currentPeriod;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public String getDruingDate() {
+        return druingDate;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setDruingDate(String druingDate) {
+        this.druingDate = druingDate;
     }
 
     public String getWeekendsSchedule() {

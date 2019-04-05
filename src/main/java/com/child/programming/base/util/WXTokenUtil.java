@@ -22,7 +22,6 @@ public class WXTokenUtil {
     public String generateToken(TokenDto tokenPojo) {
         Map<String, Object> claims = new HashMap<String, Object>();
         claims.put("openId", tokenPojo.getOpenId());
-//        claims.put("sessionKey", tokenPojo.getSessionKey());
         claims.put("accessToken", tokenPojo.getAccessToken());
         claims.put("created", this.generateCurrentDate());
         return this.generateToken(claims);
