@@ -37,6 +37,14 @@ public class ResultDto {
         return  new ResultDto(ResponseUtil.SUCCESS_200,
                 ResponseUtil.SUCCESS_MSG);
     }
+    /**
+     * 成功返回对象
+     * @return
+     */
+    public static ResultDto success(String msg){
+        return  new ResultDto(ResponseUtil.SUCCESS_200,
+                msg);
+    }
 
     /**
      * 成功返回对象

@@ -123,4 +123,33 @@ public class UploadServiceImpl implements IUploadService {
         log.info(relativePath);
         return relativePath;
     }
+
+    @Override
+    public String uploadScratch(String businessType, MultipartFile file, HttpServletRequest request) {
+        System.out.println(businessType);
+        // 初始化设置文件上传路径
+        String basePath = request.getSession().getServletContext().getRealPath(ConstDataUtil.FORWARD_SLASH)
+                + ConstDataUtil.UPLOAD_FILES + ConstDataUtil.FORWARD_SLASH;
+
+        String relativePath = businessType + ConstDataUtil.FORWARD_SLASH;
+        try {
+            // 格式化的年月日
+            String nowDateTimeDir = DateUtil.DateToString(new Date(), "yyyy-MM-dd");
+            // 根据年月日和taskId创建文件夹
+            String path = basePath + relativePath + nowDateTimeDir + ConstDataUtil.FORWARD_SLASH;
+            File destFile = new File(path);
+            if (!destFile.exists()) {
+                destFile.mkdirs();
+            }
+            String fileNameNewStr = getFileNameNew();
+            String fileNameNew = fileNameNewStr + ".sb3" ;
+            File f = new File(destFile.getAbsoluteFile() + ConstDataUtil.FORWARD_SLASH + fileNameNew);
+            file.transferTo(f);
+            f.createNewFile();
+            relativePath += nowDateTimeDir + ConstDataUtil.FORWARD_SLASH + fileNameNew;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return relativePath;
+    }
 }

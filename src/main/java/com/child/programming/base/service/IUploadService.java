@@ -27,4 +27,13 @@ public interface IUploadService {
      * @return
      */
     String uploadFile(String businessType, MultipartFile file, HttpServletRequest request);
+    /**
+     * 单文件上传
+     * @param businessType
+     * @param file
+     * @param request
+     * @return
+     */
+    String uploadScratch(String businessType, MultipartFile file, HttpServletRequest request);
+
 }
