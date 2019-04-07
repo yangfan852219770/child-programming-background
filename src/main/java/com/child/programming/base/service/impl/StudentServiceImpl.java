@@ -2,8 +2,10 @@ package com.child.programming.base.service.impl;
 
 import com.child.programming.base.dto.StudentInfoDto;
 import com.child.programming.base.mapper.TbStudentDoMapper;
+import com.child.programming.base.mapper.TbStudentSignUpDoMapper;
 import com.child.programming.base.model.TbStudentDo;
 import com.child.programming.base.model.TbStudentDoExample;
+import com.child.programming.base.model.TbStudentSignUpDo;
 import com.child.programming.base.service.IStudentService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
@@ -22,6 +24,8 @@ public class StudentServiceImpl  implements IStudentService{
 
     @Autowired
     private TbStudentDoMapper tbStudentDoMapper;
+    @Autowired
+    private TbStudentSignUpDoMapper tbStudentSignUpDoMapper;
 
     @Override
     public TbStudentDo getStudentByOpenId(String openid) {
@@ -103,5 +107,10 @@ public class StudentServiceImpl  implements IStudentService{
         }
 
         return result==idArray.length;
+    }
+
+    @Override
+    public int signUpCourse(TbStudentSignUpDo studentSignUpDo) {
+        return tbStudentSignUpDoMapper.insert(studentSignUpDo);
     }
 }

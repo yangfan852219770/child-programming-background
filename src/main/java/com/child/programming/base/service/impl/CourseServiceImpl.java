@@ -1,15 +1,20 @@
 package com.child.programming.base.service.impl;
 
+import com.child.programming.app.web.dto.CourseArrange;
 import com.child.programming.app.web.dto.HomePageHeighSerachParam;
+import com.child.programming.app.web.dto.WeekendsSchedule;
 import com.child.programming.base.mapper.CourseCustomMapper;
 import com.child.programming.base.mapper.TbCourseDoMapper;
 import com.child.programming.base.model.TbCourseDo;
 import com.child.programming.base.model.TbCourseDoExample;
 import com.child.programming.base.service.ICourseService;
+import com.child.programming.base.util.JSONUtil;
+import org.apache.logging.log4j.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +57,27 @@ public class CourseServiceImpl implements ICourseService {
         return tbCourseDos;
     }
 
+    @Override
+    public List<CourseArrange> getCourseDetailByCourseId(int courseId) {
+        List<CourseArrange> courseArrangesNew = new ArrayList<>();
+        List<CourseArrange> courseArranges = courseCustomMapper.getCourseDetailByCourseId(courseId);
+        for (CourseArrange courseArrange:courseArranges) {
+            //解析json
+            if (!StringUtils.isEmpty(courseArrange.getWeekendsSchedule())){
+                String weekendsSchedule = courseArrange.getWeekendsSchedule();
+                List<WeekendsSchedule> weekendsSchedules = JSONUtil.parseArray(weekendsSchedule,WeekendsSchedule.class);
+                String weekendsScheduleString="";
+                for (WeekendsSchedule weekends:weekendsSchedules) {
+                    String weekwnd = "星期"+weekends.getData()+" "+weekends.getStart_hour()+"-"+weekends.getEnd_hour();
+                    weekendsScheduleString=weekendsScheduleString+weekwnd+",";
+                }
+                weekendsScheduleString = weekendsScheduleString.substring(0,weekendsScheduleString.length() - 1);
+                courseArrange.setWeekendsSchedule(weekendsScheduleString);
+                courseArrangesNew.add(courseArrange);
+            }
+        }
+        return courseArrangesNew;
+    }
 
 
 }

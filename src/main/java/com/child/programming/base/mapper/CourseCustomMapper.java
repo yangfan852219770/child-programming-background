@@ -1,5 +1,6 @@
 package com.child.programming.base.mapper;
 
+import com.child.programming.app.web.dto.CourseArrange;
 import com.child.programming.base.model.TbCourseDo;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,5 @@ public interface CourseCustomMapper {
     List<TbCourseDo> getClassNowByExample(Map map);
 
 
+    List<CourseArrange> getCourseDetailByCourseId(int courseId);
 }
