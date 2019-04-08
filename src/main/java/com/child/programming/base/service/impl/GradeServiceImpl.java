@@ -4,11 +4,13 @@ import com.child.programming.base.dto.GradeInfoDto;
 import com.child.programming.base.mapper.GradeCustomMapper;
 import com.child.programming.base.mapper.TbGradeDoMapper;
 import com.child.programming.base.model.TbGradeDo;
+import com.child.programming.base.model.TbGradeDoExample;
 import com.child.programming.base.service.IClassroomService;
 import com.child.programming.base.service.IGradeService;
 import com.child.programming.base.service.ITeacherService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.education.manage.dto.InitGradeInfoDto;
+import com.child.programming.education.manage.dto.SelectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +39,7 @@ public class GradeServiceImpl implements IGradeService {
         if (EmptyUtils.listIsNotEmpty(gradeInfoDtoList)){
             for (GradeInfoDto gradeInfo:gradeInfoDtoList
             ) {
-                String[] ids = {String.valueOf(gradeInfo.getSchoolId()), String.valueOf(gradeInfo.getClassroomId())};
+                Integer[] ids = {gradeInfo.getSchoolId(), gradeInfo.getClassroomId()};
                 gradeInfo.setSchoolAndClassroomId(Arrays.asList(ids));
             }
             return gradeInfoDtoList;
@@ -70,5 +72,27 @@ public class GradeServiceImpl implements IGradeService {
             gradeDo.setLastUpdateTime(new Date());
             return tbGradeDoMapper.updateByPrimaryKeySelective(gradeDo) > 0;
         }
+    }
+
+    @Override
+    public List<SelectDto> getGradeInfoSelectList() {
+        TbGradeDoExample example = new TbGradeDoExample();
+        TbGradeDoExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusEqualTo(Byte.valueOf("1"));
+        List<TbGradeDo> gradeDoList = tbGradeDoMapper.selectByExample(example);
+        if (EmptyUtils.listIsNotEmpty(gradeDoList)){
+            List<SelectDto> selectDtoList = new ArrayList<>();
+            for (TbGradeDo grade:gradeDoList
+                 ) {
+                SelectDto selectDto = new SelectDto();
+
+                selectDto.setValue(grade.getId());
+                selectDto.setLabel(grade.getName());
+
+                selectDtoList.add(selectDto);
+            }
+            return selectDtoList;
+        }
+        return null;
     }
 }

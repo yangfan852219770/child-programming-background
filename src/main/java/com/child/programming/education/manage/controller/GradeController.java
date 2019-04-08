@@ -7,6 +7,7 @@ import com.child.programming.base.model.TbGradeDo;
 import com.child.programming.base.service.IGradeService;
 import com.child.programming.base.util.HttpSessionUtil;
 import com.child.programming.education.manage.dto.InitGradeInfoDto;
+import com.child.programming.education.manage.dto.SelectDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Description：
+ * @Description：班级管理
  * @Author：yangfan
  **/
 
@@ -29,7 +30,8 @@ public class GradeController {
     private IGradeService iGradeService;
 
     /**
-     * 查询
+     * 列表
+     * @param name 班级名称
      * @return
      */
     @RequestMapping(value = "getList", method = RequestMethod.GET)
@@ -54,6 +56,7 @@ public class GradeController {
      * @param gradeDo
      * @return
      */
+    //TODO 没有对容量进行校验
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public ResultDto save(HttpSession session, @RequestBody TbGradeDo gradeDo){
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
@@ -64,5 +67,14 @@ public class GradeController {
         }
 
         return ResultDto.fail();
+    }
+
+    /**
+     * 获取班级select框信息
+     * @return
+     */
+    @RequestMapping("getGradeInfoSelect")
+    public List<SelectDto> getGradeInfoSelect(){
+        return iGradeService.getGradeInfoSelectList();
     }
 }

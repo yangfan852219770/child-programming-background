@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Description：
+ * @Description：教室管理
  * @Author：yangfan
  **/
 
@@ -30,7 +30,8 @@ public class ClassroomController {
     private IClassroomService iClassroomService;
 
     /**
-     * 查询
+     * 列表
+     * @param schoolId 校区id
      * @return
      */
     @RequestMapping(value = "getList", method = RequestMethod.GET)

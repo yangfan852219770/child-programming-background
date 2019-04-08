@@ -3,12 +3,15 @@ package com.child.programming.base.service.impl;
 import com.child.programming.app.web.dto.CourseArrange;
 import com.child.programming.app.web.dto.HomePageHeighSerachParam;
 import com.child.programming.app.web.dto.WeekendsSchedule;
+import com.child.programming.base.dto.CourseInfoDto;
 import com.child.programming.base.mapper.CourseCustomMapper;
 import com.child.programming.base.mapper.TbCourseDoMapper;
 import com.child.programming.base.model.TbCourseDo;
 import com.child.programming.base.model.TbCourseDoExample;
 import com.child.programming.base.service.ICourseService;
+import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.JSONUtil;
+import com.child.programming.base.util.ListUtil;
 import org.apache.logging.log4j.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,8 @@ public class CourseServiceImpl implements ICourseService {
 
     @Autowired
     private CourseCustomMapper courseCustomMapper;
+    @Autowired
+    private TbCourseDoMapper tbCourseDoMapper;
 
     @Override
     public List<TbCourseDo> getClassNow(HomePageHeighSerachParam homePageHeighSerachParam) {
@@ -79,5 +84,18 @@ public class CourseServiceImpl implements ICourseService {
         return courseArrangesNew;
     }
 
+    @Override
+    public List<CourseInfoDto> getList(String name) {
+        TbCourseDoExample example = new TbCourseDoExample();
+        example.setOrderByClause("create_time desc");
+        TbCourseDoExample.Criteria criteria = example.createCriteria();
+        //TODO status值查询匹配
+        if (EmptyUtils.stringIsNotEmpty(name))
+            criteria.andNameLike("%" + name + "%");
+        List<TbCourseDo> courseDoList = tbCourseDoMapper.selectByExample(example);
+        if (EmptyUtils.listIsNotEmpty(courseDoList))
+            return ListUtil.convertElement(courseDoList, CourseInfoDto.class);
 
+        return null;
+    }
 }

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
- * @Description：
+ * @Description：校区管理
  * @Author：yangfan
  **/
 
@@ -34,7 +34,8 @@ public class SchoolController {
     private IClassroomService iClassroomService;
 
     /**
-     * 查询校区
+     * 列表
+     * @param name 校区名称
      * @return
      */
     @RequestMapping(value = "getList", method = RequestMethod.GET)
