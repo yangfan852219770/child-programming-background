@@ -132,4 +132,11 @@ public class ClassroomServiceImpl implements IClassroomService {
         }
         return null;
     }
+
+    @Override
+    public TbClassroomDo getOneById(Integer classroomId) {
+        if (EmptyUtils.intIsNotEmpty(classroomId))
+            return classroomDoMapper.selectByPrimaryKey(classroomId);
+        return null;
+    }
 }

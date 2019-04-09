@@ -57,4 +57,11 @@ public interface IClassroomService {
      * @return
      */
     List<CascadeSelectDto> getClassroomCascadeSelect();
+
+    /**
+     * 根据主键查询
+     * @param classroomId
+     * @return
+     */
+    TbClassroomDo getOneById(Integer classroomId);
 }

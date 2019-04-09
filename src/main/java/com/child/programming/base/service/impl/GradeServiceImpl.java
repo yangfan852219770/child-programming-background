@@ -3,6 +3,7 @@ package com.child.programming.base.service.impl;
 import com.child.programming.base.dto.GradeInfoDto;
 import com.child.programming.base.mapper.GradeCustomMapper;
 import com.child.programming.base.mapper.TbGradeDoMapper;
+import com.child.programming.base.model.TbClassroomDo;
 import com.child.programming.base.model.TbGradeDo;
 import com.child.programming.base.model.TbGradeDoExample;
 import com.child.programming.base.service.IClassroomService;
@@ -94,5 +95,19 @@ public class GradeServiceImpl implements IGradeService {
             return selectDtoList;
         }
         return null;
+    }
+
+    @Override
+    public Integer validateCapacity(Integer classroomId, Integer maxCapacity) {
+        if (EmptyUtils.intIsNotEmpty(classroomId) && EmptyUtils.intIsNotEmpty(maxCapacity)){
+            TbClassroomDo classroomDo = iClassroomService.getOneById(classroomId);
+            if (null != classroomDo){
+                if (classroomDo.getMaxCapacity() >= maxCapacity)
+                    return -1; // 表示可以添加
+                if (classroomDo.getMaxCapacity() < maxCapacity)
+                    return classroomDo.getMaxCapacity();
+            }
+        }
+        return 0; // 表示参数错误
     }
 }

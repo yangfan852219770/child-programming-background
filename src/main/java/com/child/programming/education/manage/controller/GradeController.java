@@ -56,14 +56,22 @@ public class GradeController {
      * @param gradeDo
      * @return
      */
-    //TODO 没有对容量进行校验
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public ResultDto save(HttpSession session, @RequestBody TbGradeDo gradeDo){
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && null != gradeDo){
-            boolean result = iGradeService.save(gradeDo,userInfoPojo.getId());
-            if (result)
-                return ResultDto.success();
+            Integer value = iGradeService.validateCapacity(gradeDo.getClassroomId(), gradeDo.getMaxCapacity());
+            // 可以添加
+            if (value == -1) {
+                boolean result = iGradeService.save(gradeDo,userInfoPojo.getId());
+                if (result)
+                    return ResultDto.success();
+            }
+            // 无法添加
+            if (value > 0) {
+                return ResultDto.fail("教室最大容量为:"+value);
+            }
+
         }
 
         return ResultDto.fail();

@@ -40,4 +40,12 @@ public interface IGradeService {
      * @return
      */
     List<SelectDto> getGradeInfoSelectList();
+
+    /**
+     * 验证班级容量
+     * @param classroomId 教室id
+     * @param maxCapacity 班级最大容量
+     * @return
+     */
+    Integer validateCapacity(Integer classroomId, Integer maxCapacity);
 }
