@@ -1,4 +1,4 @@
-package com.child.programming.base.service;
+package com.child.programming.base.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -20,11 +20,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @ServerEndpoint("/websocket/{userId}")
 @Log4j2
-public class WebSocketServer {
+public class WebSocketServerController {
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static int onlineCount = 0;
     //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
-    private static ConcurrentHashMap<String,WebSocketServer> websocketList = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, WebSocketServerController> websocketList = new ConcurrentHashMap<>();
 
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
@@ -76,7 +76,7 @@ public class WebSocketServer {
                     object.put("fromUserId",this.userId);
                     //传送给对应用户的websocket
                     if(!EmptyUtils.stringIsEmpty(toUserId)&&!EmptyUtils.stringIsEmpty(contentText)){
-                        WebSocketServer socketx=websocketList.get(userId);
+                        WebSocketServerController socketx=websocketList.get(userId);
                         if(!EmptyUtils.objectIsEmpty(socketx)){
                         String[] participle=OLAMIUtil.OLAMIParticiple(contentText);
                         boolean flag=true;
@@ -152,11 +152,11 @@ public class WebSocketServer {
     }
 
     public static synchronized void addOnlineCount() {
-        WebSocketServer.onlineCount++;
+        WebSocketServerController.onlineCount++;
     }
 
     public static synchronized void subOnlineCount() {
-        WebSocketServer.onlineCount--;
+        WebSocketServerController.onlineCount--;
     }
 
 }
