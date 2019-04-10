@@ -2,6 +2,7 @@ package com.child.programming.base.service.impl;
 
 import com.child.programming.app.web.dto.CourseArrange;
 import com.child.programming.app.web.dto.HomePageHeighSerachParam;
+import com.child.programming.app.web.dto.SignUpCourseDto;
 import com.child.programming.app.web.dto.WeekendsSchedule;
 import com.child.programming.base.dto.CourseInfoDto;
 import com.child.programming.base.mapper.CourseCustomMapper;
@@ -97,5 +98,46 @@ public class CourseServiceImpl implements ICourseService {
             return ListUtil.convertElement(courseDoList, CourseInfoDto.class);
 
         return null;
+    }
+
+    @Override
+    public List<SignUpCourseDto> getStudentSignUpCourseList(int page, int limit, String studentId) {
+        Map map = new HashMap();
+        int pageSize = limit;
+        int startRow = (page-1) * limit;
+        map.put("pageSize",pageSize);
+        map.put("startRow",startRow);
+        map.put("studentId",studentId);
+        List<SignUpCourseDto> signUpCourseDtos = courseCustomMapper.getStudentSignUpCourseList(map);
+        return signUpCourseDtos;
+    }
+
+    @Override
+    public TbCourseDo getCourseById(int courseId) {
+        return tbCourseDoMapper.selectByPrimaryKey(courseId);
+    }
+
+    @Override
+    public List<SignUpCourseDto> getStudentSignUpCourseHistoryList(int page, int limit, String studentId) {
+        Map map = new HashMap();
+        int pageSize = limit;
+        int startRow = (page-1) * limit;
+        map.put("pageSize",pageSize);
+        map.put("startRow",startRow);
+        map.put("studentId",studentId);
+        List<SignUpCourseDto> signUpCourseHistoryDtos = courseCustomMapper.getStudentSignUpCourseHistoryList(map);
+        return signUpCourseHistoryDtos;
+    }
+
+    @Override
+    public List<SignUpCourseDto> getStudentCourseClassList(int page, int limit, String studentId) {
+        Map map = new HashMap();
+        int pageSize = limit;
+        int startRow = (page-1) * limit;
+        map.put("pageSize",pageSize);
+        map.put("startRow",startRow);
+        map.put("studentId",studentId);
+        List<SignUpCourseDto> signUpCourseHistoryDtos = courseCustomMapper.getStudentCourseClassList(map);
+        return signUpCourseHistoryDtos;
     }
 }

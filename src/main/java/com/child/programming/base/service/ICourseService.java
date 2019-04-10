@@ -2,6 +2,7 @@ package com.child.programming.base.service;
 
 import com.child.programming.app.web.dto.CourseArrange;
 import com.child.programming.app.web.dto.HomePageHeighSerachParam;
+import com.child.programming.app.web.dto.SignUpCourseDto;
 import com.child.programming.base.dto.CourseInfoDto;
 import com.child.programming.base.model.TbCourseDo;
 
@@ -18,4 +19,12 @@ public interface ICourseService {
      * @return
      */
     List<CourseInfoDto> getList(String name);
+
+    List<SignUpCourseDto> getStudentSignUpCourseList(int page, int limit, String studentId);
+
+    TbCourseDo getCourseById(int courseId);
+
+    List<SignUpCourseDto> getStudentSignUpCourseHistoryList(int page, int limit, String studentId);
+
+    List<SignUpCourseDto> getStudentCourseClassList(int page, int limit, String studentId);
 }

@@ -129,25 +129,6 @@
 
 
   <select id="getCourseDetailByCourseId" parameterType="Integer" resultType="com.child.programming.app.web.dto.CourseArrange">
---     SELECT
---       g.id as id,
---       s.address as schoolAddress,
---       s.`name` as schoolName,
---       c. CODE as classroomCode,
---       g.`name` as gradeName,
---       t.`name` as teacherName,
---       g.max_capacity as capacity,
---       g.current_period as currentPeriod,
---       g.start_date as startDate,
---       g.end_date as endDate,
---       g.weekends_schedule as weekendsSchedule
---     FROM
---       grade g
---         LEFT JOIN classroom c ON c.id = g.classroom_id and c.`status`=1
---         LEFT JOIN school s ON s.id = c.school_id and s.`status` =1
---         LEFT JOIN teacher t on t.id = g.teacher_id and t.`status`=1
---     WHERE
---       g.`status`=1 AND
 SELECT
   g.id as id,
   CONCAT(s.address,s.`name`,c. CODE) as gradeAddress,
@@ -167,6 +148,91 @@ WHERE
       g.course_id = #{courseId}
   </select>
 
+
+  <select id="getStudentSignUpCourseList" parameterType="Map" resultType="com.child.programming.app.web.dto.SignUpCourseDto">
+    SELECT
+    ssu.class_id classId,
+    g.`name` gradeName,
+    ssu.sign_up_time signUpTime,
+    g.end_date endTime,
+    ssu.is_payment isPayment,
+    g.course_id courseId,
+    c.`name` courseName,
+    c.money money,
+    c.period_count periodCount,
+    g.current_period currentPeriod,
+    t.`name` teacherName,
+    t.photo_url photoUrl
+    FROM
+    student_sign_up ssu
+    LEFT JOIN grade g ON ssu.class_id = g.id AND g.`status`=1
+    LEFT JOIN course c on c.id= g.course_id and c.`status`=1
+    LEFT JOIN teacher t on t.id = g.teacher_id AND t.`status`=1
+    WHERE
+    ssu.`status`=1 AND ssu.student_id = #{studentId}
+    ORDER BY ssu.sign_up_time desc
+    <if test="startRow != null and pageSize != null and pageSize != 0">
+      limit #{startRow},#{pageSize}
+    </if>
+
+  </select>
+
+  <select id="getStudentSignUpCourseHistoryList" parameterType="Map" resultType="com.child.programming.app.web.dto.SignUpCourseDto">
+    SELECT
+    ssu.class_id classId,
+    g.`name` gradeName,
+    ssu.sign_up_time signUpTime,
+    g.end_date endTime,
+    ssu.is_payment isPayment,
+    g.course_id courseId,
+    c.`name` courseName,
+    c.money money,
+    c.period_count periodCount,
+    g.current_period currentPeriod,
+    t.`name` teacherName,
+    t.photo_url photoUrl
+    FROM
+    student_sign_up ssu
+    LEFT JOIN grade g ON ssu.class_id = g.id AND g.`status`=1
+    LEFT JOIN course c on c.id= g.course_id and c.`status`=1
+    LEFT JOIN teacher t on t.id = g.teacher_id AND t.`status`=1
+    WHERE
+    ssu.`status`=1 AND g.end_date &lt;= now() AND ssu.student_id = #{studentId}
+    ORDER BY ssu.sign_up_time desc
+    <if test="startRow != null and pageSize != null and pageSize != 0">
+      limit #{startRow},#{pageSize}
+    </if>
+
+  </select>
+
+
+  <select id="getStudentCourseClassList" parameterType="Map" resultType="com.child.programming.app.web.dto.SignUpCourseDto">
+    SELECT
+    ssu.class_id classId,
+    g.`name` gradeName,
+    ssu.sign_up_time signUpTime,
+    g.end_date endTime,
+    ssu.is_payment isPayment,
+    g.course_id courseId,
+    c.`name` courseName,
+    c.money money,
+    c.period_count periodCount,
+    g.current_period currentPeriod,
+    t.`name` teacherName,
+    t.photo_url photoUrl
+    FROM
+    student_sign_up ssu
+    LEFT JOIN grade g ON ssu.class_id = g.id AND g.`status`=1
+    LEFT JOIN course c on c.id= g.course_id and c.`status`=1
+    LEFT JOIN teacher t on t.id = g.teacher_id AND t.`status`=1
+    WHERE
+    NOW() BETWEEN g.start_date AND g.end_date AND ssu.`status`=1 AND ssu.is_payment=1 AND ssu.student_id = #{studentId}
+    ORDER BY ssu.sign_up_time desc
+    <if test="startRow != null and pageSize != null and pageSize != 0">
+      limit #{startRow},#{pageSize}
+    </if>
+
+  </select>
 
 
 
