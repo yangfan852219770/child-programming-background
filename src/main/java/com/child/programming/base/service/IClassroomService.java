@@ -64,4 +64,11 @@ public interface IClassroomService {
      * @return
      */
     TbClassroomDo getOneById(Integer classroomId);
+
+    /**
+     * 验证教室编码
+     * @param code
+     * @return
+     */
+    Boolean validateCode(Integer code);
 }

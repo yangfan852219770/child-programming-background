@@ -139,4 +139,16 @@ public class ClassroomServiceImpl implements IClassroomService {
             return classroomDoMapper.selectByPrimaryKey(classroomId);
         return null;
     }
+
+    @Override
+    public Boolean validateCode(Integer code) {
+        if (EmptyUtils.intIsNotEmpty(code)){
+            TbClassroomDoExample example = new TbClassroomDoExample();
+            TbClassroomDoExample.Criteria criteria = example.createCriteria();
+            criteria.andCodeEqualTo(code).andStatusEqualTo(Byte.valueOf("1"));
+            List<TbClassroomDo> classroomDoList = classroomDoMapper.selectByExample(example);
+            return EmptyUtils.listIsEmpty(classroomDoList);
+        }
+        return false;
+    }
 }

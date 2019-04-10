@@ -52,9 +52,14 @@ public class ClassroomController {
     public ResultDto save(HttpSession session, @RequestBody TbClassroomDo classroomDo){
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && null != classroomDo){
-            boolean result = iClassroomService.save(classroomDo,userInfoPojo.getId());
-            if (result)
-                return ResultDto.success();
+            boolean validateResult = iClassroomService.validateCode(classroomDo.getCode());
+            if (validateResult){
+                boolean result = iClassroomService.save(classroomDo,userInfoPojo.getId());
+                if (result)
+                    return ResultDto.success();
+            }else
+                return  ResultDto.fail("该教室编码已被占用!");
+
         }
 
         return ResultDto.fail();
