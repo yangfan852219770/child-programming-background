@@ -104,13 +104,8 @@
                  体验课
              </div>
          </div>
-         <div class="col-lg-2">
-             <div class="form-group">
-                 <input type="text" id="ooo" class="form-control" placeholder="手机号码">
-             </div>
-         </div>
          <div class="col-lg-2"  >
-             <button type="submit" class="btn  btn-warning  mr-3 mb-2" style="color: #fff">立即免费体验</button>
+             <a href="#consult" class="btn  btn-warning  mr-3 mb-2" style="color: #fff">立即免费体验</a>
          </div>
   </div>
 
@@ -686,23 +681,33 @@
                  </div>
              </div>
              <!--/.col-->
-             <div class="col-md-5 mr-auto margin-b-30">
+             <div id="consultEnter" class="col-md-5 mr-auto margin-b-30" >
                  <div class="p-4 rounded shadow">
-                     <form role="form">
+                     <form role="form" >
                          <div class="form-group">
-
-                             <input type="text" class="form-control" placeholder="姓名">
+                             <input id="posterPhone" type="text" class="form-control" placeholder="手机号">
                          </div>
-                         <div class="form-group">
-                             <input type="text" class="form-control" placeholder="电话">
+                         <div class="form-group form-inline" >
+                             <input id="posterCode" type="text" class="form-control" placeholder="验证码"  >
+                             <button  type="button" id="posterLoadingButton" style="margin-left: 8px" class="btn btn-sm btn-primary ">获取验证码</button>
                          </div>
 
                          <div class="form-group text-center">
-                                 <button type="button" class="btn btn-lg btn-danger text-white" >立即报名领取免费体验课</button>
+                                 <button id="posterSubmitButton" type="button" class="btn btn-lg btn-danger text-white" >立即报名领取免费体验课</button>
                          </div>
                      </form>
                  </div>
                  <!-- end .smart-wrap section -->
+             </div>
+
+             <div class="col-md-6 mb-30">
+
+                 <h4><img src="assets/images/success.png" width="20" height="20"> &nbsp;&nbsp;预约成功，课程顾问将会通过电话联系您。请留意接听 15833655291 的电话。</h4>
+                 <hr>
+                 <div class="text-center">
+                     <img src="assets/images/success.png" >
+                 </div>
+
              </div>
 
 
@@ -720,7 +725,6 @@
                  <ul class="list-inline text-sm-center  list-links" style="font-size: 24px !important;border: none;" >
                      <li class="list-inline-item" >
                          <a href="assets/plugins/CodeSquare/codeSquare.html">小童编辑器</a>
-
                      </li>
 
                      <li class="list-inline-item" >
@@ -768,6 +772,62 @@
 <script>
     layui.use('layer', function(){
         var $ = layui.jquery, layer = layui.layer;
+
+        $('#posterLoadingButton').click(function() {
+                $(this).removeClass('btn-primary').addClass('disabled');
+                $(this).html('<span class="red">59</span> 秒后重新获取');
+                var secondObj = $('#posterLoadingButton').find('span');
+                var secondObjVal = secondObj.text();
+                function secondCounter() {
+                    var secondTimer = setTimeout(function() {
+                        secondObjVal--;
+                        secondObj.text(secondObjVal);
+                        secondCounter();
+                    }, 1000);
+                    if (secondObjVal == 0) {
+                        clearTimeout(secondTimer);
+                        $('#posterLoadingButton').text('重新获取校验码');
+                        $('#posterLoadingButton').removeClass('disabled').addClass('btn-primary');
+                    }
+                }
+                secondCounter();
+        });
+
+//      $("#posterLoadingButton").click(function(){
+//
+//          $.ajax({
+//              url:""
+//              ,method:""
+//              ,async:false
+//              ,success:function(){
+//
+//              }
+//          });
+//      });
+        $("#posterSubmitButton").click(function(){
+            function fail(dom,msg){
+                dom.css("border","1px solid red");
+                dom.parent().append("<span style='color: red'>"+msg+"</span>");
+                setTimeout(function () {
+                    dom.css("border","");
+                    dom.parent().find("span").css("display","none")
+                },1000);
+            }
+              if($("#posterPhone").val()===""){
+                  fail($("#posterPhone"),"手机号不能为空！");
+              }else
+              if(!(/^1(3|4|5|7|8)\d{9}$/.test($("#posterPhone").val()))){
+                  fail($("#posterPhone"),"手机号不正确，请重新输入！");
+              }
+            if($("#posterCode").val()===""){
+                fail($("#posterCode"),"验证码不能为空！");
+            }
+        });
+
+
+
+
+
         $("#laymi").click(function () {
             layer.open({
                 type:2,
