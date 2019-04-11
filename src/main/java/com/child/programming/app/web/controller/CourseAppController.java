@@ -76,5 +76,13 @@ public class CourseAppController {
         return ResultDto.success(studentCourseClassList);
     }
 
+    @RequestMapping("getStudentCourseListByDate")
+    public ResultDto getStudentCourseListByDate(@RequestParam(value="selectDate" ,required =false ) String selectDate,
+                                               @RequestParam(value="week" ,required =false ) String week,
+                                               @RequestParam(value="studentId" ,required =false ) String studentId){
+        List<SignUpCourseDto> studentCourseByDateList = iCourseService.getStudentCourseListByDate(selectDate,week,studentId);
+        return ResultDto.success(studentCourseByDateList);
+    }
+
 
 }

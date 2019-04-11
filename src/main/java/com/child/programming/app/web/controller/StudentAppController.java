@@ -3,6 +3,7 @@ package com.child.programming.app.web.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.child.programming.app.web.dto.TokenDto;
 import com.child.programming.base.dto.ResultDto;
+import com.child.programming.base.model.TbSignUpExperienceCourseDo;
 import com.child.programming.base.model.TbStudentDo;
 import com.child.programming.base.model.TbStudentSignUpDo;
 import com.child.programming.base.service.IStudentService;
@@ -165,6 +166,7 @@ public class StudentAppController {
         studentSignUpDo.setClassId(gradeId);
         studentSignUpDo.setSignUpTime(new Date());
         studentSignUpDo.setIsPayment((byte) 0);
+        studentSignUpDo.setStatus((byte) 1);
         try {
             int index = druingDate.indexOf("~");
             String startDate = druingDate.substring(0,index);
@@ -182,8 +184,24 @@ public class StudentAppController {
         if (result>0){
             return ResultDto.success(result);
         }
-        return new ResultDto(ResponseUtil.FAIL_0,"获取用户失败");
+        return new ResultDto(ResponseUtil.FAIL_0,"报名失败");
     }
 
+
+    @RequestMapping("signUpExperienceCourse")
+    public ResultDto signUpExperienceCourse(int experienceCourseId,int studentId){
+        TbSignUpExperienceCourseDo signUpExperienceCourseDo = new TbSignUpExperienceCourseDo();
+        signUpExperienceCourseDo.setStudentId(studentId);
+        signUpExperienceCourseDo.setExperienceCourseId(experienceCourseId);
+        signUpExperienceCourseDo.setStatus((byte) 1);
+        signUpExperienceCourseDo.setCreateId(studentId);
+        signUpExperienceCourseDo.setCreateTime(new Date());
+        int result = iStudentService.signUpExperienceCourse(signUpExperienceCourseDo);
+        if (result>0){
+            return ResultDto.success(result);
+        }
+        return new ResultDto(ResponseUtil.FAIL_0,"报名失败");
+
+    }
 
 }

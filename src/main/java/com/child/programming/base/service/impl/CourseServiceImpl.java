@@ -3,8 +3,8 @@ package com.child.programming.base.service.impl;
 import com.child.programming.app.web.dto.CourseArrange;
 import com.child.programming.app.web.dto.HomePageHeighSerachParam;
 import com.child.programming.app.web.dto.SignUpCourseDto;
-import com.child.programming.app.web.dto.WeekendsSchedule;
 import com.child.programming.base.dto.CourseInfoDto;
+import com.child.programming.base.dto.GradeWeekendsScheduleDto;
 import com.child.programming.base.mapper.CourseCustomMapper;
 import com.child.programming.base.mapper.TbCourseDoMapper;
 import com.child.programming.base.model.TbCourseDo;
@@ -13,7 +13,6 @@ import com.child.programming.base.service.ICourseService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.JSONUtil;
 import com.child.programming.base.util.ListUtil;
-import org.apache.logging.log4j.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -71,11 +70,11 @@ public class CourseServiceImpl implements ICourseService {
             //解析json
             if (!StringUtils.isEmpty(courseArrange.getWeekendsSchedule())){
                 String weekendsSchedule = courseArrange.getWeekendsSchedule();
-                List<WeekendsSchedule> weekendsSchedules = JSONUtil.parseArray(weekendsSchedule,WeekendsSchedule.class);
+                List<GradeWeekendsScheduleDto> weekendsSchedules = JSONUtil.parseArray(weekendsSchedule,GradeWeekendsScheduleDto.class);
                 String weekendsScheduleString="";
-                for (WeekendsSchedule weekends:weekendsSchedules) {
-                    String weekwnd = "星期"+weekends.getData()+" "+weekends.getStart_hour()+"-"+weekends.getEnd_hour();
-                    weekendsScheduleString=weekendsScheduleString+weekwnd+",";
+                for (GradeWeekendsScheduleDto weekends:weekendsSchedules) {
+                    String weekwnd = "周"+weekends.getDay()+" "+weekends.getStartHour()+"-"+weekends.getEndHour();
+                    weekendsScheduleString = weekendsScheduleString + weekwnd +",";
                 }
                 weekendsScheduleString = weekendsScheduleString.substring(0,weekendsScheduleString.length() - 1);
                 courseArrange.setWeekendsSchedule(weekendsScheduleString);
@@ -139,5 +138,15 @@ public class CourseServiceImpl implements ICourseService {
         map.put("studentId",studentId);
         List<SignUpCourseDto> signUpCourseHistoryDtos = courseCustomMapper.getStudentCourseClassList(map);
         return signUpCourseHistoryDtos;
+    }
+
+    @Override
+    public List<SignUpCourseDto> getStudentCourseListByDate(String selectDate, String week, String studentId) {
+        Map map = new HashMap();
+        map.put("selectDate",selectDate);
+        map.put("week","%"+week+"%");
+        map.put("studentId",studentId);
+        List<SignUpCourseDto> studentCourseListByDate = courseCustomMapper.getStudentCourseListByDate(map);
+        return studentCourseListByDate;
     }
 }

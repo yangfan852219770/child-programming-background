@@ -27,4 +27,6 @@ public interface ICourseService {
     List<SignUpCourseDto> getStudentSignUpCourseHistoryList(int page, int limit, String studentId);
 
     List<SignUpCourseDto> getStudentCourseClassList(int page, int limit, String studentId);
+
+    List<SignUpCourseDto> getStudentCourseListByDate(String selectDate, String week, String studentId);
 }
