@@ -110,4 +110,33 @@ public class GradeServiceImpl implements IGradeService {
         }
         return 0; // 表示参数错误
     }
+
+    @Override
+    public TbGradeDo getOneById(Integer gradeId) {
+        if (EmptyUtils.intIsNotEmpty(gradeId))
+            return tbGradeDoMapper.selectByPrimaryKey(gradeId);
+        return null;
+    }
+
+    @Override
+    public List<TbGradeDo> getListByClassroomId(Integer classroomId) {
+        if (EmptyUtils.intIsNotEmpty(classroomId)){
+            TbGradeDoExample example = new TbGradeDoExample();
+            TbGradeDoExample.Criteria criteria = example.createCriteria();
+            criteria.andClassroomIdEqualTo(classroomId).andStatusEqualTo(Byte.valueOf("1"));
+            return tbGradeDoMapper.selectByExample(example);
+        }
+        return null;
+    }
+
+    @Override
+    public List<TbGradeDo> getListByTeacherId(Integer teacherId) {
+        if (EmptyUtils.intIsNotEmpty(teacherId)){
+            TbGradeDoExample example = new TbGradeDoExample();
+            TbGradeDoExample.Criteria criteria = example.createCriteria();
+            criteria.andTeacherIdEqualTo(teacherId).andStatusEqualTo(Byte.valueOf("1"));
+            return tbGradeDoMapper.selectByExample(example);
+        }
+        return null;
+    }
 }

@@ -58,7 +58,7 @@ public class ClassroomController {
                 if (result)
                     return ResultDto.success();
             }else
-                return  ResultDto.fail("该教室编码已被占用!");
+                return ResultDto.fail("该教室编码已被占用!");
 
         }
 

@@ -48,4 +48,25 @@ public interface IGradeService {
      * @return
      */
     Integer validateCapacity(Integer classroomId, Integer maxCapacity);
+
+    /**
+     * 根据主键获取对象
+     * @param gradeId
+     * @return
+     */
+    TbGradeDo getOneById(Integer gradeId);
+
+    /**
+     * 根据classroomId，获取集合
+     * @param classroomId 教室id
+     * @return
+     */
+    List<TbGradeDo> getListByClassroomId(Integer classroomId);
+
+    /**
+     * 根据teacherId，获取集合
+     * @param teacherId 老师id
+     * @return
+     */
+    List<TbGradeDo> getListByTeacherId(Integer teacherId);
 }
