@@ -44,7 +44,7 @@ public class MaterialServiceImpl implements IMaterialService {
     @Override
     public Boolean save(TbMaterialDo tbMaterialDo, Integer userId) {
 
-        if (!EmptyUtils.objectIsEmpty(tbMaterialDo))
+        if (EmptyUtils.objectIsEmpty(tbMaterialDo))
             return false;
         //新增
         if (EmptyUtils.intIsEmpty(tbMaterialDo.getId())) {
