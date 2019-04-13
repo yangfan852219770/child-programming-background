@@ -2,8 +2,11 @@ package com.child.programming.base.service.impl;
 
 import com.child.programming.base.dto.MaterialInfoDto;
 import com.child.programming.base.mapper.TbMaterialDoMapper;
+import com.child.programming.base.mapper.TbMaterialTypeDoMapper;
 import com.child.programming.base.model.TbMaterialDo;
 import com.child.programming.base.model.TbMaterialDoExample;
+import com.child.programming.base.model.TbMaterialTypeDo;
+import com.child.programming.base.model.TbMaterialTypeDoExample;
 import com.child.programming.base.service.IMaterialService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
@@ -22,6 +25,8 @@ public class MaterialServiceImpl implements IMaterialService {
 
     @Autowired
     private TbMaterialDoMapper tbMaterialDoMapper;
+    @Autowired
+    private TbMaterialTypeDoMapper tbMaterialTypeDoMapper;
 
     @Override
     public List<MaterialInfoDto> getList(Integer materialTypeId) {
@@ -46,15 +51,23 @@ public class MaterialServiceImpl implements IMaterialService {
 
         if (EmptyUtils.objectIsEmpty(tbMaterialDo))
             return false;
+        TbMaterialTypeDoExample tbMaterialTypeDoExample= new TbMaterialTypeDoExample();
+        TbMaterialTypeDoExample.Criteria criteria= tbMaterialTypeDoExample.createCriteria();
+        criteria.andIdEqualTo(tbMaterialDo.getMaterialTypeId());
+        List<TbMaterialTypeDo> tbMaterialTypeDos=tbMaterialTypeDoMapper.selectByExample(tbMaterialTypeDoExample);
+        if(EmptyUtils.listIsEmpty(tbMaterialTypeDos))
+            return false;
         //新增
         if (EmptyUtils.intIsEmpty(tbMaterialDo.getId())) {
             tbMaterialDo.setCreateId(userId);
             tbMaterialDo.setCreateTime(new Date());
+            tbMaterialDo.setType(tbMaterialTypeDos.get(0).getName());
             tbMaterialDo.setStatus(Byte.valueOf("1"));
             return tbMaterialDoMapper.insert(tbMaterialDo) > 0;
         } else {
             //更新
             tbMaterialDo.setLastUpdateId(userId);
+            tbMaterialDo.setType(tbMaterialTypeDos.get(0).getName());
             tbMaterialDo.setLastUpdateTime(new Date());
             return tbMaterialDoMapper.updateByPrimaryKeySelective(tbMaterialDo) > 0;
         }

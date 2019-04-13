@@ -1,5 +1,6 @@
 package com.child.programming.base.controller;
 
+import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.service.IUploadService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,15 @@ public class UploadController {
     @Autowired
     private IUploadService iUploadService;
     @RequestMapping("uploadFile")
-    public String uploadFile(String businessType,MultipartFile file, HttpServletRequest request){
+    public ResultDto uploadFile(String businessType, MultipartFile file, HttpServletRequest request){
 
-        return  iUploadService.uploadFile(businessType,file,request);
+         return  iUploadService.uploadFile(businessType,file,request);
     }
+
+    @RequestMapping("uploadFileReturnOriginNameAndFilePath")
+    public String[] uploadFileReturnOriginNameAndFilePath(String businessType,MultipartFile file, HttpServletRequest request){
+
+        return  iUploadService.uploadFileReturnOriginNameAndFilePath(businessType,file,request);
+    }
+
 }

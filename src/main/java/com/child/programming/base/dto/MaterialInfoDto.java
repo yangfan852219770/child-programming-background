@@ -21,4 +21,6 @@ public class MaterialInfoDto {
 
     private Integer downloadNumber; //下载次数
 
+    private String originName; //资料名称
+
 }

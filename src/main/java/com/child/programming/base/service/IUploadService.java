@@ -1,8 +1,11 @@
 package com.child.programming.base.service;
 
+import com.child.programming.base.dto.ResultDto;
+import com.child.programming.base.util.ListUtil;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author zdp
@@ -15,9 +18,9 @@ public interface IUploadService {
      * @param businessType
      * @param files
      * @param request
-     * @return
+     * @return 返回储存路径
      */
-    String[] uploadFiles(String businessType, MultipartFile[] files, HttpServletRequest request);
+    List<ResultDto> uploadFiles(String businessType, MultipartFile[] files, HttpServletRequest request);
 
     /**
      * 单文件上传
@@ -26,7 +29,15 @@ public interface IUploadService {
      * @param request
      * @return
      */
-    String uploadFile(String businessType, MultipartFile file, HttpServletRequest request);
+    ResultDto uploadFile(String businessType, MultipartFile file, HttpServletRequest request);
+    /**
+     * 单文件上传
+     * @param businessType
+     * @param file
+     * @param request
+     * @return 返回文件原始名称+储存路径(目前没用)
+     */
+    String[] uploadFileReturnOriginNameAndFilePath(String businessType, MultipartFile file, HttpServletRequest request);
     /**
      * 单文件上传
      * @param businessType
