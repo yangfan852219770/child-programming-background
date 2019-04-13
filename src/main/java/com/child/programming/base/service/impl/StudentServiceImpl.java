@@ -31,6 +31,9 @@ public class StudentServiceImpl  implements IStudentService{
     @Autowired
     private TbSignUpExperienceCourseDoMapper tbSignUpExperienceCourseDoMapper;
 
+    /**
+     * @Description:    据openId查询学生信息
+     */
     @Override
     public TbStudentDo getStudentByOpenId(String openid) {
         TbStudentDoExample example = new TbStudentDoExample();
@@ -43,6 +46,9 @@ public class StudentServiceImpl  implements IStudentService{
         return null;
     }
 
+    /**
+     * @Description:    根据openId修改学生信息
+     */
     @Override
     public int updateStudentByOpenId(TbStudentDo studentDto) {
         TbStudentDoExample example = new TbStudentDoExample();
@@ -52,6 +58,9 @@ public class StudentServiceImpl  implements IStudentService{
         return result;
     }
 
+    /**
+     * @Description:    添加学生信息
+     */
     @Override
     public int addStudent(TbStudentDo studentDto) {
         int result = tbStudentDoMapper.insert(studentDto);
@@ -113,11 +122,17 @@ public class StudentServiceImpl  implements IStudentService{
         return result==idArray.length;
     }
 
+    /**
+     * @Description:    报名课程
+     */
     @Override
     public int signUpCourse(TbStudentSignUpDo studentSignUpDo) {
         return tbStudentSignUpDoMapper.insert(studentSignUpDo);
     }
 
+    /**
+     * @Description:    报名体验课
+     */
     @Override
     public int signUpExperienceCourse(TbSignUpExperienceCourseDo signUpExperienceCourseDo) {
         return tbSignUpExperienceCourseDoMapper.insert(signUpExperienceCourseDo);

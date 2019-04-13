@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+/**
+ * @Description:    教师信息
+ * @Author:         赵赞峰
+ * @Version:        1.0
+ */
 @RestController
 @RequestMapping("app/web/teacher")
 public class TeacherAppController {
@@ -17,6 +21,9 @@ public class TeacherAppController {
     @Autowired
     private ITeacherService iTeacherService;
 
+    /**
+     * @Description:    教师列表
+     */
     @RequestMapping("getTeacherList")
     public ResultDto getTeacherList(){
         List<SelectDto> selectDtos = iTeacherService.getTeacherSelectList();

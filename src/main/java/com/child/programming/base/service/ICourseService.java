@@ -9,8 +9,15 @@ import com.child.programming.base.model.TbCourseDo;
 import java.util.List;
 
 public interface ICourseService {
+    /**
+     * @Description:    小程序首页课程列表展示，包括搜索，高级搜索
+     * @param homePageHeighSerachParam 查询的参数
+     */
     List<TbCourseDo> getClassNow(HomePageHeighSerachParam homePageHeighSerachParam);
 
+    /**
+     * @Description:    根据课程id查询小程序课程安排详细信息
+     */
     List<CourseArrange> getCourseDetailByCourseId(int courseId);
 
     /**
@@ -20,13 +27,28 @@ public interface ICourseService {
      */
     List<CourseInfoDto> getList(String name);
 
+    /**
+     * @Description:    根据学生ID查询报名的课程
+     */
     List<SignUpCourseDto> getStudentSignUpCourseList(int page, int limit, String studentId);
 
+    /**
+     * @Description:    根据课程ID查询课程信息
+     */
     TbCourseDo getCourseById(int courseId);
 
+    /**
+     * @Description:    查询学生的购课历史
+     */
     List<SignUpCourseDto> getStudentSignUpCourseHistoryList(int page, int limit, String studentId);
 
+    /**
+     * @Description:    查询学生的正在进行的课程信息
+     */
     List<SignUpCourseDto> getStudentCourseClassList(int page, int limit, String studentId);
 
+    /**
+     * @Description:    根据日期查询学生的课程信息列表
+     */
     List<SignUpCourseDto> getStudentCourseListByDate(String selectDate, String week, String studentId);
 }

@@ -18,7 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.Date;
-
+/**
+ * @Description:    学生信息
+ * @Author:         赵赞峰
+ * @Version:        1.0
+ */
 @RestController
 @RequestMapping("app/web/student")
 public class StudentAppController {
@@ -49,6 +53,9 @@ public class StudentAppController {
     @Autowired
     private IStudentService iStudentService;
 
+    /**
+     * @Description:    获取OpenId
+     */
     @RequestMapping("getOpenId")
     public ResultDto getOpenId(String code){
         if (StringUtils.isEmpty(code)) {
@@ -69,7 +76,9 @@ public class StudentAppController {
         return new ResultDto(ResponseUtil.FAIL_0,"获取openId失败");
     }
 
-
+    /**
+     * @Description:    根据openId添加或修改学生信息
+     */
     @RequestMapping("addStudent")
     public ResultDto addUser(TbStudentDo studentDto){
         TbStudentDo studentDtoOld = iStudentService.getStudentByOpenId(studentDto.getOpenid());
@@ -99,6 +108,9 @@ public class StudentAppController {
         return new ResultDto(ResponseUtil.FAIL_0,"添加用户失败");
     }
 
+    /**
+     * @Description:    添加学生相信信息
+     */
     @RequestMapping("addStudentInfo")
     public ResultDto addUser(@RequestParam("file") MultipartFile uploadFile,TbStudentDo studentDto){
         try {
@@ -132,6 +144,9 @@ public class StudentAppController {
         return new ResultDto(ResponseUtil.FAIL_0,"添加用户信息失败");
     }
 
+    /**
+     * @Description:    据openId查询学生信息
+     */
     @RequestMapping("getStudentByOpenId")
     public ResultDto getUserByOpenId(String openId){
         if (StringUtils.isEmpty(openId)) {
@@ -144,6 +159,9 @@ public class StudentAppController {
         return new ResultDto(ResponseUtil.FAIL_0,"获取用户失败");
     }
 
+    /**
+     * @Description:    获取ccessToken
+     */
     public String getAccessToken(){
         //请求参数
         String params = "appid=" + wxAppid + "&secret=" + wxSecret+ "&grant_type=client_credential";
@@ -159,6 +177,9 @@ public class StudentAppController {
         return null;
     }
 
+    /**
+     * @Description:    学生报名课程
+     */
     @RequestMapping("signUpCourse")
     public ResultDto signUpCourse(int gradeId,int studentId,String druingDate){
         TbStudentSignUpDo studentSignUpDo = new TbStudentSignUpDo();
@@ -187,7 +208,9 @@ public class StudentAppController {
         return new ResultDto(ResponseUtil.FAIL_0,"报名失败");
     }
 
-
+    /**
+     * @Description:    报名体验课
+     */
     @RequestMapping("signUpExperienceCourse")
     public ResultDto signUpExperienceCourse(int experienceCourseId,int studentId){
         TbSignUpExperienceCourseDo signUpExperienceCourseDo = new TbSignUpExperienceCourseDo();

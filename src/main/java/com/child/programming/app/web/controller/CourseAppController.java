@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+/**
+ * @Description:    课程信息
+ * @Author:         赵赞峰
+ * @Version:        1.0
+ */
 @RestController
 @RequestMapping("app/web/course")
 public class CourseAppController {
@@ -20,7 +24,9 @@ public class CourseAppController {
     @Autowired
     private ICourseService iCourseService;
 
-
+    /**
+     * @Description:    小程序首页课程列表展示，包括搜索，高级搜索
+     */
     @RequestMapping("getClassNow")
     public ResultDto getClassNow(HomePageHeighSerachParam homePageHeighSerachParam){
         if (Boolean.valueOf(homePageHeighSerachParam.getHeighSearchFlg())){
@@ -39,12 +45,18 @@ public class CourseAppController {
         return ResultDto.success(courseDos);
     }
 
+    /**
+     * @Description:    根据课程id查询小程序课程安排详细信息
+     */
     @RequestMapping("getCourseDetailByCourseId")
     public ResultDto getCourseDetailByCourseId(int courseId){
         List<CourseArrange> courseArranges = iCourseService.getCourseDetailByCourseId(courseId);
         return ResultDto.success(courseArranges);
     }
 
+    /**
+     * @Description:    根据学生ID查询报名的课程
+     */
     @RequestMapping("getStudentSignUpCourseList")
     public ResultDto getStudentSignUpCourseList(@RequestParam(value="page" ,required =false ) int page,
                                                 @RequestParam(value="limit" ,required =false ) int limit,
@@ -53,13 +65,18 @@ public class CourseAppController {
         return ResultDto.success(signUpCourseDtos);
     }
 
+    /**
+     * @Description:    根据课程ID查询课程信息
+     */
     @RequestMapping("getCourseById")
     public ResultDto getCourseById(int courseId){
         TbCourseDo courseDo = iCourseService.getCourseById(courseId);
         return ResultDto.success(courseDo);
     }
 
-
+    /**
+     * @Description:    查询学生的购课历史
+     */
     @RequestMapping("getStudentSignUpCourseHistoryList")
     public ResultDto getStudentSignUpCourseHistoryList(@RequestParam(value="page" ,required =false ) int page,
                                                 @RequestParam(value="limit" ,required =false ) int limit,
@@ -68,6 +85,9 @@ public class CourseAppController {
         return ResultDto.success(signUpCourseHistoryDtos);
     }
 
+    /**
+     * @Description:    查询学生的正在进行的课程信息
+     */
     @RequestMapping("getStudentCourseClassList")
     public ResultDto getStudentCourseClassList(@RequestParam(value="page" ,required =false ) int page,
                                                        @RequestParam(value="limit" ,required =false ) int limit,
@@ -76,6 +96,9 @@ public class CourseAppController {
         return ResultDto.success(studentCourseClassList);
     }
 
+    /**
+     * @Description:    根据日期查询学生的课程信息列表
+     */
     @RequestMapping("getStudentCourseListByDate")
     public ResultDto getStudentCourseListByDate(@RequestParam(value="selectDate" ,required =false ) String selectDate,
                                                @RequestParam(value="week" ,required =false ) String week,

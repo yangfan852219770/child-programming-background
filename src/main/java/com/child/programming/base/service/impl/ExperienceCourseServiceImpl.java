@@ -16,6 +16,9 @@ public class ExperienceCourseServiceImpl implements IExperienceCourseService {
     @Autowired
     private TbExperienceCourseDoMapper experienceCourseDoMapper;
 
+    /**
+     * @Description:    所有准备开课的体验课列表
+     */
     @Override
     public List<TbExperienceCourseDo> getAllExperienceCourse() {
         TbExperienceCourseDoExample example = new TbExperienceCourseDoExample();

@@ -13,10 +13,19 @@ import java.util.List;
  */
 public interface IStudentService {
 
+    /**
+     * @Description:    据openId查询学生信息
+     */
     TbStudentDo getStudentByOpenId(String openid);
 
+    /**
+     * @Description:    根据openId修改学生信息
+     */
     int updateStudentByOpenId(TbStudentDo studentDto);
 
+    /**
+     * @Description:    根据openId添加学生信息
+     */
     int addStudent(TbStudentDo studentDto);
 
     /**
@@ -42,7 +51,13 @@ public interface IStudentService {
      */
     Boolean delete(String[] idArray, Integer currentUserId);
 
+    /**
+     * @Description:    报名课程
+     */
     int signUpCourse(TbStudentSignUpDo studentSignUpDo);
 
+    /**
+     * @Description:    报名体验课
+     */
     int signUpExperienceCourse(TbSignUpExperienceCourseDo signUpExperienceCourseDo);
 }
