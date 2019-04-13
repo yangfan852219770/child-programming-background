@@ -60,4 +60,19 @@ public interface IStudentService {
      * @Description:    报名体验课
      */
     int signUpExperienceCourse(TbSignUpExperienceCourseDo signUpExperienceCourseDo);
+
+    /**
+     * @Description:    是否收藏此课程
+     */
+    Boolean isCollectCourse(int courseId, int studentId);
+
+    /**
+     * @Description:    收藏此课程
+     */
+    int saveCollectCourse(int courseId, int studentId);
+
+    /**
+     * @Description:    取消收藏此课程
+     */
+    int deleteCollectCourse(int courseId, int studentId);
 }

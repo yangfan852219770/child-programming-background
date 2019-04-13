@@ -171,4 +171,17 @@ public class CourseServiceImpl implements ICourseService {
         List<SignUpCourseDto> studentCourseListByDate = courseCustomMapper.getStudentCourseListByDate(map);
         return studentCourseListByDate;
     }
+
+    /**
+     *  @Description:    查询学生收藏课程
+     */
+    @Override
+    public List<TbCourseDo> getStudentCollectCourseList(int page, int limit, int studentId) {
+        Map map = new HashMap();
+        map.put("pageSize",limit);
+        map.put("startRow",(page-1) * limit);
+        map.put("studentId",studentId);
+        List<TbCourseDo> courseDos = courseCustomMapper.getStudentCollectCourseList(map);
+        return courseDos;
+    }
 }

@@ -261,6 +261,24 @@ WHERE
   </select>
 
 
+  <select id="getStudentCollectCourseList" parameterType="Map" resultType="com.child.programming.base.model.TbCourseDo">
+    SELECT
+    c.id id,c.`name` name,c.period_count periodCount,c.`code` code,c.max_capacity maxCapacity,c.money money,c.telephone,c.introduction,c.photo_url photoUrl,
+    c.`status`,c.create_id createId,c.create_time createTime,c.last_update_id lastUpdateId,c.last_update_time lastUpdateTime
+    FROM
+    collect_course cc
+    LEFT JOIN course c on cc.course_id = c.id
+    WHERE
+    cc.`status` = '1'
+    AND cc.student_id = #{studentId}
+    ORDER BY
+    cc.create_time DESC
+    <if test="startRow != null and pageSize != null and pageSize != 0">
+      limit #{startRow},#{pageSize}
+    </if>
+  </select>
+
+
 
 
 </mapper>

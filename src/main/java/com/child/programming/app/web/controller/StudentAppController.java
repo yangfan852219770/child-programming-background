@@ -84,22 +84,34 @@ public class StudentAppController {
         TbStudentDo studentDtoOld = iStudentService.getStudentByOpenId(studentDto.getOpenid());
         WXTokenUtil wxTokenUtil = new WXTokenUtil();
         TokenDto tokenDto = new TokenDto();
-        studentDto.setId(studentDtoOld.getId());
-        studentDto.setOpenid(studentDtoOld.getOpenid());
-        tokenDto.setAccessToken(getAccessToken());
-        String token = wxTokenUtil.generateToken(tokenDto);
-        studentDto.setAccentToken(token);
+//        studentDto.setId(studentDtoOld.getId());
+//        studentDto.setOpenid(studentDtoOld.getOpenid());
+//        tokenDto.setAccessToken(getAccessToken());
+//        String token = wxTokenUtil.generateToken(tokenDto);
+//        studentDto.setAccentToken(token);
 //        根据openId判断
         if (studentDtoOld!=null){
             //更新
+            studentDto.setId(studentDtoOld.getId());
+            studentDto.setOpenid(studentDtoOld.getOpenid());
+            tokenDto.setAccessToken(getAccessToken());
+            String token = wxTokenUtil.generateToken(tokenDto);
+            studentDto.setAccentToken(token);
             studentDto.setLastUpdateTime(new Date());
+            studentDto.setStatus(studentDtoOld.getStatus());
             int result = iStudentService.updateStudentByOpenId(studentDto);
             if (result>0){
                 return ResultDto.success(studentDto);
             }
         }else{
             //添加
+            //studentDto.setId(studentDto.getId());
+            studentDto.setOpenid(studentDto.getOpenid());
+            tokenDto.setAccessToken(getAccessToken());
+            String token = wxTokenUtil.generateToken(tokenDto);
+            studentDto.setAccentToken(token);
             studentDto.setCreateTime(new Date());
+            studentDto.setStatus((byte) 1);
             int result = iStudentService.addStudent(studentDto);
             if (result>0){
                 return ResultDto.success(studentDto);
@@ -226,5 +238,40 @@ public class StudentAppController {
         return new ResultDto(ResponseUtil.FAIL_0,"报名失败");
 
     }
+
+
+    /**
+     * @Description:    是否收藏此课程
+     */
+    @RequestMapping("isCollectCourse")
+    public ResultDto isCollectCourse(int courseId,int studentId){
+        Boolean result = iStudentService.isCollectCourse(courseId,studentId);
+        return ResultDto.success(result);
+    }
+
+
+    /**
+     * @Description:    是否收藏此课程
+     */
+    @RequestMapping("updateCollectCourse")
+    public ResultDto updateCollectCourse(int courseId,int studentId,Boolean flag){
+        if (flag){
+            //收藏
+            int result = iStudentService.saveCollectCourse(courseId,studentId);
+            if (result>0){
+                return ResultDto.success(true);
+            }
+        }else{
+            //取消
+            int result = iStudentService.deleteCollectCourse(courseId,studentId);
+            if (result>0){
+                return ResultDto.success(false);
+            }
+        }
+        return new ResultDto(ResponseUtil.FAIL_0,"报名失败");
+    }
+
+
+
 
 }

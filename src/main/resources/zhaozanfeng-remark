@@ -6,3 +6,17 @@
   `max_capacity` int(11) DEFAULT '0' COMMENT '最大人数容量',
   `money` double DEFAULT '0' COMMENT '价格',
   `telephone` varchar(255) DEFAULT '' COMMENT '联系电话',
+
+
+  添加新表，收藏课程表
+  CREATE TABLE `collect_course` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `course_id` int(11) DEFAULT NULL COMMENT '课程id',
+    `student_id` int(11) DEFAULT NULL COMMENT '学生id',
+    `status` tinyint(4) DEFAULT NULL,
+    `create_id` int(11) DEFAULT NULL,
+    `create_time` datetime DEFAULT NULL,
+    `last_update_id` int(11) DEFAULT NULL,
+    `last_update_time` datetime DEFAULT NULL,
+    PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收藏课程';

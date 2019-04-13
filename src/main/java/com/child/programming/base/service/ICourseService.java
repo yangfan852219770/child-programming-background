@@ -51,4 +51,9 @@ public interface ICourseService {
      * @Description:    根据日期查询学生的课程信息列表
      */
     List<SignUpCourseDto> getStudentCourseListByDate(String selectDate, String week, String studentId);
+
+    /**
+     *  @Description:    查询学生收藏课程
+     */
+    List<TbCourseDo> getStudentCollectCourseList(int page, int limit, int studentId);
 }

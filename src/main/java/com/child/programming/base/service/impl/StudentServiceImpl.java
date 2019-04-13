@@ -1,13 +1,11 @@
 package com.child.programming.base.service.impl;
 
 import com.child.programming.base.dto.StudentInfoDto;
+import com.child.programming.base.mapper.TbCollectCourseDoMapper;
 import com.child.programming.base.mapper.TbSignUpExperienceCourseDoMapper;
 import com.child.programming.base.mapper.TbStudentDoMapper;
 import com.child.programming.base.mapper.TbStudentSignUpDoMapper;
-import com.child.programming.base.model.TbSignUpExperienceCourseDo;
-import com.child.programming.base.model.TbStudentDo;
-import com.child.programming.base.model.TbStudentDoExample;
-import com.child.programming.base.model.TbStudentSignUpDo;
+import com.child.programming.base.model.*;
 import com.child.programming.base.service.IStudentService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
@@ -30,6 +28,8 @@ public class StudentServiceImpl  implements IStudentService{
     private TbStudentSignUpDoMapper tbStudentSignUpDoMapper;
     @Autowired
     private TbSignUpExperienceCourseDoMapper tbSignUpExperienceCourseDoMapper;
+    @Autowired
+    private TbCollectCourseDoMapper tbCollectCourseDoMapper;
 
     /**
      * @Description:    据openId查询学生信息
@@ -136,5 +136,48 @@ public class StudentServiceImpl  implements IStudentService{
     @Override
     public int signUpExperienceCourse(TbSignUpExperienceCourseDo signUpExperienceCourseDo) {
         return tbSignUpExperienceCourseDoMapper.insert(signUpExperienceCourseDo);
+    }
+
+    /**
+     * @Description:    是否收藏此课程
+     */
+    @Override
+    public Boolean isCollectCourse(int courseId, int studentId) {
+        TbCollectCourseDoExample example = new TbCollectCourseDoExample();
+        TbCollectCourseDoExample.Criteria criteria = example.createCriteria();
+        criteria.andCourseIdEqualTo(courseId);
+        criteria.andStudentIdEqualTo(studentId);
+        criteria.andStatusEqualTo((byte) 1);
+        List<TbCollectCourseDo> collectCourseDos = tbCollectCourseDoMapper.selectByExample(example);
+        if (collectCourseDos!=null && collectCourseDos.size()>0){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @Description:    收藏此课程
+     */
+    @Override
+    public int saveCollectCourse(int courseId, int studentId) {
+        TbCollectCourseDo collectCourseDo = new TbCollectCourseDo();
+        collectCourseDo.setCourseId(courseId);
+        collectCourseDo.setStudentId(studentId);
+        collectCourseDo.setCreateTime(new Date());
+        collectCourseDo.setStatus((byte) 1);
+        return tbCollectCourseDoMapper.insertSelective(collectCourseDo);
+    }
+
+    /**
+     * @Description:    取消收藏此课程
+     */
+    @Override
+    public int deleteCollectCourse(int courseId, int studentId) {
+        TbCollectCourseDoExample example = new TbCollectCourseDoExample();
+        TbCollectCourseDoExample.Criteria criteria = example.createCriteria();
+        criteria.andCourseIdEqualTo(courseId);
+        criteria.andStudentIdEqualTo(studentId);
+        criteria.andStatusEqualTo((byte) 1);
+        return tbCollectCourseDoMapper.deleteByExample(example);
     }
 }

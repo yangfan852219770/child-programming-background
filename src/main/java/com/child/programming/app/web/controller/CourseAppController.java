@@ -107,5 +107,16 @@ public class CourseAppController {
         return ResultDto.success(studentCourseByDateList);
     }
 
+    /**
+    *  @Description:    查询学生收藏课程
+    */
+    @RequestMapping("getStudentCollectCourseList")
+    public ResultDto getStudentCollectCourseList(@RequestParam(value="page" ,required =false ) int page,
+                                               @RequestParam(value="limit" ,required =false ) int limit,
+                                               @RequestParam(value="studentId" ,required =false ) int studentId){
+        List<TbCourseDo> courseDos = iCourseService.getStudentCollectCourseList(page,limit,studentId);
+        return ResultDto.success(courseDos);
+    }
+
 
 }
