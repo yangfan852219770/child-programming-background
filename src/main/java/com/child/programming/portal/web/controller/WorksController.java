@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
  * @description: TODO
  */
 @RestController
-@RequestMapping("works")
+@RequestMapping("worksPortal")
 public class WorksController {
 
     @Autowired
