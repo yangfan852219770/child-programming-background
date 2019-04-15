@@ -20,12 +20,6 @@ public interface ICourseService {
      */
     List<CourseArrange> getCourseDetailByCourseId(int courseId);
 
-    /**
-     * antd 列表
-     * @param name 课程名称
-     * @return
-     */
-    List<CourseInfoDto> getList(String name);
 
     /**
      * @Description:    根据学生ID查询报名的课程
@@ -56,4 +50,12 @@ public interface ICourseService {
      *  @Description:    查询学生收藏课程
      */
     List<TbCourseDo> getStudentCollectCourseList(int page, int limit, int studentId);
+
+    /**
+     * antd 列表
+     * @param name 课程名称
+     * @return
+     */
+    List<CourseInfoDto> getList(String name);
+
 }

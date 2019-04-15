@@ -1,22 +1,18 @@
 package com.child.programming.education.manage.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 /**
  * @Description：选择框对象
  * @Author：yangfan
  **/
 
-@ToString
+@Data
 public class SelectDto {
 
-    @Getter
-    @Setter
     private Integer value; // 唯一标识
 
-    @Getter
-    @Setter
     private String label; // 名称
+
+    private Boolean disabled; // 是否禁用
 }

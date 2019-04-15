@@ -6,6 +6,7 @@ import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.model.TbCourseDo;
 import com.child.programming.base.model.TbGradeDo;
 import com.child.programming.base.service.ICourseService;
+import com.child.programming.base.service.IGradeService;
 import com.child.programming.base.util.DateUtil;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.HttpSessionUtil;
@@ -34,6 +35,8 @@ import java.util.Map;
 public class CourseController {
     @Autowired
     private ICourseService iCourseService;
+    @Autowired
+    private IGradeService iGradeService;
 
     /**
      * 列表
@@ -60,12 +63,12 @@ public class CourseController {
                 log.error("课程时间安排[timeSchedule]为空!");
                 return ResultDto.fail("参数不完整，无法保存");
             }
-
-            // 老师时间校验
-
-            // 教室时间校验
+            String result = iGradeService.validateTimeScheduleConflict(courseTimeScheduleDtoList);
+            log.info(result);
 
             // 课程容量处理，所有班级容量相加
+
+            // 保存课程
 
             // 更新班级中的课程信息
 

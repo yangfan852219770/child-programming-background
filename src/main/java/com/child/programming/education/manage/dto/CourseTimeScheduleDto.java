@@ -13,10 +13,8 @@ public class CourseTimeScheduleDto {
 
     private DateRangeDto dateRange; // 起止日期，年月日
 
-    private List<String> day; // 一周，，比如一、二
-
-    private TimeRangeDto timeRange; // 起止时间，时分秒
-
     private Integer gradeId; // 班级id
+
+    private List<TimeScheduleChildrenDto> childrenData; // 星期和时间集合
 
 }

@@ -2,6 +2,7 @@ package com.child.programming.base.service;
 
 import com.child.programming.base.dto.GradeInfoDto;
 import com.child.programming.base.model.TbGradeDo;
+import com.child.programming.education.manage.dto.CourseTimeScheduleDto;
 import com.child.programming.education.manage.dto.InitGradeInfoDto;
 import com.child.programming.education.manage.dto.SelectDto;
 
@@ -69,4 +70,11 @@ public interface IGradeService {
      * @return
      */
     List<TbGradeDo> getListByTeacherId(Integer teacherId);
+
+    /**
+     * 班级的课程安排校验
+     * @param timeSchedule
+     * @return
+     */
+    String validateTimeScheduleConflict(List<CourseTimeScheduleDto> timeSchedule);
 }

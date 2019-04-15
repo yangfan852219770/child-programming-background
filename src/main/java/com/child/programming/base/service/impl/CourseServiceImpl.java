@@ -91,21 +91,6 @@ public class CourseServiceImpl implements ICourseService {
         return courseArrangesNew;
     }
 
-    @Override
-    public List<CourseInfoDto> getList(String name) {
-        TbCourseDoExample example = new TbCourseDoExample();
-        example.setOrderByClause("create_time desc");
-        TbCourseDoExample.Criteria criteria = example.createCriteria();
-        //TODO status值查询匹配
-        if (EmptyUtils.stringIsNotEmpty(name))
-            criteria.andNameLike("%" + name + "%");
-        List<TbCourseDo> courseDoList = tbCourseDoMapper.selectByExample(example);
-        if (EmptyUtils.listIsNotEmpty(courseDoList))
-            return ListUtil.convertElement(courseDoList, CourseInfoDto.class);
-
-        return null;
-    }
-
     /**
      * @Description:    根据学生ID查询报名的课程
      */
@@ -183,5 +168,20 @@ public class CourseServiceImpl implements ICourseService {
         map.put("studentId",studentId);
         List<TbCourseDo> courseDos = courseCustomMapper.getStudentCollectCourseList(map);
         return courseDos;
+    }
+
+    @Override
+    public List<CourseInfoDto> getList(String name) {
+        TbCourseDoExample example = new TbCourseDoExample();
+        example.setOrderByClause("create_time desc");
+        TbCourseDoExample.Criteria criteria = example.createCriteria();
+        //TODO status值查询匹配
+        if (EmptyUtils.stringIsNotEmpty(name))
+            criteria.andNameLike("%" + name + "%");
+        List<TbCourseDo> courseDoList = tbCourseDoMapper.selectByExample(example);
+        if (EmptyUtils.listIsNotEmpty(courseDoList))
+            return ListUtil.convertElement(courseDoList, CourseInfoDto.class);
+
+        return null;
     }
 }
