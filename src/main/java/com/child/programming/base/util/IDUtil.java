@@ -17,4 +17,16 @@ public class IDUtil {
         String str = millis + String.format("%03d", end3);
         return str;
     }
+
+    /**
+     * 生成随机分享码后缀
+     */
+    public static String getLastShareCode() {
+        //加上四位随机数
+        Random random = new Random();
+        int end4 = random.nextInt(9999);
+        //如果不足四位前面补0
+        String str = String.format("%04d", end4);
+        return str;
+    }
 }

@@ -189,6 +189,12 @@ public class StudentAppController {
         return null;
     }
 
+    @RequestMapping("getWXAccessToken")
+    public ResultDto getWXAccessToken(){
+        String accessToken = getAccessToken();
+        return ResultDto.success((Object) accessToken);
+    }
+
     /**
      * @Description:    学生报名课程
      */
