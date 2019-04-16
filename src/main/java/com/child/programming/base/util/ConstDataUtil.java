@@ -13,4 +13,6 @@ public class ConstDataUtil {
     public final static String UPLOAD_FILES = "upload_files"; // TODO 临时上传目录
 
     public final static String FORWARD_SLASH = "/"; // 正斜杠
+
+    public final static String VALIDATE_PARAMETER_FALSE = "校验数据错误"; // 时间安排冲突检测
 }

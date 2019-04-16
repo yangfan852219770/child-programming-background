@@ -9,18 +9,20 @@ import com.child.programming.base.mapper.CourseCustomMapper;
 import com.child.programming.base.mapper.TbCourseDoMapper;
 import com.child.programming.base.model.TbCourseDo;
 import com.child.programming.base.model.TbCourseDoExample;
+import com.child.programming.base.model.TbGradeDo;
 import com.child.programming.base.service.ICourseService;
+import com.child.programming.base.service.IGradeService;
+import com.child.programming.base.util.DateUtil;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.JSONUtil;
 import com.child.programming.base.util.ListUtil;
+import com.child.programming.education.manage.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Time;
+import java.util.*;
 
 @Service
 public class CourseServiceImpl implements ICourseService {
@@ -29,6 +31,8 @@ public class CourseServiceImpl implements ICourseService {
     private CourseCustomMapper courseCustomMapper;
     @Autowired
     private TbCourseDoMapper tbCourseDoMapper;
+    @Autowired
+    private IGradeService iGradeService;
 
     /**
      * @Description:    小程序首页课程列表展示，包括搜索，高级搜索
@@ -170,8 +174,10 @@ public class CourseServiceImpl implements ICourseService {
         return courseDos;
     }
 
+    /********************************************************************/
+
     @Override
-    public List<CourseInfoDto> getList(String name) {
+    public List<CourseSaveDto> getList(String name) {
         TbCourseDoExample example = new TbCourseDoExample();
         example.setOrderByClause("create_time desc");
         TbCourseDoExample.Criteria criteria = example.createCriteria();
@@ -179,9 +185,80 @@ public class CourseServiceImpl implements ICourseService {
         if (EmptyUtils.stringIsNotEmpty(name))
             criteria.andNameLike("%" + name + "%");
         List<TbCourseDo> courseDoList = tbCourseDoMapper.selectByExample(example);
-        if (EmptyUtils.listIsNotEmpty(courseDoList))
-            return ListUtil.convertElement(courseDoList, CourseInfoDto.class);
+        if (EmptyUtils.listIsNotEmpty(courseDoList)) {
+            List<CourseSaveDto> courseSaveDtoList = ListUtil.convertElement(courseDoList, CourseSaveDto.class);
+            // 时间安排
+            initTimeSchedule(courseSaveDtoList);
 
+            return courseSaveDtoList;
+        }
         return null;
     }
+
+    @Override
+    public Boolean save(Integer userId, TbCourseDo courseDo, List<CourseTimeScheduleDto> courseTimeScheduleDtoList) {
+        if (!EmptyUtils.objectIsEmpty(courseDo) && EmptyUtils.listIsNotEmpty(courseTimeScheduleDtoList)){
+
+            // 容量
+            Integer capacity = 0;
+            // TODO 之后转为sql语句统计容量
+            for (CourseTimeScheduleDto timeSchedule:courseTimeScheduleDtoList
+            ) {
+                TbGradeDo gradeDo = iGradeService.getOneById(timeSchedule.getGradeId());
+                if(EmptyUtils.objectIsEmpty(gradeDo)){
+                    capacity +=gradeDo.getMaxCapacity();
+                }
+
+            }
+            courseDo.setMaxCapacity(capacity);
+
+            // 新增
+            if (EmptyUtils.objectIsEmpty(courseDo.getId())){
+                courseDo.setStatus(1); // 报名
+                courseDo.setCreateTime(new Date());
+                courseDo.setCreateId(userId);
+                // 插入返回主键
+                Integer result = tbCourseDoMapper.insert(courseDo);
+                if (result != 1)
+                    return false;
+                // 班级时间安排保存
+                Boolean updateResult = iGradeService.updateTimeSchedule(courseDo.getId(), userId, courseTimeScheduleDtoList);
+                return updateResult;
+            }else{
+                // 更新
+                courseDo.setLastUpdateTime(new Date());
+                courseDo.setLastUpdateId(userId);
+                Integer result = tbCourseDoMapper.updateByPrimaryKeySelective(courseDo);
+                if (result != 1)
+                    return false;
+                // 班级时间安排保存
+                Boolean updateResult = iGradeService.updateTimeSchedule(courseDo.getId(), userId, courseTimeScheduleDtoList);
+                return updateResult;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 查询列表时，对时间安排赋值
+     * @param courseSaveDtoList
+     */
+    private void initTimeSchedule(List<CourseSaveDto> courseSaveDtoList){
+        if (EmptyUtils.listIsEmpty(courseSaveDtoList))
+            return;
+        for (CourseSaveDto course:courseSaveDtoList
+        ) {
+            List<TbGradeDo> gradeDoList = iGradeService.getListByCourseId(course.getId());
+            if (EmptyUtils.listIsEmpty(gradeDoList))
+                return;
+            List<CourseTimeScheduleDto> courseTimeScheduleDtoList = new ArrayList<>();
+            for (TbGradeDo grade:gradeDoList
+                 ) {
+                courseTimeScheduleDtoList.add(iGradeService.convertToCourseTimeSchedule(grade));
+            }
+            course.setTimeSchedule(courseTimeScheduleDtoList);
+        }
+    }
+
+    /******************************************************************/
 }

@@ -1,9 +1,11 @@
 package com.child.programming.education.manage.dto;
 
 import com.child.programming.base.dto.GradeWeekendsScheduleDto;
+import com.child.programming.base.util.ConstDataUtil;
 import com.child.programming.base.util.DateUtil;
 import com.child.programming.base.util.EmptyUtils;
 import lombok.Data;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
  * @Author：yangfan
  **/
 @Data
+@Log4j2
 public class ValidateTimeScheduleDto {
 
     private Integer teacherId; // 老师id
@@ -49,7 +52,7 @@ public class ValidateTimeScheduleDto {
             // 执行到此处说明无冲突
             return "0";
         }
-        // 此处不会执行
-        return "-1";
+        log.warn(ConstDataUtil.VALIDATE_PARAMETER_FALSE);
+        return ConstDataUtil.VALIDATE_PARAMETER_FALSE;
     }
 }

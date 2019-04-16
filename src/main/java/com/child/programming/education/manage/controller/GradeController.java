@@ -81,8 +81,8 @@ public class GradeController {
      * 获取班级select框信息
      * @return
      */
-    @RequestMapping("getGradeInfoSelect")
-    public List<SelectDto> getGradeInfoSelect(){
-        return iGradeService.getGradeInfoSelectList();
+    @RequestMapping(value = "getGradeInfoSelect", method = RequestMethod.GET)
+    public List<SelectDto> getGradeInfoSelect(@RequestParam(value = "gradeIds", required = false)String gradeIds){
+        return iGradeService.getGradeInfoSelectList(gradeIds);
     }
 }

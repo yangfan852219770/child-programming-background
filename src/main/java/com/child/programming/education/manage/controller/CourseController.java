@@ -44,10 +44,16 @@ public class CourseController {
      * @return
      */
     @RequestMapping(value = "getList", method = RequestMethod.GET)
-    public List<CourseInfoDto> getList(@RequestParam(value = "name", required = false) String name){
+    public List<CourseSaveDto> getList(@RequestParam(value = "name", required = false) String name){
         return iCourseService.getList(name);
     }
 
+    /**
+     * 保存
+     * @param session
+     * @param courseSaveDto
+     * @return
+     */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public ResultDto save(HttpSession session, @RequestBody CourseSaveDto courseSaveDto){
         log.info(courseSaveDto);
@@ -63,16 +69,17 @@ public class CourseController {
                 log.error("课程时间安排[timeSchedule]为空!");
                 return ResultDto.fail("参数不完整，无法保存");
             }
+            // 冲突检测
             String result = iGradeService.validateTimeScheduleConflict(courseTimeScheduleDtoList);
             log.info(result);
-
-            // 课程容量处理，所有班级容量相加
-
-            // 保存课程
-
-            // 更新班级中的课程信息
-
-
+            // 有冲突
+            if (!"0".equals(result))
+                return ResultDto.fail(result);
+            //无冲突
+            boolean saveResult = iCourseService.save(userInfoPojo.getId(), courseDo, courseTimeScheduleDtoList);
+            if (saveResult)
+                return ResultDto.success();
+            return ResultDto.fail();
         }
 
         return ResultDto.fail();

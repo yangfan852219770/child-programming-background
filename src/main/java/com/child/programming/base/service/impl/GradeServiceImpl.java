@@ -1,6 +1,5 @@
 package com.child.programming.base.service.impl;
 
-import com.child.programming.app.web.dto.WeekendsSchedule;
 import com.child.programming.base.dto.GradeInfoDto;
 import com.child.programming.base.dto.GradeWeekendsScheduleDto;
 import com.child.programming.base.mapper.GradeCustomMapper;
@@ -11,10 +10,12 @@ import com.child.programming.base.model.TbGradeDoExample;
 import com.child.programming.base.service.IClassroomService;
 import com.child.programming.base.service.IGradeService;
 import com.child.programming.base.service.ITeacherService;
+import com.child.programming.base.util.ConstDataUtil;
 import com.child.programming.base.util.DateUtil;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.JSONUtil;
 import com.child.programming.education.manage.dto.*;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ import java.util.*;
  * @Author：yangfan
  **/
 @Service
+@Log4j2
 public class GradeServiceImpl implements IGradeService {
 
     @Autowired
@@ -79,10 +81,12 @@ public class GradeServiceImpl implements IGradeService {
     }
 
     @Override
-    public List<SelectDto> getGradeInfoSelectList() {
+    public List<SelectDto> getGradeInfoSelectList(String gradeIds) {
         TbGradeDoExample example = new TbGradeDoExample();
         TbGradeDoExample.Criteria criteria = example.createCriteria();
+
         criteria.andStatusEqualTo(Byte.valueOf("1"));
+
         List<TbGradeDo> gradeDoList = tbGradeDoMapper.selectByExample(example);
         if (EmptyUtils.listIsNotEmpty(gradeDoList)) {
             List<SelectDto> selectDtoList = new ArrayList<>();
@@ -93,8 +97,22 @@ public class GradeServiceImpl implements IGradeService {
                 selectDto.setValue(grade.getId());
                 selectDto.setLabel(grade.getName());
                 selectDto.setDisabled(false);
-
                 selectDtoList.add(selectDto);
+            }
+            // 已选的班级禁用
+            if (EmptyUtils.stringIsNotEmpty(gradeIds)){
+                String[] gradeIdArray = gradeIds.split(",");
+                if (!EmptyUtils.objectIsEmpty(gradeIdArray)){
+                    for (SelectDto select:selectDtoList
+                         ) {
+                        for (String gradeId:gradeIdArray
+                             ) {
+                            if (select.getValue().equals(Integer.parseInt(gradeId))){
+                                select.setDisabled(true);
+                            }
+                        }
+                    }
+                }
             }
             return selectDtoList;
         }
@@ -146,54 +164,131 @@ public class GradeServiceImpl implements IGradeService {
 
     @Override
     public String validateTimeScheduleConflict(List<CourseTimeScheduleDto> timeSchedule) {
-        if (EmptyUtils.listIsNotEmpty(timeSchedule)){
+        if (EmptyUtils.listIsNotEmpty(timeSchedule)) {
             for (CourseTimeScheduleDto courseTimeSchedule : timeSchedule
             ) {
                 TbGradeDo gradeDo = getOneById(courseTimeSchedule.getGradeId());
-                // 未查到班级，直接跳过后面的验证，一般不会出现这种情况
+
+                //有课的不能再安排课程
+                // TODO 后期不在此处校验
+                if (EmptyUtils.intIsNotEmpty(gradeDo.getCourseId()))
+                    return gradeDo.getName() + "已经安排课程，不能重复安排!";
+                // 未查到班级，直接跳过后面的验证，只有第一次新增会出现
                 if (EmptyUtils.objectIsEmpty(gradeDo))
                     continue;
+                //TODO sql 不查询 weekendsSchedule 为空的
+
                 // 获取老师安排
                 List<TbGradeDo> teacherGradeList = getListByTeacherId(gradeDo.getTeacherId());
                 // 获取教室安排
                 List<TbGradeDo> classroomGradeList = getListByClassroomId(gradeDo.getClassroomId());
 
-                //两个集合都是空，说明无冲突
+                // 移除当前要校验的元素
+                teacherGradeList = removeOneByGradeId(teacherGradeList, gradeDo.getId());
+                classroomGradeList = removeOneByGradeId(classroomGradeList, gradeDo.getId());
+
+                // 两个集合都是空，说明无冲突
                 if (EmptyUtils.listIsEmpty(teacherGradeList) && EmptyUtils.listIsEmpty(classroomGradeList))
                     return "0";
 
-                //对象转换
+                // 对象转换
                 List<ValidateTimeScheduleDto> teacherTimeScheduleList = gradeListToValidateTimeSchduleList(teacherGradeList);
                 List<ValidateTimeScheduleDto> classroomTimeScheduleList = gradeListToValidateTimeSchduleList(classroomGradeList);
                 ValidateTimeScheduleDto validateTimeScheduleDto = courseTimeScheduleToValidateTimeSchduleList(courseTimeSchedule);
 
-                if (EmptyUtils.listIsNotEmpty(teacherTimeScheduleList)
-                        && EmptyUtils.listIsNotEmpty(classroomTimeScheduleList)
-                        && !EmptyUtils.objectIsEmpty(validateTimeScheduleDto)) {
+                //校验数据不合法
+                if (EmptyUtils.objectIsEmpty(validateTimeScheduleDto)){
+                    log.warn(ConstDataUtil.VALIDATE_PARAMETER_FALSE);
+                    return ConstDataUtil.VALIDATE_PARAMETER_FALSE;
+                }
 
-                    // 老师时间校验
-                    String validateTeacherResult = detectTimeScheduleConflict(teacherTimeScheduleList, validateTimeScheduleDto);
-                    // 老师时间安排有冲突
-                    if (!"0".equals(validateTeacherResult)){
-                        // TODO 查询老师信息
-                        return validateTeacherResult;
-                    }
+                //teacherTimeScheduleList、classroomTimeScheduleList无校验数据的直接通过
+                // 老师时间校验
+                String validateTeacherResult = detectTimeScheduleConflict(teacherTimeScheduleList, validateTimeScheduleDto);
+                // 老师时间安排有冲突
+                if (!"0".equals(validateTeacherResult)) {
+                    // TODO 查询老师信息
+                    return validateTeacherResult;
+                }
 
-                    // 教室时间校验
-                    String validateClassroomResult = detectTimeScheduleConflict(classroomTimeScheduleList, validateTimeScheduleDto);
-                    if (!"0".equals(validateClassroomResult)){
-                        // TODO 查询教授信息
-                        return validateClassroomResult;
-                    }
-
-                } else
-                    return "时间转换失败，无法进行校验!";
+                // 教室时间校验
+                String validateClassroomResult = detectTimeScheduleConflict(classroomTimeScheduleList, validateTimeScheduleDto);
+                if (!"0".equals(validateClassroomResult)) {
+                    // TODO 查询教室信息
+                    return validateClassroomResult;
+                }
             }
-            // 执行到此处，无冲突
+            // 执行到此处，校验通过
             return "0";
         }
-        // 此处return不会执行
-        return "-1";
+        log.warn(ConstDataUtil.VALIDATE_PARAMETER_FALSE);
+        return ConstDataUtil.VALIDATE_PARAMETER_FALSE;
+    }
+
+    // TODO 批量操作，未有事务回滚
+    @Override
+    public Boolean updateTimeSchedule(Integer courseId, Integer userId, List<CourseTimeScheduleDto> courseTimeScheduleDtoList) {
+        int count = 0;
+        TbGradeDo gradeDo = new TbGradeDo();
+        for (CourseTimeScheduleDto timeSchedule : courseTimeScheduleDtoList
+        ) {
+            gradeDo.setId(timeSchedule.getGradeId());
+            gradeDo.setCourseId(courseId);
+            //时间安排
+            gradeDo.setStartDate(DateUtil.stringToDateByDefaultDayFormat(timeSchedule.getDateRange().getStartDate()));
+            gradeDo.setEndDate(DateUtil.stringToDateByDefaultDayFormat(timeSchedule.getDateRange().getEndDate()));
+            if (EmptyUtils.listIsEmpty(timeSchedule.getChildrenData()))
+                return false;
+            List<GradeWeekendsScheduleDto> gradeWeekendsScheduleDtoList = timeSchedule.convertToGradeWeekendsSchedule();
+            if (EmptyUtils.listIsEmpty(gradeWeekendsScheduleDtoList))
+                return false;
+            gradeDo.setWeekendsSchedule(JSONUtil.toJSONString(gradeWeekendsScheduleDtoList));
+
+            gradeDo.setLastUpdateTime(new Date());
+            gradeDo.setLastUpdateId(userId);
+
+            count += tbGradeDoMapper.updateByPrimaryKeySelective(gradeDo);
+        }
+        return count == courseTimeScheduleDtoList.size();
+    }
+
+    @Override
+    public List<TbGradeDo> getListByCourseId(Integer courseId) {
+        if (EmptyUtils.intIsNotEmpty(courseId)){
+            TbGradeDoExample example = new TbGradeDoExample();
+            TbGradeDoExample.Criteria criteria = example.createCriteria();
+            criteria.andCourseIdEqualTo(courseId).andStatusEqualTo(Byte.valueOf("1"));
+            return tbGradeDoMapper.selectByExample(example);
+        }
+        return null;
+    }
+
+    @Override
+    public CourseTimeScheduleDto convertToCourseTimeSchedule(TbGradeDo gradeDo) {
+        CourseTimeScheduleDto courseTimeScheduleDto = new CourseTimeScheduleDto();
+
+        //日期
+        DateRangeDto dateRangeDto = new DateRangeDto();
+        dateRangeDto.setStartDate(DateUtil.dateToStringByDefaultDayFormat(gradeDo.getStartDate()));
+        dateRangeDto.setEndDate(DateUtil.dateToStringByDefaultDayFormat(gradeDo.getEndDate()));
+
+        //一周安排
+        if (EmptyUtils.stringIsNotEmpty(gradeDo.getWeekendsSchedule())){
+
+            List<GradeWeekendsScheduleDto> gradeWeekendsScheduleDtoList = JSONUtil.parseArray(gradeDo.getWeekendsSchedule(), GradeWeekendsScheduleDto.class);
+            if (EmptyUtils.listIsNotEmpty(gradeWeekendsScheduleDtoList)){
+                List<TimeScheduleChildrenDto> timeScheduleChildrenDtoList = new ArrayList<>();
+                for (GradeWeekendsScheduleDto gradeWeekendsSchedule:gradeWeekendsScheduleDtoList
+                ) {
+                    TimeScheduleChildrenDto timeScheduleChildrenDto = gradeWeekendsSchedule.convertToTimeScheduleChildren();
+                    timeScheduleChildrenDtoList.add(timeScheduleChildrenDto);
+                }
+                courseTimeScheduleDto.setChildrenData(timeScheduleChildrenDtoList);
+            }
+        }
+        courseTimeScheduleDto.setGradeId(gradeDo.getId());
+        courseTimeScheduleDto.setDateRange(dateRangeDto);
+        return courseTimeScheduleDto;
     }
 
     /**
@@ -207,6 +302,9 @@ public class GradeServiceImpl implements IGradeService {
             List<ValidateTimeScheduleDto> validateTimeScheduleDtoList = new ArrayList<>();
             for (TbGradeDo grade : gradeDoList
             ) {
+                // 时间安排为空，则不必放入校验集合
+                if (EmptyUtils.stringIsEmpty(grade.getWeekendsSchedule()))
+                    continue;
                 ValidateTimeScheduleDto validateTimeScheduleDto = new ValidateTimeScheduleDto();
 
                 validateTimeScheduleDto.setTeacherId(grade.getTeacherId());
@@ -234,18 +332,11 @@ public class GradeServiceImpl implements IGradeService {
 
             validateTimeScheduleDto.setStartDate(DateUtil.stringToDateByDefaultDayFormat(courseTimeScheduleDto.getDateRange().getStartDate()));
             validateTimeScheduleDto.setEndDate(DateUtil.stringToDateByDefaultDayFormat(courseTimeScheduleDto.getDateRange().getEndDate()));
+
             // 一周时间安排
-            List<GradeWeekendsScheduleDto> weekendsScheduleDtoList = new ArrayList<>();
-            for (TimeScheduleChildrenDto timeScheduleChildren : courseTimeScheduleDto.getChildrenData()
-            ) {
-                GradeWeekendsScheduleDto gradeWeekendsScheduleDto = new GradeWeekendsScheduleDto();
-
-                gradeWeekendsScheduleDto.setDay(timeScheduleChildren.getDay());
-                gradeWeekendsScheduleDto.setStartHour(timeScheduleChildren.getTimeRange().getStartHour());
-                gradeWeekendsScheduleDto.setEndHour(timeScheduleChildren.getTimeRange().getEndHour());
-
-                weekendsScheduleDtoList.add(gradeWeekendsScheduleDto);
-            }
+            if (EmptyUtils.listIsEmpty(courseTimeScheduleDto.getChildrenData()))
+                return null;
+            List<GradeWeekendsScheduleDto> weekendsScheduleDtoList = courseTimeScheduleDto.convertToGradeWeekendsSchedule();
             validateTimeScheduleDto.setWeekendsScheduleDtoList(weekendsScheduleDtoList);
             return validateTimeScheduleDto;
         }
@@ -260,7 +351,11 @@ public class GradeServiceImpl implements IGradeService {
      * @return
      */
     private String detectTimeScheduleConflict(List<ValidateTimeScheduleDto> sourceTimeScheduleList, ValidateTimeScheduleDto targetValidateTime) {
-        if (EmptyUtils.listIsNotEmpty(sourceTimeScheduleList) && !EmptyUtils.objectIsEmpty(targetValidateTime)) {
+        //无要校验的数据直接通过
+        if (EmptyUtils.listIsEmpty(sourceTimeScheduleList))
+            return "0";
+
+        if (!EmptyUtils.objectIsEmpty(targetValidateTime)) {
             for (ValidateTimeScheduleDto sourceValidateTime : sourceTimeScheduleList
             ) {
                 // 两个时间段无交叉，则不需要校验
@@ -276,7 +371,26 @@ public class GradeServiceImpl implements IGradeService {
             // 执行到此处，说明无冲突
             return "0";
         }
-        // 不会执行
-        return "-1";
+        log.warn(ConstDataUtil.VALIDATE_PARAMETER_FALSE);
+        return ConstDataUtil.VALIDATE_PARAMETER_FALSE;
     }
+
+    /**
+     * 此方法只移除集合的一个元素
+     * @param gradeDoList
+     * @param gradeId
+     * @return
+     */
+    private List<TbGradeDo> removeOneByGradeId(List<TbGradeDo> gradeDoList, Integer gradeId){
+        if (EmptyUtils.listIsEmpty(gradeDoList))
+            return null;
+        for (int i = 0; i < gradeDoList.size(); i++) {
+            if (gradeDoList.get(i).getId().equals(gradeId)){
+                gradeDoList.remove(i);
+                break;
+            }
+        }
+        return gradeDoList;
+    }
+
 }

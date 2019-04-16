@@ -38,9 +38,10 @@ public interface IGradeService {
 
     /**
      * 获取班级select信息
+     * @param gradeIds 此id集合的select禁用
      * @return
      */
-    List<SelectDto> getGradeInfoSelectList();
+    List<SelectDto> getGradeInfoSelectList(String gradeIds);
 
     /**
      * 验证班级容量
@@ -77,4 +78,27 @@ public interface IGradeService {
      * @return
      */
     String validateTimeScheduleConflict(List<CourseTimeScheduleDto> timeSchedule);
+
+    /**
+     * 更新时间安排 、课程id
+     * @param courseId
+     * @param userId
+     * @param courseTimeScheduleDtoList
+     * @return
+     */
+    Boolean updateTimeSchedule(Integer courseId, Integer userId, List<CourseTimeScheduleDto> courseTimeScheduleDtoList);
+
+    /**
+     * 根据课程id查询
+     * @param courseId
+     * @return
+     */
+    List<TbGradeDo> getListByCourseId(Integer courseId);
+
+    /**
+     * 将班级的时间安排转换
+     * @param gradeDo
+     * @return
+     */
+    CourseTimeScheduleDto convertToCourseTimeSchedule(TbGradeDo gradeDo);
 }

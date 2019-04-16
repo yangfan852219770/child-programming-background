@@ -2,6 +2,7 @@ package com.child.programming.education.manage.dto;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -28,6 +29,10 @@ public class CourseSaveDto {
     private String introduction; // 简介
 
     private String photoUrl; // 图片描述地址
+
+    private Integer status; // 状态，0停用，1报名，2开课，3结课
+
+    private Date createTime; // 创建时间
 
     private List<CourseTimeScheduleDto> timeSchedule; // 时间安排
 }

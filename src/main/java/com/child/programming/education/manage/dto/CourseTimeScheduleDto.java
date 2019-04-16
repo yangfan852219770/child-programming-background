@@ -1,7 +1,10 @@
 package com.child.programming.education.manage.dto;
 
+import com.child.programming.base.dto.GradeWeekendsScheduleDto;
 import lombok.Data;
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,5 +19,18 @@ public class CourseTimeScheduleDto {
     private Integer gradeId; // 班级id
 
     private List<TimeScheduleChildrenDto> childrenData; // 星期和时间集合
+
+    /**
+     * 类型转换
+     * @return
+     */
+    public List<GradeWeekendsScheduleDto> convertToGradeWeekendsSchedule(){
+        List<GradeWeekendsScheduleDto> gradeWeekendsScheduleDtoList = new ArrayList<>();
+        for (TimeScheduleChildrenDto children:this.childrenData
+             ) {
+            gradeWeekendsScheduleDtoList.add(children.convertToGradeWeekendsSchedule());
+        }
+        return gradeWeekendsScheduleDtoList;
+    }
 
 }

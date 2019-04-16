@@ -13,7 +13,7 @@ import java.util.Date;
 @Log4j2
 public class DateUtil {
 
-    private final static String defaultDayFormat = "YYYY-MM-DD";
+    private final static String defaultDayFormat = "yyyy-MM-dd";
 
     /**
      * 将日期转换为YYYY-MM-DD格式字符串

@@ -5,6 +5,9 @@ import com.child.programming.app.web.dto.HomePageHeighSerachParam;
 import com.child.programming.app.web.dto.SignUpCourseDto;
 import com.child.programming.base.dto.CourseInfoDto;
 import com.child.programming.base.model.TbCourseDo;
+import com.child.programming.base.model.TbGradeDo;
+import com.child.programming.education.manage.dto.CourseSaveDto;
+import com.child.programming.education.manage.dto.CourseTimeScheduleDto;
 
 import java.util.List;
 
@@ -56,6 +59,15 @@ public interface ICourseService {
      * @param name 课程名称
      * @return
      */
-    List<CourseInfoDto> getList(String name);
+    List<CourseSaveDto> getList(String name);
+
+    /**
+     * 新增、编辑
+     * @param userId
+     * @param courseTimeScheduleDtoList
+     * @param courseDo
+     * @return
+     */
+    Boolean save(Integer userId, TbCourseDo courseDo, List<CourseTimeScheduleDto> courseTimeScheduleDtoList);
 
 }

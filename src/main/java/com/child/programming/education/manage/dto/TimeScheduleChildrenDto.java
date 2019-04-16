@@ -1,5 +1,6 @@
 package com.child.programming.education.manage.dto;
 
+import com.child.programming.base.dto.GradeWeekendsScheduleDto;
 import lombok.Data;
 
 import java.util.List;
@@ -15,4 +16,15 @@ public class TimeScheduleChildrenDto {
 
     private TimeRangeDto timeRange; // 起止时间，时分秒
 
+    /**
+     * 类型转换
+     * @return
+     */
+    public GradeWeekendsScheduleDto convertToGradeWeekendsSchedule(){
+        GradeWeekendsScheduleDto gradeWeekendsScheduleDto = new GradeWeekendsScheduleDto();
+        gradeWeekendsScheduleDto.setDay(this.day);
+        gradeWeekendsScheduleDto.setStartHour(this.timeRange.getStartHour());
+        gradeWeekendsScheduleDto.setEndHour(this.timeRange.getEndHour());
+        return gradeWeekendsScheduleDto;
+    }
 }

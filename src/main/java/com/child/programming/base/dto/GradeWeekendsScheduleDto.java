@@ -1,6 +1,10 @@
 package com.child.programming.base.dto;
 
+import com.child.programming.base.util.ConstDataUtil;
+import com.child.programming.education.manage.dto.TimeRangeDto;
+import com.child.programming.education.manage.dto.TimeScheduleChildrenDto;
 import lombok.Data;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.List;
 
@@ -9,9 +13,10 @@ import java.util.List;
  * @Author：yangfan
  **/
 @Data
+@Log4j2
 public class GradeWeekendsScheduleDto {
 
-    private List<String> day; // 周几有课，如一、二
+    private List<String> day; // 周几有课，如[一、二]
 
     private String startHour; // 开始上课时间
 
@@ -23,7 +28,7 @@ public class GradeWeekendsScheduleDto {
      * @return
      */
     public String detectConflict(GradeWeekendsScheduleDto target){
-        if (null == target){
+        if (null != target){
             for (String sourceDay:this.day
             ) {
                 for (String targetDay:target.getDay()
@@ -41,7 +46,24 @@ public class GradeWeekendsScheduleDto {
             // 执行此处return，说明没有检测到冲突
             return "0";
         }
-        // 不会执行此处
-        return "-1";
+        log.warn(ConstDataUtil.VALIDATE_PARAMETER_FALSE);
+        return ConstDataUtil.VALIDATE_PARAMETER_FALSE;
+    }
+
+    /**
+     * 类型转换
+     * @return
+     */
+    public TimeScheduleChildrenDto convertToTimeScheduleChildren(){
+        TimeScheduleChildrenDto timeScheduleChildrenDto = new TimeScheduleChildrenDto();
+
+        TimeRangeDto timeRangeDto =  new TimeRangeDto();
+        timeRangeDto.setStartHour(this.startHour);
+        timeRangeDto.setEndHour(this.endHour);
+
+        timeScheduleChildrenDto.setDay(this.day);
+        timeScheduleChildrenDto.setTimeRange(timeRangeDto);
+
+        return timeScheduleChildrenDto;
     }
 }
