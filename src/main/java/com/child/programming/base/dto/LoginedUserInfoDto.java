@@ -18,4 +18,6 @@ public class LoginedUserInfoDto {
 
     //TODO 临时
     private String currentAuthority; //登陆角色
+
+    private String flexibleProperty; //灵活属性 用于储存学生作品 或其他
 }
