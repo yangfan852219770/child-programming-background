@@ -20,3 +20,5 @@
     `last_update_time` datetime DEFAULT NULL,
     PRIMARY KEY (`id`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收藏课程';
+
+  修改experience_course表 status类型, varchar -> int

@@ -42,6 +42,7 @@
 
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
 
+        <!--
         <table tableName="classroom" domainObjectName="TbClassroomDo" enableCountByExample="true"
                enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true">
@@ -135,6 +136,10 @@
        <table tableName="teacher_course_schedule" domainObjectName="TbTeacherCourseScheduleDo" enableCountByExample="true"
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
-       </table>
+       </table>-->
+        <table tableName="experience_course" domainObjectName="TbExperienceCourseDo" enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true">
+        </table>
     </context>
 </generatorConfiguration>

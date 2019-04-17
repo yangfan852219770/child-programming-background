@@ -64,6 +64,7 @@ public class TeacherController {
      * @param session
      * @return
      */
+    // TODO 有班级占用的无法删除
     @RequestMapping(value = "delete", method = RequestMethod.GET)
     public ResultDto delete(@RequestParam(value = "idsStr", required = true)String idsStr,
                             HttpSession session) {

@@ -1,6 +1,5 @@
 package com.child.programming.app.web.controller;
 
-import com.child.programming.app.web.dto.CourseArrange;
 import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.model.TbExperienceCourseDo;
 import com.child.programming.base.model.TbShareCircleDo;

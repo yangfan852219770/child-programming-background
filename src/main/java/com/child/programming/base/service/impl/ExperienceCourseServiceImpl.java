@@ -29,7 +29,7 @@ public class ExperienceCourseServiceImpl implements IExperienceCourseService {
         TbExperienceCourseDoExample example = new TbExperienceCourseDoExample();
         example.setOrderByClause("sign_up_end_date asc");
         TbExperienceCourseDoExample.Criteria criteria = example.createCriteria();
-        criteria.andStatusEqualTo("1");
+        criteria.andStatusEqualTo(1);
         criteria.andSignUpEndDateGreaterThan(new Date()); // >
         return experienceCourseDoMapper.selectByExample(example);
     }
