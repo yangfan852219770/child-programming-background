@@ -70,7 +70,7 @@ public class CourseController {
                 return ResultDto.fail("参数不完整，无法保存");
             }
             // 冲突检测
-            String result = iGradeService.validateTimeScheduleConflict(courseTimeScheduleDtoList);
+            String result = iGradeService.validateTimeScheduleConflict(courseTimeScheduleDtoList, courseDo.getId());
             log.info(result);
             // 有冲突
             if (!"0".equals(result))
@@ -83,5 +83,33 @@ public class CourseController {
         }
 
         return ResultDto.fail();
+    }
+
+    /**
+     * 改变课程状态
+     * @param id
+     * @param status
+     * @param session
+     * @return
+     */
+    // TODO 之后新增定时器处理
+    @RequestMapping(value = "changeCourseStatus", method = RequestMethod.GET)
+    public ResultDto changeCourseStatus(@RequestParam(value = "id", required = true)Integer id,
+                                        @RequestParam(value = "status", required = true)Integer status,
+                                        HttpSession session){
+        LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
+        if (!EmptyUtils.objectIsEmpty(userInfoPojo)){
+            if (EmptyUtils.intIsNotEmpty(id) && EmptyUtils.intIsNotEmpty(status)){
+                TbCourseDo courseDo = new TbCourseDo();
+                courseDo.setId(id);
+                courseDo.setStatus(status);
+                boolean result = iCourseService.updateCourse(userInfoPojo.getId(), courseDo);
+                if (result)
+                    return ResultDto.success();
+                return ResultDto.fail();
+            }
+            return ResultDto.fail();
+        }
+        return ResultDto.fail("请先登陆!");
     }
 }

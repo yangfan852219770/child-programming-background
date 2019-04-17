@@ -75,9 +75,10 @@ public interface IGradeService {
     /**
      * 班级的课程安排校验
      * @param timeSchedule
+     * @param courseId
      * @return
      */
-    String validateTimeScheduleConflict(List<CourseTimeScheduleDto> timeSchedule);
+    String validateTimeScheduleConflict(List<CourseTimeScheduleDto> timeSchedule, Integer courseId);
 
     /**
      * 更新时间安排 、课程id
@@ -101,4 +102,19 @@ public interface IGradeService {
      * @return
      */
     CourseTimeScheduleDto convertToCourseTimeSchedule(TbGradeDo gradeDo);
+
+    /**
+     * 删除
+     * @param idArray
+     * @param userId
+     * @return
+     */
+    Boolean delete(String[] idArray, Integer userId);
+
+    /**
+     * 删除时，校验是否有课程占用
+     * @param idArray
+     * @return
+     */
+    Boolean validateCourseId(String[] idArray);
 }

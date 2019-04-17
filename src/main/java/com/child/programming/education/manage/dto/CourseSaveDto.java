@@ -18,7 +18,8 @@ public class CourseSaveDto {
 
     private Integer periodCount; // 课时数量
 
-    private String code; // 课程编码
+    // TODO 暂时去掉编码
+    // private String code; // 课程编码
 
     private Integer maxCapacity; // 最大容量
 

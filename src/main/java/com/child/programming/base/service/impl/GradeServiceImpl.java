@@ -97,6 +97,9 @@ public class GradeServiceImpl implements IGradeService {
                 selectDto.setValue(grade.getId());
                 selectDto.setLabel(grade.getName());
                 selectDto.setDisabled(false);
+                // 将已用课程的班级禁选
+                if (EmptyUtils.intIsNotEmpty(grade.getCourseId()))
+                    selectDto.setDisabled(true);
                 selectDtoList.add(selectDto);
             }
             // 已选的班级禁用
@@ -163,20 +166,20 @@ public class GradeServiceImpl implements IGradeService {
     }
 
     @Override
-    public String validateTimeScheduleConflict(List<CourseTimeScheduleDto> timeSchedule) {
+    public String validateTimeScheduleConflict(List<CourseTimeScheduleDto> timeSchedule, Integer courseId) {
         if (EmptyUtils.listIsNotEmpty(timeSchedule)) {
             for (CourseTimeScheduleDto courseTimeSchedule : timeSchedule
             ) {
                 TbGradeDo gradeDo = getOneById(courseTimeSchedule.getGradeId());
 
-                //有课的不能再安排课程
+                // 有课的不能再安排课程
                 // TODO 后期不在此处校验
                 if (EmptyUtils.intIsNotEmpty(gradeDo.getCourseId()))
-                    return gradeDo.getName() + "已经安排课程，不能重复安排!";
+                    if (!gradeDo.getCourseId().equals(courseId))
+                        return gradeDo.getName() + "已经安排课程，不能重复安排!";
                 // 未查到班级，直接跳过后面的验证，只有第一次新增会出现
                 if (EmptyUtils.objectIsEmpty(gradeDo))
                     continue;
-                //TODO sql 不查询 weekendsSchedule 为空的
 
                 // 获取老师安排
                 List<TbGradeDo> teacherGradeList = getListByTeacherId(gradeDo.getTeacherId());
@@ -208,14 +211,14 @@ public class GradeServiceImpl implements IGradeService {
                 // 老师时间安排有冲突
                 if (!"0".equals(validateTeacherResult)) {
                     // TODO 查询老师信息
-                    return validateTeacherResult;
+                    return "该老师" + validateTeacherResult;
                 }
 
                 // 教室时间校验
                 String validateClassroomResult = detectTimeScheduleConflict(classroomTimeScheduleList, validateTimeScheduleDto);
                 if (!"0".equals(validateClassroomResult)) {
                     // TODO 查询教室信息
-                    return validateClassroomResult;
+                    return "该教室" + validateClassroomResult;
                 }
             }
             // 执行到此处，校验通过
@@ -228,13 +231,56 @@ public class GradeServiceImpl implements IGradeService {
     // TODO 批量操作，未有事务回滚
     @Override
     public Boolean updateTimeSchedule(Integer courseId, Integer userId, List<CourseTimeScheduleDto> courseTimeScheduleDtoList) {
+
+        // 将此次不包含班级id的时间安排置空
+        List<TbGradeDo> gradeDoList = getListByCourseId(courseId);
+        if (EmptyUtils.listIsNotEmpty(gradeDoList)){
+            List<TbGradeDo> resetGradeList = new ArrayList<>();
+            // 找出此次不包含的班级id
+            for (TbGradeDo grade:gradeDoList
+                 ) {
+                boolean flag = false; // 默认不存在
+                for (CourseTimeScheduleDto schedule:courseTimeScheduleDtoList
+                     ) {
+                    // 如果存在，则终止循环
+                    if (grade.getId().equals(schedule.getGradeId())){
+                        flag = true;
+                        break;
+                    }
+                }
+                // 不存在，则需置空
+                if (!flag)
+                    resetGradeList.add(grade);
+            }
+
+            // 置空处理
+            if (EmptyUtils.listIsNotEmpty(resetGradeList)){
+                int resetCount = 0;
+                for (TbGradeDo grade:resetGradeList
+                     ) {
+                    // TODO 此处set方法可提出去
+                    grade.setCourseId(null);
+                    grade.setStartDate(null);
+                    grade.setEndDate(null);
+                    grade.setWeekendsSchedule(null);
+                    grade.setLastUpdateId(userId);
+                    grade.setLastUpdateTime(new Date());
+                    // TODO 之后此处更新改为sql
+                    resetCount += tbGradeDoMapper.updateByPrimaryKey(grade);
+                }
+                if (resetCount != resetGradeList.size())
+                    return false;
+            }
+        }
+
+        // 将涉及到班级的时间安排更新
         int count = 0;
         TbGradeDo gradeDo = new TbGradeDo();
         for (CourseTimeScheduleDto timeSchedule : courseTimeScheduleDtoList
         ) {
             gradeDo.setId(timeSchedule.getGradeId());
             gradeDo.setCourseId(courseId);
-            //时间安排
+            // 时间安排
             gradeDo.setStartDate(DateUtil.stringToDateByDefaultDayFormat(timeSchedule.getDateRange().getStartDate()));
             gradeDo.setEndDate(DateUtil.stringToDateByDefaultDayFormat(timeSchedule.getDateRange().getEndDate()));
             if (EmptyUtils.listIsEmpty(timeSchedule.getChildrenData()))
@@ -265,7 +311,14 @@ public class GradeServiceImpl implements IGradeService {
 
     @Override
     public CourseTimeScheduleDto convertToCourseTimeSchedule(TbGradeDo gradeDo) {
+        //TODO 此处应加上对gradeDo为空的判断
         CourseTimeScheduleDto courseTimeScheduleDto = new CourseTimeScheduleDto();
+
+        // 班级信息
+        LabelInValueDto labelInValueDto = new LabelInValueDto();
+        labelInValueDto.setKey(gradeDo.getId());
+        labelInValueDto.setLabel(gradeDo.getName());
+        courseTimeScheduleDto.setGradeSelect(labelInValueDto);
 
         //日期
         DateRangeDto dateRangeDto = new DateRangeDto();
@@ -289,6 +342,40 @@ public class GradeServiceImpl implements IGradeService {
         courseTimeScheduleDto.setGradeId(gradeDo.getId());
         courseTimeScheduleDto.setDateRange(dateRangeDto);
         return courseTimeScheduleDto;
+    }
+
+    @Override
+    public Boolean validateCourseId(String[] idArray) {
+        if(EmptyUtils.arrayIsEmpty(idArray))
+            return false;
+        for (String id:idArray
+             ) {
+            TbGradeDo gradeDo = getOneById(Integer.parseInt(id));
+            if (!EmptyUtils.objectIsEmpty(gradeDo))
+                if (EmptyUtils.intIsNotEmpty(gradeDo.getCourseId()))
+                    return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean delete(String[] idArray, Integer userId) {
+        if (EmptyUtils.arrayIsEmpty(idArray))
+            return false;
+
+        int result = 0;
+        for (String str:idArray
+        ) {
+            TbGradeDo gradeDo = tbGradeDoMapper.selectByPrimaryKey(Integer.parseInt(str));
+            if (null != gradeDo){
+                gradeDo.setStatus(Byte.valueOf("0"));
+                gradeDo.setLastUpdateId(userId);
+                gradeDo.setLastUpdateTime(new Date());
+                result += tbGradeDoMapper.updateByPrimaryKeySelective(gradeDo);
+            }
+        }
+
+        return result == idArray.length;
     }
 
     /**

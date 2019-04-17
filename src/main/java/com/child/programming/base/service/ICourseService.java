@@ -70,4 +70,12 @@ public interface ICourseService {
      */
     Boolean save(Integer userId, TbCourseDo courseDo, List<CourseTimeScheduleDto> courseTimeScheduleDtoList);
 
+    /**
+     * 更新
+     * @param userId
+     * @param courseDo
+     * @return
+     */
+    Boolean updateCourse(Integer userId, TbCourseDo courseDo);
+
 }

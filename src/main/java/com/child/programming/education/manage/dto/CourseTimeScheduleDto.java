@@ -18,6 +18,8 @@ public class CourseTimeScheduleDto {
 
     private Integer gradeId; // 班级id
 
+    private LabelInValueDto gradeSelect; // 回显选择框信息
+
     private List<TimeScheduleChildrenDto> childrenData; // 星期和时间集合
 
     /**

@@ -12,10 +12,7 @@ import com.child.programming.base.model.TbCourseDoExample;
 import com.child.programming.base.model.TbGradeDo;
 import com.child.programming.base.service.ICourseService;
 import com.child.programming.base.service.IGradeService;
-import com.child.programming.base.util.DateUtil;
-import com.child.programming.base.util.EmptyUtils;
-import com.child.programming.base.util.JSONUtil;
-import com.child.programming.base.util.ListUtil;
+import com.child.programming.base.util.*;
 import com.child.programming.education.manage.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -198,14 +195,14 @@ public class CourseServiceImpl implements ICourseService {
     @Override
     public Boolean save(Integer userId, TbCourseDo courseDo, List<CourseTimeScheduleDto> courseTimeScheduleDtoList) {
         if (!EmptyUtils.objectIsEmpty(courseDo) && EmptyUtils.listIsNotEmpty(courseTimeScheduleDtoList)){
-
+            Integer courseSaveResult = -1;
             // 容量
             Integer capacity = 0;
             // TODO 之后转为sql语句统计容量
             for (CourseTimeScheduleDto timeSchedule:courseTimeScheduleDtoList
             ) {
                 TbGradeDo gradeDo = iGradeService.getOneById(timeSchedule.getGradeId());
-                if(EmptyUtils.objectIsEmpty(gradeDo)){
+                if(!EmptyUtils.objectIsEmpty(gradeDo)){
                     capacity +=gradeDo.getMaxCapacity();
                 }
 
@@ -214,27 +211,39 @@ public class CourseServiceImpl implements ICourseService {
 
             // 新增
             if (EmptyUtils.objectIsEmpty(courseDo.getId())){
+                // 课程编码六位随机数，无实际含义
+                courseDo.setCode(UuidUtils.getStochastic(6));
                 courseDo.setStatus(1); // 报名
                 courseDo.setCreateTime(new Date());
                 courseDo.setCreateId(userId);
                 // 插入返回主键
-                Integer result = tbCourseDoMapper.insert(courseDo);
-                if (result != 1)
+                courseSaveResult = tbCourseDoMapper.insert(courseDo);
+                if (courseSaveResult != 1)
                     return false;
-                // 班级时间安排保存
-                Boolean updateResult = iGradeService.updateTimeSchedule(courseDo.getId(), userId, courseTimeScheduleDtoList);
-                return updateResult;
+
             }else{
                 // 更新
                 courseDo.setLastUpdateTime(new Date());
                 courseDo.setLastUpdateId(userId);
-                Integer result = tbCourseDoMapper.updateByPrimaryKeySelective(courseDo);
-                if (result != 1)
+                courseSaveResult = tbCourseDoMapper.updateByPrimaryKeySelective(courseDo);
+                if (courseSaveResult != 1)
                     return false;
+            }
+            if (courseSaveResult == 1){
                 // 班级时间安排保存
                 Boolean updateResult = iGradeService.updateTimeSchedule(courseDo.getId(), userId, courseTimeScheduleDtoList);
                 return updateResult;
             }
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean updateCourse(Integer userId, TbCourseDo courseDo) {
+        if (!EmptyUtils.objectIsEmpty(courseDo) && EmptyUtils.intIsNotEmpty(courseDo.getId())){
+            courseDo.setLastUpdateId(userId);
+            courseDo.setLastUpdateTime(new Date());
+            return tbCourseDoMapper.updateByPrimaryKeySelective(courseDo) == 1;
         }
         return false;
     }

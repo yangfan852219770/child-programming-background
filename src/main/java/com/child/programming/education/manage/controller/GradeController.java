@@ -3,13 +3,16 @@ package com.child.programming.education.manage.controller;
 import com.child.programming.base.dto.GradeInfoDto;
 import com.child.programming.base.dto.LoginedUserInfoDto;
 import com.child.programming.base.dto.ResultDto;
+import com.child.programming.base.model.TbCourseDo;
 import com.child.programming.base.model.TbGradeDo;
 import com.child.programming.base.service.IGradeService;
+import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.HttpSessionUtil;
 import com.child.programming.education.manage.dto.InitGradeInfoDto;
 import com.child.programming.education.manage.dto.SelectDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -84,5 +87,29 @@ public class GradeController {
     @RequestMapping(value = "getGradeInfoSelect", method = RequestMethod.GET)
     public List<SelectDto> getGradeInfoSelect(@RequestParam(value = "gradeIds", required = false)String gradeIds){
         return iGradeService.getGradeInfoSelectList(gradeIds);
+    }
+
+    /**
+     * 逻辑删除
+     * @param idsStr
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "delete", method = RequestMethod.GET)
+    public ResultDto delete(@RequestParam(value = "idsStr", required = true)String idsStr,
+                            HttpSession session) {
+        log.info(idsStr + "删除");
+
+        LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
+        if (null != userInfoPojo && !StringUtils.isEmpty(idsStr)) {
+            String[] idArray = idsStr.split(",");
+            Boolean validateResult = iGradeService.validateCourseId(idArray);
+            if (!validateResult)
+                return ResultDto.fail("该班有课程占用，无法删除!");
+            boolean result = iGradeService.delete(idArray, userInfoPojo.getId());
+            if (result)
+                return ResultDto.success();
+        }
+        return ResultDto.fail();
     }
 }
