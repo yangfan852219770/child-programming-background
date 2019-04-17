@@ -12,23 +12,23 @@ import java.util.Date;
 @Data
 public class ExperienceCourseInfoDto {
 
-    private Integer id;
+    private Integer id; // 主键
 
-    private String title;
+    private String title; // 名称
 
-    private Double money;
+    private Double money; // 价格
 
-    private String introduction;
+    private String introduction; // 介绍
 
-    private String photoUrl;
+    private String photoUrl; // 图片地址
 
-    private String address;
+    private String address; // 上课地址
 
-    private Date signUpEndDate;
+    private Date signUpEndDate; // 终止报名时间
 
-    private String telephone;
+    private String telephone; // 电话
 
-    private Integer status;
+    private Integer status; // 状态0停用，1报名，3结课
 
-    private Date createTime;
+    private Date createTime; // 创建时间
 }

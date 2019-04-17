@@ -1,5 +1,6 @@
 package com.child.programming.base.service.impl;
 
+import com.child.programming.base.dto.ExperienceCourseInfoDto;
 import com.child.programming.base.mapper.TbExperienceCourseDoMapper;
 import com.child.programming.base.mapper.TbShareCircleDoMapper;
 import com.child.programming.base.model.TbExperienceCourseDo;
@@ -7,6 +8,9 @@ import com.child.programming.base.model.TbExperienceCourseDoExample;
 import com.child.programming.base.model.TbShareCircleDo;
 import com.child.programming.base.model.TbShareCircleDoExample;
 import com.child.programming.base.service.IExperienceCourseService;
+import com.child.programming.base.util.ConstDataUtil;
+import com.child.programming.base.util.EmptyUtils;
+import com.child.programming.base.util.ListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,5 +74,37 @@ public class ExperienceCourseServiceImpl implements IExperienceCourseService {
     @Override
     public int updateShareCodeCount(TbShareCircleDo tbShareCircleDo) {
         return shareCircleDoMapper.updateByPrimaryKey(tbShareCircleDo);
+    }
+
+    @Override
+    public List<ExperienceCourseInfoDto> getList(String title) {
+        TbExperienceCourseDoExample example = new TbExperienceCourseDoExample();
+        example.setOrderByClause("create_time desc");
+        TbExperienceCourseDoExample.Criteria criteria = example.createCriteria();
+        if (EmptyUtils.stringIsNotEmpty(title))
+            criteria.andTitleLike("%" + title + "%");
+        List<TbExperienceCourseDo> experienceCourseDoList = experienceCourseDoMapper.selectByExample(example);
+        if (EmptyUtils.listIsNotEmpty(experienceCourseDoList))
+            return ListUtil.convertElement(experienceCourseDoList, ExperienceCourseInfoDto.class);
+        return null;
+    }
+
+    @Override
+    public Boolean save(Integer userId, TbExperienceCourseDo experienceCourseDo) {
+        if (null == experienceCourseDo)
+            return false;
+
+        //插入
+        if (null == experienceCourseDo.getId()){
+            experienceCourseDo.setStatus(1);
+            experienceCourseDo.setCreateId(userId);
+            experienceCourseDo.setCreateTime(new Date());
+            return experienceCourseDoMapper.insert(experienceCourseDo) > 0;
+        }else {
+            // 更新
+            experienceCourseDo.setLastUpdateId(userId);
+            experienceCourseDo.setLastUpdateTime(new Date());
+            return experienceCourseDoMapper.updateByPrimaryKeySelective(experienceCourseDo) > 0;
+        }
     }
 }
