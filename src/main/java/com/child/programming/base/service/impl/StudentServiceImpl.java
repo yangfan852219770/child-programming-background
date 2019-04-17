@@ -180,4 +180,32 @@ public class StudentServiceImpl  implements IStudentService{
         criteria.andStatusEqualTo((byte) 1);
         return tbCollectCourseDoMapper.deleteByExample(example);
     }
+
+    /**
+     * @Description:    查询此课程是否已经报名
+     */
+    @Override
+    public List<TbStudentSignUpDo> getStudentSignUpByClassIdAndStudentId(int gradeId, int studentId) {
+        TbStudentSignUpDoExample example = new TbStudentSignUpDoExample();
+        TbStudentSignUpDoExample.Criteria criteria = example.createCriteria();
+        criteria.andStudentIdEqualTo(studentId);
+        criteria.andClassIdEqualTo(gradeId);
+        criteria.andStatusEqualTo((byte) 1);
+        List<TbStudentSignUpDo> studentSignUpDos = tbStudentSignUpDoMapper.selectByExample(example);
+        return studentSignUpDos;
+    }
+
+    /**
+     * @Description:    查询此体验课是否已经报名
+     */
+    @Override
+    public List<TbSignUpExperienceCourseDo> getsignUpExperienceCourseByExperienceCourseIdAndStudentId(int experienceCourseId, int studentId) {
+        TbSignUpExperienceCourseDoExample experienceCourseDoExample = new TbSignUpExperienceCourseDoExample();
+        TbSignUpExperienceCourseDoExample.Criteria criteria = experienceCourseDoExample.createCriteria();
+        criteria.andExperienceCourseIdEqualTo(experienceCourseId);
+        criteria.andStudentIdEqualTo(studentId);
+        criteria.andStatusEqualTo((byte) 1);
+        List<TbSignUpExperienceCourseDo> experienceCourseDos = tbSignUpExperienceCourseDoMapper.selectByExample(experienceCourseDoExample);
+        return experienceCourseDos;
+    }
 }

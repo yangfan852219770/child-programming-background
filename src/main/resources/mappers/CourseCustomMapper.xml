@@ -87,9 +87,19 @@
 
 
   <select id="getClassNowByExample" parameterType="Map" resultMap="BaseResultMap">
-    SELECT * from course where id IN(
+--     SELECT * from course where id IN(
+--     SELECT
+--     DISTINCT(co.id)
+--     FROM
+--     grade g
+--     LEFT JOIN classroom c ON g.classroom_id = c.id and c.`status`=1
+--     LEFT JOIN school s ON c.school_id = s.id and s.`status` =1
+--     LEFT JOIN course co ON g.course_id = co.id
+--     LEFT JOIN teacher t on g.teacher_id = t.id and t.`status`=1
+    select c.* from
+    (
     SELECT
-    DISTINCT(co.id)
+    DISTINCT(co.id),g.start_date,g.end_date
     FROM
     grade g
     LEFT JOIN classroom c ON g.classroom_id = c.id and c.`status`=1
@@ -97,29 +107,34 @@
     LEFT JOIN course co ON g.course_id = co.id
     LEFT JOIN teacher t on g.teacher_id = t.id and t.`status`=1
     <where>
-    <if test="courseName != null">
-      and co.name LIKE #{courseName}
-    </if>
-    <if test="selectSchoolId != null">
-    AND s.id=#{selectSchoolId}
-    </if>
-    <if test="teacherId != null">
-    AND t.id = #{teacherId}
-    </if>
-    <if test="lowDate != null and heighDate !=null">
-    and g.start_date BETWEEN #{lowDate} and #{heighDate}
-    </if>
-    <if test="lowPrice != null and heighPrice == null">
-      and co.money  &gt; #{lowPrice}
-    </if>
-    <if test="heighPrice != null and lowPrice == null">
-      and co.money  &lt;  #{heighPrice}
-    </if>
-    <if test="lowPrice != null and heighPrice !=null">
-    and co.money BETWEEN #{lowPrice} AND #{heighPrice}
-    </if>
+      <if test="courseName != null">
+        and co.name LIKE #{courseName}
+      </if>
+      <if test="selectSchoolId != null">
+        AND s.id=#{selectSchoolId}
+      </if>
+      <if test="teacherId != null">
+        AND t.id = #{teacherId}
+      </if>
+      <if test="lowDate != null and heighDate !=null">
+        and g.start_date BETWEEN #{lowDate} and #{heighDate}
+      </if>
+      <if test="lowPrice != null and heighPrice == null">
+        and co.money  &gt; #{lowPrice}
+      </if>
+      <if test="heighPrice != null and lowPrice == null">
+        and co.money  &lt;  #{heighPrice}
+      </if>
+      <if test="lowPrice != null and heighPrice !=null">
+        and co.money BETWEEN #{lowPrice} AND #{heighPrice}
+      </if>
     </where>
-    )
+     GROUP BY co.id
+    ) tmpc
+    LEFT JOIN course c
+    on tmpc.id = c.id
+    where tmpc.end_date>NOW()
+    ORDER BY tmpc.start_date
     <if test="startRow != null and pageSize != null and pageSize != 0">
       limit #{startRow},#{pageSize}
     </if>

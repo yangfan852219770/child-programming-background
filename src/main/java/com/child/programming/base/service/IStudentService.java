@@ -75,4 +75,14 @@ public interface IStudentService {
      * @Description:    取消收藏此课程
      */
     int deleteCollectCourse(int courseId, int studentId);
+
+    /**
+     * @Description:    查询此课程是否已经报名
+     */
+    List<TbStudentSignUpDo> getStudentSignUpByClassIdAndStudentId(int gradeId, int studentId);
+
+    /**
+     * @Description:    查询此体验课是否已经报名
+     */
+    List<TbSignUpExperienceCourseDo> getsignUpExperienceCourseByExperienceCourseIdAndStudentId(int experienceCourseId, int studentId);
 }
