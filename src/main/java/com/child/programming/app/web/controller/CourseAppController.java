@@ -42,7 +42,13 @@ public class CourseAppController {
             homePageHeighSerachParam.setHeighDate(null);
         }
         List<TbCourseDo> courseDos = iCourseService.getClassNow(homePageHeighSerachParam);
-        return ResultDto.success(courseDos);
+        if (courseDos!=null && courseDos.size()>0){
+            if (courseDos.get(0)==null){
+                return ResultDto.success(null);
+            }
+            return ResultDto.success(courseDos);
+        }
+        return ResultDto.success(null);
     }
 
     /**
@@ -115,7 +121,13 @@ public class CourseAppController {
                                                @RequestParam(value="limit" ,required =false ) int limit,
                                                @RequestParam(value="studentId" ,required =false ) int studentId){
         List<TbCourseDo> courseDos = iCourseService.getStudentCollectCourseList(page,limit,studentId);
-        return ResultDto.success(courseDos);
+        if (courseDos!=null && courseDos.size()>0){
+            if (courseDos.get(0)==null){
+                return ResultDto.success(null);
+            }
+            return ResultDto.success(courseDos);
+        }
+        return ResultDto.success(null);
     }
 
 
