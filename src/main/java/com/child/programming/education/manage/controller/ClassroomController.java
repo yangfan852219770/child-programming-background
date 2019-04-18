@@ -52,7 +52,8 @@ public class ClassroomController {
     public ResultDto save(HttpSession session, @RequestBody TbClassroomDo classroomDo){
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && null != classroomDo){
-            boolean validateResult = iClassroomService.validateCode(classroomDo.getCode());
+
+            boolean validateResult = iClassroomService.validateCode(classroomDo.getId(),classroomDo.getCode(), classroomDo.getSchoolId());
             if (validateResult){
                 boolean result = iClassroomService.save(classroomDo,userInfoPojo.getId());
                 if (result)

@@ -67,8 +67,10 @@ public interface IClassroomService {
 
     /**
      * 验证教室编码
+     * @param classroomId
      * @param code
+     * @param schoolId
      * @return
      */
-    Boolean validateCode(Integer code);
+    Boolean validateCode(Integer classroomId, Integer code, Integer schoolId);
 }

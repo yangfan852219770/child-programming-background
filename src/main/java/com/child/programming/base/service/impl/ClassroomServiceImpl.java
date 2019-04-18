@@ -141,11 +141,13 @@ public class ClassroomServiceImpl implements IClassroomService {
     }
 
     @Override
-    public Boolean validateCode(Integer code) {
+    public Boolean validateCode(Integer classroomId, Integer code, Integer schoolId) {
         if (EmptyUtils.intIsNotEmpty(code)){
             TbClassroomDoExample example = new TbClassroomDoExample();
             TbClassroomDoExample.Criteria criteria = example.createCriteria();
-            criteria.andCodeEqualTo(code).andStatusEqualTo(Byte.valueOf("1"));
+            if (EmptyUtils.intIsNotEmpty(classroomId))
+                criteria.andCodeEqualTo(code).andSchoolIdEqualTo(schoolId).andStatusEqualTo(Byte.valueOf("1")).andIdNotEqualTo(classroomId);
+            criteria.andCodeEqualTo(code).andSchoolIdEqualTo(schoolId).andStatusEqualTo(Byte.valueOf("1"));
             List<TbClassroomDo> classroomDoList = classroomDoMapper.selectByExample(example);
             return EmptyUtils.listIsEmpty(classroomDoList);
         }

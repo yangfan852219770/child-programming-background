@@ -165,6 +165,7 @@ public class GradeServiceImpl implements IGradeService {
         return null;
     }
 
+    // TODO 目前只对数据库存在的数据校验，并未对提交的数据校验
     @Override
     public String validateTimeScheduleConflict(List<CourseTimeScheduleDto> timeSchedule, Integer courseId) {
         if (EmptyUtils.listIsNotEmpty(timeSchedule)) {
