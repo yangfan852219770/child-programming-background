@@ -82,7 +82,8 @@ public class ExperienceCourseServiceImpl implements IExperienceCourseService {
         example.setOrderByClause("create_time desc");
         TbExperienceCourseDoExample.Criteria criteria = example.createCriteria();
         if (EmptyUtils.stringIsNotEmpty(title))
-            criteria.andTitleLike("%" + title + "%");
+            criteria.andTitleLike("%" + title + "%").andStatusNotEqualTo(0);
+        criteria.andStatusNotEqualTo(0);
         List<TbExperienceCourseDo> experienceCourseDoList = experienceCourseDoMapper.selectByExample(example);
         if (EmptyUtils.listIsNotEmpty(experienceCourseDoList))
             return ListUtil.convertElement(experienceCourseDoList, ExperienceCourseInfoDto.class);
@@ -106,5 +107,25 @@ public class ExperienceCourseServiceImpl implements IExperienceCourseService {
             experienceCourseDo.setLastUpdateTime(new Date());
             return experienceCourseDoMapper.updateByPrimaryKeySelective(experienceCourseDo) > 0;
         }
+    }
+
+    @Override
+    public Boolean delete(String[] idArray, Integer userId) {
+        if (EmptyUtils.arrayIsEmpty(idArray))
+            return false;
+
+        int result = 0;
+        for (String str:idArray
+        ) {
+            TbExperienceCourseDo experienceCourseDo = experienceCourseDoMapper.selectByPrimaryKey(Integer.parseInt(str));
+            if (null != experienceCourseDo){
+                experienceCourseDo.setStatus(0);
+                experienceCourseDo.setLastUpdateId(userId);
+                experienceCourseDo.setLastUpdateTime(new Date());
+                result += experienceCourseDoMapper.updateByPrimaryKeySelective(experienceCourseDo);
+            }
+        }
+
+        return result == idArray.length;
     }
 }

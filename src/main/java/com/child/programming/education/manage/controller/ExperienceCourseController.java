@@ -5,9 +5,11 @@ import com.child.programming.base.dto.LoginedUserInfoDto;
 import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.model.TbExperienceCourseDo;
 import com.child.programming.base.service.IExperienceCourseService;
+import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.HttpSessionUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -51,5 +53,26 @@ public class ExperienceCourseController {
         }
         return ResultDto.fail();
 
+    }
+
+    /**
+     * 删除
+     * @param idsStr
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "delete", method = RequestMethod.GET)
+    public ResultDto delete(@RequestParam(value = "idsStr", required = true)String idsStr,
+                            HttpSession session) {
+        log.info(idsStr + "删除");
+
+        LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
+        if (null != userInfoPojo && EmptyUtils.stringIsNotEmpty(idsStr)) {
+            String[] idArray = idsStr.split(",");
+            boolean result = iExperienceCourseService.delete(idArray, userInfoPojo.getId());
+            if (result)
+                return ResultDto.success();
+        }
+        return ResultDto.fail();
     }
 }

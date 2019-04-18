@@ -36,4 +36,11 @@ public interface IExperienceCourseService {
      */
     Boolean save(Integer userId, TbExperienceCourseDo experienceCourseDo);
 
+    /**
+     * 删除
+     * @param idArray
+     * @param userId
+     * @return
+     */
+    Boolean delete(String[] idArray, Integer userId);
 }

@@ -28,7 +28,7 @@ public class ExperienceCourseInfoDto {
 
     private String telephone; // 电话
 
-    private Integer status; // 状态0停用，1报名，3结课
+    private Integer status; // 状态0删除，1报名，3结课
 
     private Date createTime; // 创建时间
 }
