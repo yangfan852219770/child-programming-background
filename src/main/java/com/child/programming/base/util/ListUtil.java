@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -62,5 +63,14 @@ public class ListUtil {
             }
         }
         return list;
+    }
+
+    /**
+     * Array 转化成对象
+     * @param array
+     * @return
+     */
+    public static List<String> ArrayToList(String[] array){
+       return new ArrayList<String>(Arrays.asList(array));
     }
 }

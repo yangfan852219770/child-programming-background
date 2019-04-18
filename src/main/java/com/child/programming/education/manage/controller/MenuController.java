@@ -45,7 +45,7 @@ public class MenuController {
     @RequestMapping(value = "assignAuthority", method = RequestMethod.GET)
     public ResultDto assignAuthority(HttpSession session, @RequestParam(value = "menuIds", required = true)String menuIds,@RequestParam(value = "roleToken", required = true)String roleToken){
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
-        if (!EmptyUtils.objectIsEmpty(userInfoPojo) && !EmptyUtils.stringIsEmpty(menuIds)&&!EmptyUtils.stringIsEmpty(roleToken)){
+        if (!EmptyUtils.objectIsEmpty(userInfoPojo) && !EmptyUtils.stringIsEmpty(roleToken)){
             boolean result = menuService.assignAuthority(menuIds,roleToken,userInfoPojo.getId());
             if (result)
                 return ResultDto.success();

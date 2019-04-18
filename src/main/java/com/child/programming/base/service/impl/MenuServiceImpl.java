@@ -6,12 +6,14 @@ import com.child.programming.base.model.TbMenuDoExample;
 import com.child.programming.base.service.IMenuService;
 import com.child.programming.base.dto.MenuInfoDto;
 import com.child.programming.base.util.EmptyUtils;
+import com.child.programming.base.util.ListUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -57,39 +59,54 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public Boolean assignAuthority(String menusIds, String roleToken, Integer userId) {
+
+        //先清空当前用户以前的权限
+        TbMenuDoExample  example =new TbMenuDoExample();
+        TbMenuDoExample.Criteria criteria =example.createCriteria();
+        criteria.andStatusEqualTo(Byte.valueOf("1"));
+
+       List<TbMenuDo> tbMenuDoLit=tbMenuDoMapper.selectByExample(example);
+        if(EmptyUtils.listIsEmpty(tbMenuDoLit))
+            return  false;
+        for (TbMenuDo tbMenuDo: tbMenuDoLit) {
+            if(!EmptyUtils.stringIsEmpty(tbMenuDo.getAuthority())){
+                String[] dbAuthorArry=tbMenuDo.getAuthority().split(",");
+                if(dbAuthorArry.length<=0)
+                    continue;
+               List<String> authorArryList = ListUtil.ArrayToList(dbAuthorArry);
+               if(authorArryList.size()<=0)
+                   continue;
+                for(int i=0;i<authorArryList.size();i++){
+                    if(authorArryList.get(i).equals(roleToken)){
+                        authorArryList.remove(i);
+                    }
+                }
+
+                tbMenuDo.setAuthority(StringUtils.join(authorArryList.toArray(),","));
+                tbMenuDoMapper.updateByPrimaryKeySelective(tbMenuDo);
+            }
+        }
+        //全部授权
+        if(EmptyUtils.stringIsEmpty(menusIds))
+            return true;
+        //重新赋值权限
         String[] idArray=menusIds.split(",");
-        if (EmptyUtils.arrayIsEmpty(idArray))
+        if (EmptyUtils.arrayIsEmpty(idArray)||EmptyUtils.stringIsEmpty(roleToken))
             return false;
-
         int result = 0;
-
         for (String str:idArray
                 ) {
            TbMenuDo tbMenuDo= tbMenuDoMapper.selectByPrimaryKey(Integer.parseInt(str));
            if (!EmptyUtils.objectIsEmpty(tbMenuDo)){
-               boolean isAuthor=false;
-               String[] authorityArry=tbMenuDo.getAuthority().split(",");
-               if(!EmptyUtils.arrayIsEmpty(authorityArry)){
-                   List<String> list = new ArrayList<String>();
-                   for (int i=0; i<authorityArry.length; i++) {
-                       list.add(authorityArry[i]);
-                   }
-                    for(int j=0;j<list.size();j++){
-                       if(list.get(j)==roleToken){
-                           isAuthor=true;
-                       }
-                    }
-                    if(!isAuthor){
-                        isAuthor=false;
-                        list.add(roleToken);
-                    }
-                   authorityArry=list.toArray(new String[list.size()]);
-                   tbMenuDo.setAuthority(StringUtils.join(authorityArry,","));
-                   result+= tbMenuDoMapper.updateByPrimaryKeySelective(tbMenuDo);
+               if(EmptyUtils.stringIsEmpty(tbMenuDo.getAuthority()))
+                   tbMenuDo.setAuthority(roleToken);
+               else
+                   tbMenuDo.setAuthority(tbMenuDo.getAuthority()+","+roleToken);
+
+               result+=tbMenuDoMapper.updateByPrimaryKeySelective(tbMenuDo);
                }
            }
 
-        }
         return  result==idArray.length;
     }
 
@@ -100,11 +117,10 @@ public class MenuServiceImpl implements IMenuService {
             List<MenuInfoDto> menuInfoDtos1 =new ArrayList<>();
             for (TbMenuDo  tbMenuDo:tbMenuDos
                     ) {
-                System.out.println(menuInfoDto.getId()+"/"+tbMenuDo.getPid()+"\n");
                 if(menuInfoDto.getId().equals(tbMenuDo.getPid())){
                     MenuInfoDto menuInfoDto1 =new MenuInfoDto();
                     BeanUtils.copyProperties(tbMenuDo,menuInfoDto1);
-                    menuInfoDto.setAuthority(tbMenuDo.getAuthority().split(","));
+                    menuInfoDto1.setAuthority(tbMenuDo.getAuthority().split(","));
                     menuInfoDtos1.add(menuInfoDto1);
                 }
             }
