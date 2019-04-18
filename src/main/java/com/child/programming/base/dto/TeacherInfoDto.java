@@ -28,4 +28,8 @@ public class TeacherInfoDto {
 
     private Date createTime; // 创建时间
 
+    private String roleName;  //角色名称
+
+    private Integer roleId;  //角色id
+
 }

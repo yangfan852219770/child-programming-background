@@ -1,5 +1,6 @@
 package com.child.programming.base.service;
 
+import com.child.programming.base.dto.LoginedUserInfoDto;
 import com.child.programming.base.dto.TeacherInfoDto;
 import com.child.programming.base.model.TbTeacherDo;
 import com.child.programming.education.manage.dto.SelectDto;
@@ -50,4 +51,12 @@ public interface ITeacherService {
      * @return
      */
     List<SelectDto> getTeacherSelectList();
+
+    /***
+     * 教师登录校验
+     * @param loginId
+     * @param password
+     * @return
+     */
+    LoginedUserInfoDto getTeacherByLoginIdAndPassword(String loginId , String password);
 }

@@ -24,7 +24,7 @@
     <title>贝壳编程官方网站</title>
 </head>
 
-<body data-spy="scroll" data-target="#navbar-scroll" data-offset="75"  >
+<body data-spy="scroll" data-target="#navbar-scroll" data-offset="75" style="overflow-x: hidden"  >
 
 <!--悬浮窗-->
 <div class="suspension_frame" style="margin-top:280px;border-radius: 10px;background: rgba(255,255,255,0.5)">
@@ -41,13 +41,19 @@
         <div id="preloader-inner"></div>
     </div>
     <!--pre-loader-->
+
+<div class="btn-group"  style=" position:fixed;z-index: 999;margin-left: 82%;margin-top: 20px;" >
+    <a  class="btn-lg btn-danger text-white" href="#consult" style="margin-right:5px; ">详细咨询</a>
+
+    <a  class="btn-lg btn-warning text-white" href="index.html" >了解更多</a>
+</div>
     <!--页面下悬浮窗-->
  <nav  id="experience-class"  class="navbar navbar-expand-lg  navbar-light fixed-bottom experience-class-none" style="height: 6rem; ">
 
      <div style="margin-bottom: 30px;float:left; z-index:999;position:absolute;">
          <img src="assets/images/experience_class_01.png"  width="700" height="350">
      </div>
-     <div class="row m-auto "style="background-color: #fff; height: 4rem; width: 100%;border: 1px solid #c3e6cb;border-radius: 10px;padding-top: 10px">
+     <div class="row m-auto "style="background-color: #fff; height: 4rem; width: 100%;box-shadow: 2px 2px 5px #ccc;border-radius: 10px;padding-top: 10px">
          <div class="col-lg-5"></div>
          <div class="col-lg-3">
              <div class="form-group" style="text-align: center;font-size: 16px;color: #0b0b0b;margin-top: 5px">
@@ -92,12 +98,12 @@
  <!--/.navbar-->
 
 
-    <div class="dark hero fullscreen-hero" data-jarallax='{"speed": 0.4}' style='background-image: url("assets/images/bg1.jpg")'>
+    <div class="dark hero fullscreen-hero" data-jarallax='{"speed": 0.4}' style='background-image: url("assets/images/portal_bg1.png")'>
 
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 text-center mr-auto ml-auto text-white"></div>
-                <div class="col-lg-3 text-right  text-white" style="background:rgba(255,255,255, 0.8);border-radius: 5%;box-shadow: 2px 2px 5px #ccc;">
+                <div class="col-lg-3 text-right  text-white " style="background:rgba(255,255,255, 0.8);border-radius: 5%;box-shadow: 2px 2px 5px #ccc;margin-top: 200px;padding: 50px 0;">
 
                     <div class="row">
                         <div class="col-lg-12 text-center" style="margin-top: 20px;font-size: 20px">
@@ -116,12 +122,12 @@
 
 
 
-        <svg class="svg-abs svg-f-btm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+       <!-- <svg class="svg-abs svg-f-btm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             viewBox="0 0 1920 140" style="margin-bottom: -9px; enable-background:new 0 0 1920 140;" xml:space="preserve">
             <path class="svg-white" d="M960,92.9C811.4,93.3,662.8,89.4,515.3,79c-138.6-9.8-277.1-26.2-409-53.3C97.8,24,0,6.5,0,0c0,0,0,140,0,140
               l960-1.2l960,1.2c0,0,0-140,0-140c0,2.7-42.1,11.3-45.8,12.2c-45.1,11-91.5,20.1-138.4,28.1c-176.2,30.1-359.9,43.8-542.9,48.9
               C1115.4,91.4,1037.7,92.7,960,92.9z"  ></path>
-        </svg>
+        </svg>-->
 
     </div>
     <!--Hero end-->
@@ -462,6 +468,7 @@
                      <li class="list-inline-item" >
                          <a href="assets/plugins/CodeSquare/codeSquare.html">小童编辑器</a>
                      </li>
+
                  </ul>
              </div>
 
@@ -474,6 +481,7 @@
          </div>
      </div>
  </footer>
+
     <!--/.footer-->
     <!--compile plugins-->
     <script src="assets/plugins/float/js/jquery-3.2.1.min.js"></script>

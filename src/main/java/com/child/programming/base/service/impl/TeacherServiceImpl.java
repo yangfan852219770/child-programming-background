@@ -1,7 +1,10 @@
 package com.child.programming.base.service.impl;
 
+import com.child.programming.base.dto.LoginedUserInfoDto;
 import com.child.programming.base.dto.TeacherInfoDto;
+import com.child.programming.base.mapper.TbRoleDoMapper;
 import com.child.programming.base.mapper.TbTeacherDoMapper;
+import com.child.programming.base.model.TbRoleDo;
 import com.child.programming.base.model.TbTeacherDo;
 import com.child.programming.base.model.TbTeacherDoExample;
 import com.child.programming.base.service.ITeacherService;
@@ -10,6 +13,7 @@ import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
 import com.child.programming.base.util.MD5Util;
 import com.child.programming.education.manage.dto.SelectDto;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +32,13 @@ public class TeacherServiceImpl implements ITeacherService {
     @Autowired
     private TbTeacherDoMapper tbTeacherDoMapper;
 
+    @Autowired
+    private TbRoleDoMapper tbRoleDoMapper;
+
+
     @Override
     public List<TeacherInfoDto> getList(String name) {
+        List<TeacherInfoDto> teacherInfoDtos =new ArrayList<>();
         TbTeacherDoExample example = new TbTeacherDoExample();
         TbTeacherDoExample.Criteria criteria = example.createCriteria();
 
@@ -39,8 +48,19 @@ public class TeacherServiceImpl implements ITeacherService {
         else
             criteria.andStatusEqualTo(Byte.valueOf("1"));
         List<TbTeacherDo> teacherDoList = tbTeacherDoMapper.selectByExample(example);
-        if (!EmptyUtils.listIsEmpty(teacherDoList))
-            return ListUtil.convertElement(teacherDoList, TeacherInfoDto.class);
+
+        if (!EmptyUtils.listIsEmpty(teacherDoList)) {
+            for (TbTeacherDo tbTeacherDo : teacherDoList
+                    ) {
+                TeacherInfoDto teacherInfoDto = new TeacherInfoDto();
+                BeanUtils.copyProperties(tbTeacherDo, teacherInfoDto);
+                TbRoleDo tbRoleDo=tbRoleDoMapper.selectByPrimaryKey(tbTeacherDo.getRoleId());
+                if(!EmptyUtils.objectIsEmpty(tbRoleDo))
+                teacherInfoDto.setRoleName(tbRoleDo.getName());
+                teacherInfoDtos.add(teacherInfoDto);
+            }
+            return teacherInfoDtos;
+        }
         else
             return null;
     }
@@ -49,7 +69,6 @@ public class TeacherServiceImpl implements ITeacherService {
     public Boolean save(TbTeacherDo teacherDo, Integer userId) {
         if (null == teacherDo)
             return false;
-
         //插入
         if (null == teacherDo.getId()){
             teacherDo.setPassword(MD5Util.MD5Encode(ConstDataUtil.DEFAULT_PASSWORD));
@@ -112,5 +131,30 @@ public class TeacherServiceImpl implements ITeacherService {
             return teacherSelectInfoList;
         }
         return null;
+    }
+
+    @Override
+    public LoginedUserInfoDto getTeacherByLoginIdAndPassword(String loginId, String password) {
+        LoginedUserInfoDto loginedUserInfoDto =new LoginedUserInfoDto();
+        TbTeacherDoExample example = new TbTeacherDoExample();
+        TbTeacherDoExample.Criteria criteria = example.createCriteria();
+
+        if (EmptyUtils.stringIsEmpty(loginId)||EmptyUtils.stringIsEmpty(password))
+            return  null;
+
+
+        criteria.andStatusEqualTo(Byte.valueOf("1")).andLoginIdEqualTo(loginId).andPasswordEqualTo(MD5Util.MD5Encode(password));
+        List<TbTeacherDo> teacherDoList = tbTeacherDoMapper.selectByExample(example);
+
+        if(EmptyUtils.listIsEmpty(teacherDoList))
+        return null;
+
+        BeanUtils.copyProperties(teacherDoList.get(0),loginedUserInfoDto);
+       TbRoleDo tbRoleDo= tbRoleDoMapper.selectByPrimaryKey(teacherDoList.get(0).getRoleId());
+        if(EmptyUtils.objectIsEmpty(tbRoleDo))
+            return null;
+         loginedUserInfoDto.setCurrentAuthority(tbRoleDo.getRoleToken());
+
+         return loginedUserInfoDto;
     }
 }

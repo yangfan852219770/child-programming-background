@@ -12,7 +12,7 @@ public class LoginedUserInfoDto {
 
     private Integer id; //主键
 
-    private String userName; //登陆者的真实姓名
+    private String name; //登陆者的真实姓名
 
     private String loginId; //登陆账号
 

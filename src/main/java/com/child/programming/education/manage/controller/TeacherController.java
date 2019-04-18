@@ -89,7 +89,7 @@ public class TeacherController {
 
         boolean result = iTeacherService.resetPassword(teacherId, userInfoPojo.getId());
         if (result){
-            log.warn(userInfoPojo.getUserName() + "将老师id为:" + teacherId + "重置默认密码");
+            log.warn(userInfoPojo.getName() + "将老师id为:" + teacherId + "重置默认密码");
             return ResultDto.success();
         }
         return ResultDto.fail();
