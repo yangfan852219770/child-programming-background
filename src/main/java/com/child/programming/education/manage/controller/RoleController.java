@@ -8,6 +8,7 @@ import com.child.programming.base.service.IRoleService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.HttpSessionUtil;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,5 +73,17 @@ public class RoleController {
                 return ResultDto.success();
         }
         return ResultDto.fail();
+    }
+
+    @RequestMapping("getRoleByRoleToken")
+    public ResultDto getRoleByRoleToken(@RequestParam(value = "roleToken")String roleToken){
+
+        RoleInfoDto roleInfoDto =new RoleInfoDto();
+        TbRoleDo tbRoleDo=iRoleService.selectRoleByToken(roleToken);
+        if(EmptyUtils.objectIsEmpty(tbRoleDo))
+            ResultDto.fail();
+        BeanUtils.copyProperties(tbRoleDo,roleInfoDto);
+        return ResultDto.success(roleInfoDto);
+
     }
 }

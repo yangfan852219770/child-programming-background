@@ -3,8 +3,10 @@ package com.child.programming.base.service.impl;
 import com.child.programming.base.mapper.TbMenuDoMapper;
 import com.child.programming.base.model.TbMenuDo;
 import com.child.programming.base.model.TbMenuDoExample;
+import com.child.programming.base.model.TbRoleDo;
 import com.child.programming.base.service.IMenuService;
 import com.child.programming.base.dto.MenuInfoDto;
+import com.child.programming.base.service.IRoleService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +27,8 @@ public class MenuServiceImpl implements IMenuService {
 
     @Autowired
     private TbMenuDoMapper tbMenuDoMapper;
+    @Autowired
+    private IRoleService iRoleService;
 
     @Override
     public List<MenuInfoDto> getMenuList() {
@@ -59,8 +63,9 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public Boolean assignAuthority(String menusIds, String roleToken, Integer userId) {
-
+       boolean roleResult= false;
         //先清空当前用户以前的权限
+          //清空menu权限Token
         TbMenuDoExample  example =new TbMenuDoExample();
         TbMenuDoExample.Criteria criteria =example.createCriteria();
         criteria.andStatusEqualTo(Byte.valueOf("1"));
@@ -86,7 +91,13 @@ public class MenuServiceImpl implements IMenuService {
                 tbMenuDoMapper.updateByPrimaryKeySelective(tbMenuDo);
             }
         }
-        //全部授权
+           //清空role表中的MenuId;
+        TbRoleDo roleDo=iRoleService.selectRoleByToken(roleToken);
+        if(EmptyUtils.objectIsEmpty(roleDo))
+            return false;
+        roleDo.setMenuIds("");
+        roleResult =iRoleService.save(roleDo,userId);
+        //全部取消授权
         if(EmptyUtils.stringIsEmpty(menusIds))
             return true;
         //重新赋值权限
@@ -94,20 +105,28 @@ public class MenuServiceImpl implements IMenuService {
         if (EmptyUtils.arrayIsEmpty(idArray)||EmptyUtils.stringIsEmpty(roleToken))
             return false;
         int result = 0;
+        //更新role表中的menuIds;
+         List<String> menusIsArry= new ArrayList<>();
+
         for (String str:idArray
                 ) {
            TbMenuDo tbMenuDo= tbMenuDoMapper.selectByPrimaryKey(Integer.parseInt(str));
            if (!EmptyUtils.objectIsEmpty(tbMenuDo)){
+               if(tbMenuDo.getExact())
+                   menusIsArry.add(str);
+
                if(EmptyUtils.stringIsEmpty(tbMenuDo.getAuthority()))
                    tbMenuDo.setAuthority(roleToken);
                else
                    tbMenuDo.setAuthority(tbMenuDo.getAuthority()+","+roleToken);
-
                result+=tbMenuDoMapper.updateByPrimaryKeySelective(tbMenuDo);
                }
            }
 
-        return  result==idArray.length;
+        roleDo.setMenuIds(StringUtils.join(menusIsArry,","));
+        roleResult = iRoleService.save(roleDo,userId);
+
+        return  result==idArray.length && roleResult;
     }
 
     private List<MenuInfoDto>  getMenuInfoDtoList(List<TbMenuDo> tbMenuDos,List<MenuInfoDto> menuInfoDtos){

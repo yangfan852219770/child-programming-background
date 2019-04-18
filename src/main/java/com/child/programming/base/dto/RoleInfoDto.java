@@ -16,4 +16,6 @@ public class RoleInfoDto {
     private String comment;
 
     private String roleToken;
+
+    private String menuIds;
 }

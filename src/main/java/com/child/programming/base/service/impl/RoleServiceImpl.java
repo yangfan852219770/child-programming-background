@@ -2,9 +2,7 @@ package com.child.programming.base.service.impl;
 
 import com.child.programming.base.dto.RoleInfoDto;
 import com.child.programming.base.mapper.TbRoleDoMapper;
-import com.child.programming.base.model.TbMaterialTypeDo;
-import com.child.programming.base.model.TbRoleDo;
-import com.child.programming.base.model.TbRoleDoExample;
+import com.child.programming.base.model.*;
 import com.child.programming.base.service.IRoleService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
@@ -76,5 +74,16 @@ public class RoleServiceImpl implements IRoleService{
         }
 
         return result == idArray.length;
+    }
+
+    @Override
+    public TbRoleDo selectRoleByToken(String roleToken) {
+        TbRoleDoExample tbRoleDoExample =new TbRoleDoExample();
+        TbRoleDoExample.Criteria criteria=tbRoleDoExample.createCriteria();
+        criteria.andStatusEqualTo(Byte.valueOf("1")).andRoleTokenEqualTo(roleToken);
+        List<TbRoleDo> tbRoleDos = tbRoleDoMapper.selectByExample(tbRoleDoExample);
+        if(EmptyUtils.listIsEmpty(tbRoleDos))
+            return null;
+        return tbRoleDos.get(0);
     }
 }

@@ -3,6 +3,7 @@ package com.child.programming.base.service;
 import com.child.programming.base.dto.MaterialTypeInfoDto;
 import com.child.programming.base.dto.RoleInfoDto;
 import com.child.programming.base.model.TbMaterialTypeDo;
+import com.child.programming.base.model.TbMenuDo;
 import com.child.programming.base.model.TbRoleDo;
 
 import java.util.List;
@@ -36,4 +37,11 @@ public interface IRoleService {
      * @return
      */
     Boolean delete(String[] idArray, Integer userId);
+
+    /***
+     * 根据role_token查询角色
+     * @param roleToken
+     * @return
+     */
+    TbRoleDo selectRoleByToken(String roleToken);
 }
