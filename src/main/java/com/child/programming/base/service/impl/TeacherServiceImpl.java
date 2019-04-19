@@ -157,4 +157,11 @@ public class TeacherServiceImpl implements ITeacherService {
 
          return loginedUserInfoDto;
     }
+
+    @Override
+    public TbTeacherDo getOneById(Integer teacherId) {
+        if (EmptyUtils.intIsNotEmpty(teacherId))
+            return tbTeacherDoMapper.selectByPrimaryKey(teacherId);
+        return null;
+    }
 }

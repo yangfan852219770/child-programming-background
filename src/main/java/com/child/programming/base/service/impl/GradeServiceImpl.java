@@ -7,6 +7,7 @@ import com.child.programming.base.mapper.TbGradeDoMapper;
 import com.child.programming.base.model.TbClassroomDo;
 import com.child.programming.base.model.TbGradeDo;
 import com.child.programming.base.model.TbGradeDoExample;
+import com.child.programming.base.model.TbTeacherDo;
 import com.child.programming.base.service.IClassroomService;
 import com.child.programming.base.service.IGradeService;
 import com.child.programming.base.service.ITeacherService;
@@ -182,14 +183,20 @@ public class GradeServiceImpl implements IGradeService {
                 if (EmptyUtils.objectIsEmpty(gradeDo))
                     continue;
 
-                // 获取老师安排
+                // 代码复用性
+                // 获取数据库中老师安排
                 List<TbGradeDo> teacherGradeList = getListByTeacherId(gradeDo.getTeacherId());
-                // 获取教室安排
+                // 获取数据库中教室安排
                 List<TbGradeDo> classroomGradeList = getListByClassroomId(gradeDo.getClassroomId());
 
                 // 移除当前要校验的元素
-                teacherGradeList = removeOneByGradeId(teacherGradeList, gradeDo.getId());
-                classroomGradeList = removeOneByGradeId(classroomGradeList, gradeDo.getId());
+                removeOneByGradeId(teacherGradeList, gradeDo.getId());
+                removeOneByGradeId(classroomGradeList, gradeDo.getId());
+
+                // 校验数据中，如果存在一个老师教不同班级的情况，也要放入老师安排数组中
+                teacherGradeList = addGradeByTeacherId(teacherGradeList, timeSchedule, gradeDo.getTeacherId(), gradeDo.getId());
+                // 教室同理
+                classroomGradeList = addGradeByClassroomId(classroomGradeList, timeSchedule, gradeDo.getClassroomId(), gradeDo.getId());
 
                 // 两个集合都是空，说明无冲突
                 if (EmptyUtils.listIsEmpty(teacherGradeList) && EmptyUtils.listIsEmpty(classroomGradeList))
@@ -211,14 +218,20 @@ public class GradeServiceImpl implements IGradeService {
                 String validateTeacherResult = detectTimeScheduleConflict(teacherTimeScheduleList, validateTimeScheduleDto);
                 // 老师时间安排有冲突
                 if (!"0".equals(validateTeacherResult)) {
-                    // TODO 查询老师信息
-                    return "该老师" + validateTeacherResult;
+                    TbTeacherDo teacherDo = iTeacherService.getOneById(gradeDo.getTeacherId());
+                    // 此处判空，意义不大
+                    if (!EmptyUtils.objectIsEmpty(teacherDo)){
+
+                    }
+                    return "老师" + validateTeacherResult;
                 }
 
                 // 教室时间校验
                 String validateClassroomResult = detectTimeScheduleConflict(classroomTimeScheduleList, validateTimeScheduleDto);
                 if (!"0".equals(validateClassroomResult)) {
-                    // TODO 查询教室信息
+                    TbClassroomDo classroomDo = iClassroomService.getOneById(gradeDo.getClassroomId());
+                    if (!EmptyUtils.objectIsEmpty(classroomDo))
+                        return classroomDo.getCode() + "教室" + validateClassroomResult;
                     return "该教室" + validateClassroomResult;
                 }
             }
@@ -276,21 +289,14 @@ public class GradeServiceImpl implements IGradeService {
 
         // 将涉及到班级的时间安排更新
         int count = 0;
-        TbGradeDo gradeDo = new TbGradeDo();
+
         for (CourseTimeScheduleDto timeSchedule : courseTimeScheduleDtoList
         ) {
-            gradeDo.setId(timeSchedule.getGradeId());
-            gradeDo.setCourseId(courseId);
-            // 时间安排
-            gradeDo.setStartDate(DateUtil.stringToDateByDefaultDayFormat(timeSchedule.getDateRange().getStartDate()));
-            gradeDo.setEndDate(DateUtil.stringToDateByDefaultDayFormat(timeSchedule.getDateRange().getEndDate()));
-            if (EmptyUtils.listIsEmpty(timeSchedule.getChildrenData()))
+            TbGradeDo gradeDo = converCourseTimeScheduleDtoToTbGradeDo(timeSchedule);
+            if (EmptyUtils.objectIsEmpty(gradeDo))
                 return false;
-            List<GradeWeekendsScheduleDto> gradeWeekendsScheduleDtoList = timeSchedule.convertToGradeWeekendsSchedule();
-            if (EmptyUtils.listIsEmpty(gradeWeekendsScheduleDtoList))
-                return false;
-            gradeDo.setWeekendsSchedule(JSONUtil.toJSONString(gradeWeekendsScheduleDtoList));
 
+            gradeDo.setCourseId(courseId);
             gradeDo.setLastUpdateTime(new Date());
             gradeDo.setLastUpdateId(userId);
 
@@ -448,7 +454,7 @@ public class GradeServiceImpl implements IGradeService {
             ) {
                 // 两个时间段无交叉，则不需要校验
                 if (DateUtil.compareDate(targetValidateTime.getEndDate(), sourceValidateTime.getStartDate()) == 1
-                        || DateUtil.compareDate(targetValidateTime.getStartDate(), sourceValidateTime.getEndDate()) == 1)
+                        || DateUtil.compareDate(targetValidateTime.getStartDate(), sourceValidateTime.getEndDate()) == -1)
                     continue;
                 // 有交叉，进行校验
                 String result = sourceValidateTime.detectConflict(targetValidateTime);
@@ -469,16 +475,93 @@ public class GradeServiceImpl implements IGradeService {
      * @param gradeId
      * @return
      */
-    private List<TbGradeDo> removeOneByGradeId(List<TbGradeDo> gradeDoList, Integer gradeId){
+    private void removeOneByGradeId(List<TbGradeDo> gradeDoList, Integer gradeId){
         if (EmptyUtils.listIsEmpty(gradeDoList))
-            return null;
+            return;
         for (int i = 0; i < gradeDoList.size(); i++) {
             if (gradeDoList.get(i).getId().equals(gradeId)){
                 gradeDoList.remove(i);
-                break;
+                return;
             }
         }
-        return gradeDoList;
+        return;
     }
 
+    /**
+     * 将校验数据中，老师id一样的放入老师安排集合中
+     * @param teacherGradeList 数据库中查到的老师安排
+     * @param timeScheduleList 校验数据
+     * @param teacherId 老师id
+     * @param gradeId 班级id
+     * @return
+     */
+    private List<TbGradeDo> addGradeByTeacherId(List<TbGradeDo> teacherGradeList, List<CourseTimeScheduleDto> timeScheduleList, Integer teacherId, Integer gradeId) {
+        if (EmptyUtils.listIsEmpty(teacherGradeList))
+            teacherGradeList = new ArrayList<>();
+        // 参数合法性校验
+        if (EmptyUtils.listIsEmpty(timeScheduleList) || EmptyUtils.intIsEmpty(gradeId) || EmptyUtils.intIsEmpty(teacherId))
+            return teacherGradeList;
+        for (CourseTimeScheduleDto timeSchedule:timeScheduleList
+        ) {
+            TbGradeDo gradeDo = getOneById(timeSchedule.getGradeId());
+            if (!EmptyUtils.objectIsEmpty(gradeDo)) {
+                // 找出校验数据中，老师id一样的，同时排除本身
+                if (gradeDo.getTeacherId().equals(teacherId) && !gradeDo.getId().equals(gradeId)) {
+                    TbGradeDo grade = converCourseTimeScheduleDtoToTbGradeDo(timeSchedule);
+                    if (!EmptyUtils.objectIsEmpty(grade))
+                        teacherGradeList.add(grade);
+                }
+
+            }
+        }
+        return teacherGradeList;
+    }
+
+    /**
+     * 将校验数据中，教室id一样的放入教室安排集合中
+     * @param classroomGradeList 数据库中查到的教室安排
+     * @param timeScheduleList 校验数据
+     * @param classroomId 教室id
+     * @param gradeId 班级id
+     * @return
+     */
+    private List<TbGradeDo> addGradeByClassroomId(List<TbGradeDo> classroomGradeList, List<CourseTimeScheduleDto> timeScheduleList, Integer classroomId, Integer gradeId) {
+        if (EmptyUtils.listIsEmpty(classroomGradeList))
+            classroomGradeList = new ArrayList<>();
+        // 参数合法性校验
+        if (EmptyUtils.listIsEmpty(timeScheduleList) || EmptyUtils.intIsEmpty(gradeId) || EmptyUtils.intIsEmpty(classroomId))
+            return classroomGradeList;
+        for (CourseTimeScheduleDto timeSchedule:timeScheduleList
+        ) {
+            TbGradeDo gradeDo = getOneById(timeSchedule.getGradeId());
+            if (!EmptyUtils.objectIsEmpty(gradeDo)) {
+                // 找出校验数据中，教室id一样的，同时排除本身
+                if (gradeDo.getClassroomId().equals(classroomId) && !gradeDo.getId().equals(gradeId)){
+                    TbGradeDo grade =  converCourseTimeScheduleDtoToTbGradeDo(timeSchedule);
+                    if (!EmptyUtils.objectIsEmpty(grade))
+                        classroomGradeList.add(grade);
+                }
+            }
+        }
+        return classroomGradeList;
+    }
+
+    /**
+     * 将CourseTimeScheduleDto转化为TbGradeDo
+     * @param timeSchedule
+     * @return
+     */
+    private TbGradeDo converCourseTimeScheduleDtoToTbGradeDo(CourseTimeScheduleDto timeSchedule){
+        if ( EmptyUtils.objectIsEmpty(timeSchedule))
+            return null;
+        TbGradeDo grade = new TbGradeDo();
+        grade.setId(timeSchedule.getGradeId());
+        // 时间安排
+        grade.setStartDate(DateUtil.stringToDateByDefaultDayFormat(timeSchedule.getDateRange().getStartDate()));
+        grade.setEndDate(DateUtil.stringToDateByDefaultDayFormat(timeSchedule.getDateRange().getEndDate()));
+        List<GradeWeekendsScheduleDto> gradeWeekendsScheduleDtoList = timeSchedule.convertToGradeWeekendsSchedule();
+        grade.setWeekendsSchedule(JSONUtil.toJSONString(gradeWeekendsScheduleDtoList));
+
+        return grade;
+    }
 }

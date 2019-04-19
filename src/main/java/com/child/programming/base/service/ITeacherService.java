@@ -59,4 +59,11 @@ public interface ITeacherService {
      * @return
      */
     LoginedUserInfoDto getTeacherByLoginIdAndPassword(String loginId , String password);
+
+    /**
+     * 根据主键查询老师
+     * @param teacherId
+     * @return
+     */
+    TbTeacherDo getOneById(Integer teacherId);
 }

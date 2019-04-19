@@ -36,7 +36,7 @@ public class ValidateTimeScheduleDto {
     public String detectConflict(ValidateTimeScheduleDto targetValidateTime){
         if (!EmptyUtils.objectIsEmpty(targetValidateTime)){
             if(DateUtil.compareDate(targetValidateTime.getEndDate(), this.startDate) == 1
-                    || DateUtil.compareDate(targetValidateTime.getStartDate(), this.endDate) == 1)
+                    || DateUtil.compareDate(targetValidateTime.getStartDate(), this.endDate) == -1)
                 return "0"; // 无时间交叉则不需要检测
             for (GradeWeekendsScheduleDto sourceSchedule:this.weekendsScheduleDtoList
             ) {
