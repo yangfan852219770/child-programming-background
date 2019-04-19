@@ -22,3 +22,5 @@
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收藏课程';
 
   修改experience_course表 status类型, varchar -> int
+
+  表sign_up_experience_course 添加 is_payment(tinyint)
