@@ -1,6 +1,7 @@
 package com.child.programming.base.service;
 
 import com.child.programming.base.dto.LoginedUserInfoDto;
+import com.child.programming.base.dto.ShiroDto;
 import com.child.programming.base.dto.TeacherInfoDto;
 import com.child.programming.base.model.TbTeacherDo;
 import com.child.programming.education.manage.dto.SelectDto;
@@ -66,4 +67,10 @@ public interface ITeacherService {
      * @return
      */
     TbTeacherDo getOneById(Integer teacherId);
+    /***
+     * 根据登录名称查询教师
+     * @param loginId
+     * @return
+     */
+    ShiroDto getTeacherByLoginId(String loginId);
 }

@@ -11,6 +11,8 @@ public class ResponseUtil {
 
     public final static short INTERNAL_ERROR_500 = 500; //服务器处理有问题
 
+    public final static short NO_LOGIN_401 = 401; //用户未登录
+
     public final static String SUCCESS_MSG = "操作成功";
 
     public final static String ERROR_MSG = "内部服务器错误";

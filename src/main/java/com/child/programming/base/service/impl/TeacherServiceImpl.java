@@ -1,6 +1,7 @@
 package com.child.programming.base.service.impl;
 
 import com.child.programming.base.dto.LoginedUserInfoDto;
+import com.child.programming.base.dto.ShiroDto;
 import com.child.programming.base.dto.TeacherInfoDto;
 import com.child.programming.base.mapper.TbRoleDoMapper;
 import com.child.programming.base.mapper.TbTeacherDoMapper;
@@ -163,5 +164,29 @@ public class TeacherServiceImpl implements ITeacherService {
         if (EmptyUtils.intIsNotEmpty(teacherId))
             return tbTeacherDoMapper.selectByPrimaryKey(teacherId);
         return null;
+    }
+    @Override
+    public ShiroDto getTeacherByLoginId(String loginId) {
+        ShiroDto shiroDto =new ShiroDto();
+        TbTeacherDoExample example = new TbTeacherDoExample();
+        TbTeacherDoExample.Criteria criteria = example.createCriteria();
+
+        if (EmptyUtils.stringIsEmpty(loginId))
+            return  null;
+
+
+        criteria.andStatusEqualTo(Byte.valueOf("1")).andLoginIdEqualTo(loginId);
+        List<TbTeacherDo> teacherDoList = tbTeacherDoMapper.selectByExample(example);
+
+        if(EmptyUtils.listIsEmpty(teacherDoList))
+            return null;
+
+        BeanUtils.copyProperties(teacherDoList.get(0),shiroDto);
+        TbRoleDo tbRoleDo= tbRoleDoMapper.selectByPrimaryKey(teacherDoList.get(0).getRoleId());
+        if(EmptyUtils.objectIsEmpty(tbRoleDo))
+            return null;
+
+        shiroDto.setCurrentAuthority(tbRoleDo.getRoleToken());
+        return shiroDto;
     }
 }

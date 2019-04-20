@@ -75,6 +75,15 @@ public class ResultDto {
         return new ResultDto(ResponseUtil.INTERNAL_ERROR_500, msg);
     }
 
+    /**
+     * 未登录
+     * @param msg
+     * @return
+     */
+    public static ResultDto noLogin(String msg){
+        return new ResultDto(ResponseUtil.NO_LOGIN_401, msg);
+    }
+
 
     /**
      * 操作失败
