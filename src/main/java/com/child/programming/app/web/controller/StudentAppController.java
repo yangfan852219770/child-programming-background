@@ -250,6 +250,7 @@ public class StudentAppController {
             signUpExperienceCourseDo.setStudentId(studentId);
             signUpExperienceCourseDo.setExperienceCourseId(experienceCourseId);
             signUpExperienceCourseDo.setStatus((byte) 1);
+            signUpExperienceCourseDo.setIsPayment((byte) 0);
             signUpExperienceCourseDo.setSignUpTime(new Date());
             signUpExperienceCourseDo.setCreateId(studentId);
             signUpExperienceCourseDo.setCreateTime(new Date());

@@ -62,6 +62,8 @@ public class ShiroConfig {
 
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/static/**", "anon"); //静态资源
+        filterChainDefinitionMap.put("/app/web/**", "anon"); //小程序接口
+        filterChainDefinitionMap.put("/app/manage/**", "anon"); //小程序接口
         //filterChainDefinitionMap.put("/web/login/account", "anon"); //登陆Url
 
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
