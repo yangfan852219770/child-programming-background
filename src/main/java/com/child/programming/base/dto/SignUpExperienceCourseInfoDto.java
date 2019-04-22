@@ -18,6 +18,8 @@ public class SignUpExperienceCourseInfoDto {
 
     private String studentName; // 学生姓名
 
+    private String studentPhone; // 学生电话
+
     private String experienceCourseName; // 体验课名称
 
     private Integer shareCounts; // 分享次数

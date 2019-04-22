@@ -4,6 +4,7 @@ import com.child.programming.base.dto.SignUpExperienceCourseInfoDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description：
@@ -12,5 +13,5 @@ import java.util.List;
 @Repository
 public interface SignUpExperienceCourseCustomMapper {
 
-    List<SignUpExperienceCourseInfoDto> getList();
+    List<SignUpExperienceCourseInfoDto> getList(Map map);
 }

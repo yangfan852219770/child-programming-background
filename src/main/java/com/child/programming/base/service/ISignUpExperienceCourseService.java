@@ -3,6 +3,7 @@ package com.child.programming.base.service;
 import com.child.programming.base.dto.SignUpExperienceCourseInfoDto;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description：
@@ -10,5 +11,18 @@ import java.util.List;
  **/
 public interface ISignUpExperienceCourseService {
 
-    List<SignUpExperienceCourseInfoDto>  getList();
+    /**
+     * 体验课报名信息列表
+     * @param map 学生姓名
+     * @return
+     */
+    List<SignUpExperienceCourseInfoDto>  getList(Map map);
+
+    /**
+     * 删除
+     * @param idArray
+     * @param userId
+     * @return
+     */
+    Boolean delete(String[] idArray, Integer userId);
 }

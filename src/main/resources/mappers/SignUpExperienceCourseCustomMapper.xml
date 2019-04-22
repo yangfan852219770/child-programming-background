@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.child.programming.base.mapper.SignUpExperienceCourseCustomMapper">
-    <select id="getList" resultType="com.child.programming.base.dto.SignUpExperienceCourseInfoDto">
+    <select id="getList" parameterType="java.util.Map" resultType="com.child.programming.base.dto.SignUpExperienceCourseInfoDto">
         select suec.id, suec.sign_up_time AS signUpTime, suec.is_payment AS isPayment,
         s.name AS studentName, s.id AS studentId, s.guardian_phone studentPhone,
         ec.title AS experienceCourseName, ec.id AS experienceCourseId,
@@ -14,5 +14,10 @@
         LEFT JOIN share_circle AS sc
         ON sc.course_id=suec.id
         and sc.student_id=s.id
+        and ec.status=1
+        <if test="studentName != null">
+            and s.name=#{studentName}
+        </if>
+
     </select>
 </mapper>
