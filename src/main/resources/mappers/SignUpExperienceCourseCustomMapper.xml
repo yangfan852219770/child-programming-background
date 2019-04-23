@@ -14,9 +14,16 @@
         LEFT JOIN share_circle AS sc
         ON sc.course_id=suec.id
         and sc.student_id=s.id
-        and ec.status=1
+        where ec.status=1
+        and suec.status=1
+        and s.status=1
+        and s.id is not null
+        and ec.id is not null
         <if test="studentName != null">
             and s.name=#{studentName}
+        </if>
+        <if test="isPayment != null">
+            and suec.is_payment=#{isPayment}
         </if>
 
     </select>
