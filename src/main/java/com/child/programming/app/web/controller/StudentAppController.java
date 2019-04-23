@@ -5,7 +5,6 @@ import com.child.programming.app.web.dto.TokenDto;
 import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.model.TbSignUpExperienceCourseDo;
 import com.child.programming.base.model.TbStudentDo;
-import com.child.programming.base.model.TbStudentSignUpDo;
 import com.child.programming.base.service.IStudentService;
 import com.child.programming.base.util.*;
 import org.springframework.beans.factory.annotation.Autowired;

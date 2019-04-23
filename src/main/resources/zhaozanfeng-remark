@@ -24,3 +24,5 @@
   修改experience_course表 status类型, varchar -> int
 
   表sign_up_experience_course 添加 is_payment(tinyint)
+
+  student_sign_up、student_course_schedule、 teacher_course_schedule 将class_id改为grade_id
