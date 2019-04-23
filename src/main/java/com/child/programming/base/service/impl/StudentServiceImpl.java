@@ -4,6 +4,7 @@ import com.child.programming.base.dto.StudentInfoDto;
 import com.child.programming.base.mapper.TbCollectCourseDoMapper;
 import com.child.programming.base.mapper.TbSignUpExperienceCourseDoMapper;
 import com.child.programming.base.mapper.TbStudentDoMapper;
+import com.child.programming.base.mapper.TbStudentSignUpDoMapper;
 import com.child.programming.base.model.*;
 import com.child.programming.base.service.IStudentService;
 import com.child.programming.base.util.EmptyUtils;
@@ -188,7 +189,7 @@ public class StudentServiceImpl  implements IStudentService{
         TbStudentSignUpDoExample example = new TbStudentSignUpDoExample();
         TbStudentSignUpDoExample.Criteria criteria = example.createCriteria();
         criteria.andStudentIdEqualTo(studentId);
-        criteria.andClassIdEqualTo(gradeId);
+        criteria.andGradeIdEqualTo(gradeId);
         criteria.andStatusEqualTo((byte) 1);
         List<TbStudentSignUpDo> studentSignUpDos = tbStudentSignUpDoMapper.selectByExample(example);
         return studentSignUpDos;

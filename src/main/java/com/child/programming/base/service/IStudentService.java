@@ -3,6 +3,7 @@ package com.child.programming.base.service;
 import com.child.programming.base.dto.StudentInfoDto;
 import com.child.programming.base.model.TbSignUpExperienceCourseDo;
 import com.child.programming.base.model.TbStudentDo;
+import com.child.programming.base.model.TbStudentSignUpDo;
 
 import java.util.List;
 

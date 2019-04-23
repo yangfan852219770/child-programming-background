@@ -166,7 +166,7 @@ WHERE
 
   <select id="getStudentSignUpCourseList" parameterType="Map" resultType="com.child.programming.app.web.dto.SignUpCourseDto">
     SELECT
-    ssu.class_id classId,
+    ssu.grade_id classId,
     g.`name` gradeName,
     ssu.sign_up_time signUpTime,
     g.end_date endTime,
@@ -180,7 +180,7 @@ WHERE
     t.photo_url photoUrl
     FROM
     student_sign_up ssu
-    LEFT JOIN grade g ON ssu.class_id = g.id AND g.`status`=1
+    LEFT JOIN grade g ON ssu.grade_id = g.id AND g.`status`=1
     LEFT JOIN course c on c.id= g.course_id and c.`status`=1
     LEFT JOIN teacher t on t.id = g.teacher_id AND t.`status`=1
     WHERE
@@ -194,7 +194,7 @@ WHERE
 
   <select id="getStudentSignUpCourseHistoryList" parameterType="Map" resultType="com.child.programming.app.web.dto.SignUpCourseDto">
     SELECT
-    ssu.class_id classId,
+    ssu.grade_id classId,
     g.`name` gradeName,
     ssu.sign_up_time signUpTime,
     g.end_date endTime,
@@ -208,7 +208,7 @@ WHERE
     t.photo_url photoUrl
     FROM
     student_sign_up ssu
-    LEFT JOIN grade g ON ssu.class_id = g.id AND g.`status`=1
+    LEFT JOIN grade g ON ssu.grade_id = g.id AND g.`status`=1
     LEFT JOIN course c on c.id= g.course_id and c.`status`=1
     LEFT JOIN teacher t on t.id = g.teacher_id AND t.`status`=1
     WHERE
@@ -223,7 +223,7 @@ WHERE
 
   <select id="getStudentCourseClassList" parameterType="Map" resultType="com.child.programming.app.web.dto.SignUpCourseDto">
     SELECT
-    ssu.class_id classId,
+    ssu.grade_id classId,
     g.`name` gradeName,
     ssu.sign_up_time signUpTime,
     g.end_date endTime,
@@ -237,7 +237,7 @@ WHERE
     t.photo_url photoUrl
     FROM
     student_sign_up ssu
-    LEFT JOIN grade g ON ssu.class_id = g.id AND g.`status`=1
+    LEFT JOIN grade g ON ssu.grade_id = g.id AND g.`status`=1
     LEFT JOIN course c on c.id= g.course_id and c.`status`=1
     LEFT JOIN teacher t on t.id = g.teacher_id AND t.`status`=1
     WHERE
@@ -251,7 +251,7 @@ WHERE
 
   <select id="getStudentCourseListByDate" parameterType="Map" resultType="com.child.programming.app.web.dto.SignUpCourseDto">
     SELECT
-    ssu.class_id classId,
+    ssu.grade_id classId,
     g.`name` gradeName,
     ssu.sign_up_time signUpTime,
     g.end_date endTime,
@@ -265,7 +265,7 @@ WHERE
     t.photo_url photoUrl
     FROM
     student_sign_up ssu
-    LEFT JOIN grade g ON ssu.class_id = g.id AND g.`status`=1
+    LEFT JOIN grade g ON ssu.grade_id = g.id AND g.`status`=1
     LEFT JOIN course c on c.id= g.course_id and c.`status`=1
     LEFT JOIN teacher t on t.id = g.teacher_id AND t.`status`=1
     WHERE
