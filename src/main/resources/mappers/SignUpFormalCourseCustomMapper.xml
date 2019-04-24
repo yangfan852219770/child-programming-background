@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.child.programming.base.mapper.SignUpFormalCourseCustomMapper">
+    <select id="getList" parameterType="java.util.Map" resultType="com.child.programming.base.dto.SignUpFormalCourseInfoDto">
+        SELECT ssu.id,ssu.is_payment AS isPayment,ssu.is_halfway AS isHalfway,ssu.sign_up_time as signUpTime,
+        s.id AS studentId,s.name AS studentName,s.guardian_phone AS studentPhone,
+        g.id AS gradeId,g.name AS gradeName,
+        c.id AS courseId,c.name AS courseName,c.money AS courseMoney
+        FROM student_sign_up AS ssu
+        LEFT JOIN student AS s
+        on ssu.student_id=s.id
+        LEFT JOIN grade AS g
+        on ssu.grade_id=g.id
+        LEFT JOIN course AS c
+        on g.course_id=c.id
+        where ssu.status=1
+        and s.status=1
+        and g.status=1
+        and s.id is not NULL
+        and g.id is not NULL
+        and c.id is not NULL
+        <if test="studentName != null">
+            and s.name=#{studentName}
+        </if>
+        <if test="isPayment != null">
+            and ssu.is_payment=#{isPayment}
+        </if>
+    </select>
+</mapper>
