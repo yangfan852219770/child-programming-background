@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  * @description: TODO
  */
 @RestController
-@RequestMapping("worksPortal")
+@RequestMapping("portal")
 public class StudentWorkPortalController {
 
     @Autowired

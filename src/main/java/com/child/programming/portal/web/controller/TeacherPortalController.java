@@ -17,7 +17,7 @@ import java.util.List;
  * @description: TODO
  */
 @RestController
-@RequestMapping("teacherPortal")
+@RequestMapping("portal")
 public class TeacherPortalController {
 
     @Autowired
