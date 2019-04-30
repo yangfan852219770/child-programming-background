@@ -23,4 +23,6 @@ public class MaterialInfoDto {
 
     private String originName; //资料名称
 
+    private Byte status; //状态
+
 }

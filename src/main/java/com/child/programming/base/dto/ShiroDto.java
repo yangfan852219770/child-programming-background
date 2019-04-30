@@ -15,7 +15,14 @@ public class ShiroDto {
 
     private String loginId; //登陆账号
 
-    //TODO 临时
+    private String photoUrl;
+
+    private String roleName;
+
+    private String phone;
+
+    private String introduction;
+
     private String currentAuthority; //登陆角色
 
     private String flexibleProperty; //灵活属性 用于储存学生作品 或其他

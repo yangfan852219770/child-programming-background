@@ -77,7 +77,7 @@ Project Version - v1.0
 
     /* 教师列表展示 */
     $.ajax({
-         url:"teacherPortal/getList"
+         url:"portal/teacherGetList"
         ,method:"POST"
         ,async:false
         ,success:function (res) {

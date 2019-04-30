@@ -187,6 +187,7 @@ public class TeacherServiceImpl implements ITeacherService {
             return null;
 
         shiroDto.setCurrentAuthority(tbRoleDo.getRoleToken());
+        shiroDto.setRoleName(tbRoleDo.getName());
         return shiroDto;
     }
 }

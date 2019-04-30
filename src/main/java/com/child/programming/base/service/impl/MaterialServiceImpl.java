@@ -36,9 +36,9 @@ public class MaterialServiceImpl implements IMaterialService {
 
         tbMaterialDoExample.setOrderByClause("create_time desc");
         if (!EmptyUtils.intIsEmpty(materialTypeId))
-            criteria.andStatusEqualTo(Byte.valueOf("1")).andMaterialTypeIdEqualTo(materialTypeId);
+            criteria.andStatusNotEqualTo(Byte.valueOf("0")).andMaterialTypeIdEqualTo(materialTypeId);
         else
-            criteria.andStatusEqualTo(Byte.valueOf("1"));
+            criteria.andStatusNotEqualTo(Byte.valueOf("0"));
         List<TbMaterialDo> tbMaterialDos = tbMaterialDoMapper.selectByExample(tbMaterialDoExample);
         if (!EmptyUtils.listIsEmpty(tbMaterialDos))
             return ListUtil.convertElement(tbMaterialDos, MaterialInfoDto.class);
@@ -86,6 +86,27 @@ public class MaterialServiceImpl implements IMaterialService {
             TbMaterialDo tbMaterialDo = tbMaterialDoMapper.selectByPrimaryKey(Integer.parseInt(str));
             if (!EmptyUtils.objectIsEmpty(tbMaterialDo)){
                 tbMaterialDo.setStatus(Byte.valueOf("0"));
+                tbMaterialDo.setLastUpdateId(userId);
+                tbMaterialDo.setLastUpdateTime(new Date());
+                result += tbMaterialDoMapper.updateByPrimaryKeySelective(tbMaterialDo);
+            }
+        }
+
+        return result == idArray.length;
+    }
+
+    @Override
+    public Boolean push(String[] idArray,String status, Integer userId) {
+
+        if (EmptyUtils.arrayIsEmpty(idArray))
+            return false;
+
+        int result = 0;
+        for (String str:idArray
+                ) {
+            TbMaterialDo tbMaterialDo = tbMaterialDoMapper.selectByPrimaryKey(Integer.parseInt(str));
+            if (!EmptyUtils.objectIsEmpty(tbMaterialDo)){
+                tbMaterialDo.setStatus(Byte.valueOf(status));
                 tbMaterialDo.setLastUpdateId(userId);
                 tbMaterialDo.setLastUpdateTime(new Date());
                 result += tbMaterialDoMapper.updateByPrimaryKeySelective(tbMaterialDo);

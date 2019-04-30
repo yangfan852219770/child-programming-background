@@ -33,4 +33,14 @@ public interface IMaterialService {
      * @return
      */
     Boolean delete(String[] idArray, Integer userId);
+
+    /***
+     * 单个、批量推送
+     * @param idArray
+     * @param status
+     * @param userId
+     * @return
+     */
+    Boolean push(String[] idArray,String status, Integer userId);
+
 }

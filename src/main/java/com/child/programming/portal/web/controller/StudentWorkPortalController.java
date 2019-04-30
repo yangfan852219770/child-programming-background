@@ -3,6 +3,7 @@ package com.child.programming.portal.web.controller;
 
 import com.child.programming.base.dto.LoginedUserInfoDto;
 import com.child.programming.base.dto.ResultDto;
+import com.child.programming.base.dto.StudentWorkInfoDto;
 import com.child.programming.base.model.TbStudentWorkDo;
 import com.child.programming.base.service.IStudentWorkService;
 import com.child.programming.base.util.ConstDataUtil;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @author zdp
@@ -45,10 +47,16 @@ public class StudentWorkPortalController {
      */
     @RequestMapping("sessionKeyUpdate")
     public ResultDto sessionKeyUpdate(String studentWorkId, HttpSession session) {
-
         return studentWorkService.sessionKeyUpdate(studentWorkId,session)?ResultDto.success():ResultDto.fail();
     }
 
-
+    /***
+     * 学生作品列表
+     * @return
+     */
+   @RequestMapping("studentWorkGetList")
+    public List<StudentWorkInfoDto> getList(){
+        return studentWorkService.getList("");
+   }
 
 }

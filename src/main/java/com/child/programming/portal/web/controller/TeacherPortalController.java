@@ -29,7 +29,7 @@ public class TeacherPortalController {
      * 教师信息展示
      * @return
      */
-    @RequestMapping("getList")
+    @RequestMapping("teacherGetList")
     public List<TeacherInfoPortalDto> getList(){
 
         List<TeacherInfoDto> tbTeacherDos=teacherService.getList("");

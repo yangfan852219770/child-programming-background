@@ -2,6 +2,7 @@ package com.child.programming.education.manage.controller;
 
 import com.child.programming.base.dto.LoginedUserInfoDto;
 import com.child.programming.base.dto.ResultDto;
+import com.child.programming.base.dto.ShiroDto;
 import com.child.programming.base.dto.TeacherInfoDto;
 import com.child.programming.base.model.TbTeacherDo;
 import com.child.programming.base.service.ITeacherService;
@@ -93,5 +94,15 @@ public class TeacherController {
             return ResultDto.success();
         }
         return ResultDto.fail();
+    }
+
+    /**
+     * 通过loginId 的到教师信息
+     * @param loginId 登录账号
+     * @return
+     */
+    @RequestMapping(value = "getTeacherByLoginId", method = RequestMethod.GET)
+    public ShiroDto getTeacherByLoginId(@RequestParam(value = "loginId", required = false) String loginId){
+        return iTeacherService.getTeacherByLoginId(loginId);
     }
 }

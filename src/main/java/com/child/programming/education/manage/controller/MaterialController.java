@@ -73,4 +73,24 @@ public class MaterialController {
         }
         return ResultDto.fail();
     }
+
+    /**
+     * 删除
+     * @param idsStr
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "push", method = RequestMethod.GET)
+    public ResultDto push(@RequestParam(value = "idsStr", required = true)String idsStr,
+                          @RequestParam(value = "status", required = true)String status, HttpSession session) {
+        log.info(idsStr + "推送");
+        LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
+        if (!EmptyUtils.objectIsEmpty(userInfoPojo) && !EmptyUtils.stringIsEmpty(idsStr)) {
+            String[] idArray = idsStr.split(",");
+            boolean result = iMaterialService.push(idArray,status, userInfoPojo.getId());
+            if (result)
+                return ResultDto.success();
+        }
+        return ResultDto.fail();
+    }
 }
