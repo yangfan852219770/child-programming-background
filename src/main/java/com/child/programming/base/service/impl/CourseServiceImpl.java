@@ -171,7 +171,7 @@ public class CourseServiceImpl implements ICourseService {
         return courseDos;
     }
 
-    /********************************************************************/
+    /*********************yf_start*********************************/
 
     @Override
     public List<CourseSaveDto> getList(String name) {
@@ -248,6 +248,21 @@ public class CourseServiceImpl implements ICourseService {
         return false;
     }
 
+    @Override
+    public Boolean generateCourseSchedule(Integer courseId) {
+        if (EmptyUtils.intIsEmpty(courseId))
+            return false;
+        List<TbGradeDo> gradeDoList = iGradeService.getListByCourseId(courseId);
+        if (EmptyUtils.listIsEmpty(gradeDoList))
+            return false;
+
+        // 课表处理
+        for (TbGradeDo grade:gradeDoList
+             ) {
+        }
+        return null;
+    }
+
     /**
      * 查询列表时，对时间安排赋值
      * @param courseSaveDtoList
@@ -269,5 +284,5 @@ public class CourseServiceImpl implements ICourseService {
         }
     }
 
-    /******************************************************************/
+    /*********************yf_end*********************************/
 }

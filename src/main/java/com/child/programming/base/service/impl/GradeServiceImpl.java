@@ -4,23 +4,19 @@ import com.child.programming.base.dto.GradeInfoDto;
 import com.child.programming.base.dto.GradeWeekendsScheduleDto;
 import com.child.programming.base.mapper.GradeCustomMapper;
 import com.child.programming.base.mapper.TbGradeDoMapper;
-import com.child.programming.base.model.TbClassroomDo;
-import com.child.programming.base.model.TbGradeDo;
-import com.child.programming.base.model.TbGradeDoExample;
-import com.child.programming.base.model.TbTeacherDo;
+import com.child.programming.base.model.*;
 import com.child.programming.base.service.IClassroomService;
+import com.child.programming.base.service.ICourseService;
 import com.child.programming.base.service.IGradeService;
 import com.child.programming.base.service.ITeacherService;
-import com.child.programming.base.util.ConstDataUtil;
-import com.child.programming.base.util.DateUtil;
-import com.child.programming.base.util.EmptyUtils;
-import com.child.programming.base.util.JSONUtil;
+import com.child.programming.base.util.*;
 import com.child.programming.education.manage.dto.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Description：
@@ -39,6 +35,21 @@ public class GradeServiceImpl implements IGradeService {
     private ITeacherService iTeacherService;
     @Autowired
     private IClassroomService iClassroomService;
+    @Autowired
+    private ICourseService iCourseService;
+
+    // 计算课程表用
+    private static final Map<String, Integer> weekMap = new HashMap();
+
+    static {
+        weekMap.put("一", 0);
+        weekMap.put("二", 1);
+        weekMap.put("三", 2);
+        weekMap.put("四", 3);
+        weekMap.put("五", 4);
+        weekMap.put("六", 5);
+        weekMap.put("日", 6);
+    }
 
     @Override
     public List<GradeInfoDto> getList(Map map) {
@@ -383,6 +394,62 @@ public class GradeServiceImpl implements IGradeService {
         }
 
         return result == idArray.length;
+    }
+
+    @Override
+    public List<CourseScheduleDto> convertToCourseSchedule(TbGradeDo gradeDo) {
+        // 参数校验
+        if (null == gradeDo || EmptyUtils.stringIsEmpty(gradeDo.getWeekendsSchedule()))
+            return null;
+        TbCourseDo courseDo = iCourseService.getCourseById(gradeDo.getCourseId());
+        if (null == courseDo)
+            return null;
+        // 时间安排集合
+        List<GradeWeekendsScheduleDto> gradeWeekendsScheduleDtoList = JSONUtil.parseArray(gradeDo.getWeekendsSchedule(), GradeWeekendsScheduleDto.class);
+        if (EmptyUtils.listIsEmpty(gradeWeekendsScheduleDtoList))
+            return null;
+
+        // 将查出的时间安排，转化为单个元素
+        List<WeekendsScheduleDto> weekendsScheduleDtoList = new ArrayList<>();
+        for (GradeWeekendsScheduleDto schedule:gradeWeekendsScheduleDtoList
+             )
+            weekendsScheduleDtoList.addAll(schedule.convertToWeekendsSchedule());
+
+        // 时间安排排序
+        weekendsScheduleDtoList = weekendsScheduleDtoList.stream()
+                .sorted(Comparator.comparing(WeekendsScheduleDto::getDay)
+                .thenComparing(WeekendsScheduleDto::getStartHour))
+                .collect(Collectors.toList());
+        // 将时间安排转化为日期表格式的数据
+        List<CourseScheduleDto> courseScheduleDtoList = new ArrayList<>();
+        // 计算连个日期间隔天数
+        int days = DateUtil.computeDiffDays(gradeDo.getStartDate(), gradeDo.getEndDate());
+        // 计算有几个星期
+        int weekCount = days / 7;
+        // 课时
+        int period = 0;
+
+        for (int i = 0; i <weekCount; i++) {
+            // 开始上课时间，日月年
+            Date startDate = DateUtil.add(gradeDo.getStartDate(),Calendar.DATE, i * 7);
+            for (WeekendsScheduleDto schedule:weekendsScheduleDtoList
+                 ) {
+                period ++;
+                int addDay = weekMap.get(schedule.getDay());
+                Date courseDate = DateUtil.add(startDate, Calendar.DATE, addDay);
+                CourseScheduleDto courseScheduleDto = new CourseScheduleDto();
+
+                courseScheduleDto.setGradeId(gradeDo.getId());
+                courseScheduleDto.setCourseId(gradeDo.getCourseId());
+                courseScheduleDto.setTeacherId(gradeDo.getTeacherId());
+                courseScheduleDto.setStartTime(DateUtil.addHHmmss(courseDate, schedule.getStartHour()));
+                courseScheduleDto.setEndTime(DateUtil.addHHmmss(courseDate,schedule.getEndHour()));
+                courseScheduleDto.setPeriod(period);
+
+                courseScheduleDtoList.add(courseScheduleDto);
+            }
+        }
+        return courseScheduleDtoList;
     }
 
     /**

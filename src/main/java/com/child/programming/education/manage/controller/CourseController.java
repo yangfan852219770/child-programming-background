@@ -103,7 +103,9 @@ public class CourseController {
                 TbCourseDo courseDo = new TbCourseDo();
                 courseDo.setId(id);
                 courseDo.setStatus(status);
+                // 修改课程状态
                 boolean result = iCourseService.updateCourse(userInfoPojo.getId(), courseDo);
+                // 开课 老师、学生生成课表
                 if (result)
                     return ResultDto.success();
                 return ResultDto.fail();

@@ -78,4 +78,10 @@ public interface ICourseService {
      */
     Boolean updateCourse(Integer userId, TbCourseDo courseDo);
 
+    /**
+     * 生成老师、学生课表
+     * @param courseId
+     * @return
+     */
+    Boolean generateCourseSchedule(Integer courseId);
 }

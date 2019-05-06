@@ -2,8 +2,10 @@ package com.child.programming.base.util;
 
 import lombok.extern.log4j.Log4j2;
 
+import javax.validation.constraints.NotBlank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -90,4 +92,56 @@ public class DateUtil {
         }
     }
 
+    /**
+     * 转化为calendar
+     * @param date
+     * @return
+     */
+    public static Calendar convertToCalendar(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+    }
+
+    /**
+     * 计算两个日期间，相差的天数
+     * @param minDate
+     * @param maxDate
+     * @return
+     */
+    public static int computeDiffDays(Date minDate, Date maxDate){
+        int days = (int)(maxDate.getTime() - minDate.getTime())/(24*3600*1000);
+        days +=1;
+        return days;
+    }
+
+    /**
+     * 日期，加运算
+     * @param date
+     * @param field
+     * @param number
+     * @return
+     */
+    public static Date add(Date date, int field, int number){
+        Calendar calendar = convertToCalendar(date);
+        calendar.set(field, calendar.get(field) + number);
+        return calendar.getTime();
+    }
+
+    /**
+     * 时分秒，相加
+     * @param date
+     * @param timeHHmmss
+     * @return
+     */
+    public static Date addHHmmss(Date date, @NotBlank String timeHHmmss){
+        Calendar calendar = convertToCalendar(date);
+        String[] timeArray = timeHHmmss.split(":");
+        if (!EmptyUtils.arrayIsEmpty(timeArray) && timeArray.length == 3){
+            calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + Integer.parseInt(timeArray[0]));
+            calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + Integer.parseInt(timeArray[1]));
+            calendar.set(Calendar.SECOND, calendar.get(Calendar.SECOND) + Integer.parseInt(timeArray[2]));
+        }
+        return calendar.getTime();
+    }
 }

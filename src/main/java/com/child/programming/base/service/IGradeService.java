@@ -2,6 +2,7 @@ package com.child.programming.base.service;
 
 import com.child.programming.base.dto.GradeInfoDto;
 import com.child.programming.base.model.TbGradeDo;
+import com.child.programming.education.manage.dto.CourseScheduleDto;
 import com.child.programming.education.manage.dto.CourseTimeScheduleDto;
 import com.child.programming.education.manage.dto.InitGradeInfoDto;
 import com.child.programming.education.manage.dto.SelectDto;
@@ -117,4 +118,11 @@ public interface IGradeService {
      * @return
      */
     Boolean validateCourseId(String[] idArray);
+
+    /**
+     * 将班级的课程信息，转化为课程表
+     * @param gradeDo
+     * @return
+     */
+    List<CourseScheduleDto> convertToCourseSchedule(TbGradeDo gradeDo);
 }

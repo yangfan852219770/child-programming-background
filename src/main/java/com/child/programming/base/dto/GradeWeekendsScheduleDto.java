@@ -3,9 +3,11 @@ package com.child.programming.base.dto;
 import com.child.programming.base.util.ConstDataUtil;
 import com.child.programming.education.manage.dto.TimeRangeDto;
 import com.child.programming.education.manage.dto.TimeScheduleChildrenDto;
+import com.child.programming.education.manage.dto.WeekendsScheduleDto;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -65,5 +67,24 @@ public class GradeWeekendsScheduleDto {
         timeScheduleChildrenDto.setTimeRange(timeRangeDto);
 
         return timeScheduleChildrenDto;
+    }
+
+    /**
+     * 类型转换，主要是将星期拆分开
+     * @return
+     */
+    public List<WeekendsScheduleDto> convertToWeekendsSchedule(){
+        List<WeekendsScheduleDto> weekendsScheduleDtoList = new ArrayList<>();
+        for (String day:this.day
+             ) {
+            WeekendsScheduleDto weekendsScheduleDto = new WeekendsScheduleDto();
+
+            weekendsScheduleDto.setDay(day);
+            weekendsScheduleDto.setStartHour(this.startHour);
+            weekendsScheduleDto.setEndHour(this.endHour);
+
+            weekendsScheduleDtoList.add(weekendsScheduleDto);
+        }
+        return weekendsScheduleDtoList;
     }
 }
