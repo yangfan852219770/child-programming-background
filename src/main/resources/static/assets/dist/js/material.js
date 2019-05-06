@@ -57,7 +57,7 @@ function  materialListDoM() {
                                 +'  </span>'
                                 +'  </div>'
                                 +'  <div class="col-md-3 py-2 col-12">'
-                                +'<a target="_blank" href="'+thisData[i].fileUrl+'" class="btn btn-outline-primary btn-lg">'
+                                +'<a target="_blank" download="'+thisData[i].originName+'" href="'+thisData[i].fileUrl+'" class="btn btn-outline-primary btn-lg">'
                                 +'  下载'
                                 +'  </a>'
                                 +'  </div>'
@@ -84,7 +84,7 @@ function  materialListDoM() {
                                 +'  </span>'
                                 +'  </div>'
                                 +'  <div class="col-md-3 py-2 col-12">'
-                                +'<a target="_blank" href="'+thisData[i].fileUrl+'" class="btn btn-outline-primary btn-lg">'
+                                +'<a target="_blank"  download="'+thisData[i].originName+'" href="'+thisData[i].fileUrl+'" class="btn btn-outline-primary btn-lg">'
                                 +'  下载'
                                 +'  </a>'
                                 +'  </div>'
@@ -237,14 +237,14 @@ function selectMaterial(typeId){
                     if(res[i].downloadNumber>20){
                         $('#materialPush').append(
                             '<li>'
-                            +'<a target="_blank" href="'+res[i].fileUrl+'">' +res[i].originName +'  <span class="badge rounded bg-secondary text-white d-inline-block ml-2"> <i class="fa fa-arrow-up" ></i></span>'
+                            +'<a target="_blank" href="'+res[i].fileUrl+'" download="'+thisData[i].originName+'">' +res[i].originName +'  <span class="badge rounded bg-secondary text-white d-inline-block ml-2"> <i class="fa fa-arrow-up" ></i></span>'
                             +' </a>'
                             +' </li>'
                         );
                     }else{
                         $('#materialPush').append(
                             '<li>'
-                            +'<a target="_blank" href="'+res[i].fileUrl+'">'+res[i].originName +' </a>'
+                            +'<a target="_blank" href="'+res[i].fileUrl+'" download="'+thisData[i].originName+'">'+res[i].originName +' </a>'
                             +' </li>');
                     }
 
