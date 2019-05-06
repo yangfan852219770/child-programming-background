@@ -30,3 +30,4 @@
 
 ####sign_up_experience_course表把student_id改为`phone` varchar(255)
 sign_up_experience_course表加上`phone` varchar(255)
+以后sign_up_experience_course表里的student_id会删去，尽量不要用了。

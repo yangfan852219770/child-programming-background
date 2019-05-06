@@ -82,7 +82,12 @@ public interface IStudentService {
     List<TbStudentSignUpDo> getStudentSignUpByClassIdAndStudentId(int gradeId, int studentId);
 
     /**
-     * @Description:    查询此体验课是否已经报名
+     * @Description:    根据课程，学生查询此体验课是否已经报名
      */
     List<TbSignUpExperienceCourseDo> getsignUpExperienceCourseByExperienceCourseIdAndStudentId(int experienceCourseId, int studentId);
+
+    /**
+     * @Description:    根据课程，手机号查询此体验课是否已经报名
+     */
+    List<TbSignUpExperienceCourseDo> getsignUpExperienceCourseByExperienceCourseIdAndPhone(int experienceCourseId, String phone);
 }

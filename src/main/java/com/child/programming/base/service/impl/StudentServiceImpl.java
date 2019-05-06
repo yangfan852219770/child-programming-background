@@ -208,4 +208,18 @@ public class StudentServiceImpl  implements IStudentService{
         List<TbSignUpExperienceCourseDo> experienceCourseDos = tbSignUpExperienceCourseDoMapper.selectByExample(experienceCourseDoExample);
         return experienceCourseDos;
     }
+
+    /**
+     * @Description:    查询此体验课是否已经报名
+     */
+    @Override
+    public List<TbSignUpExperienceCourseDo> getsignUpExperienceCourseByExperienceCourseIdAndPhone(int experienceCourseId, String phone) {
+        TbSignUpExperienceCourseDoExample experienceCourseDoExample = new TbSignUpExperienceCourseDoExample();
+        TbSignUpExperienceCourseDoExample.Criteria criteria = experienceCourseDoExample.createCriteria();
+        criteria.andExperienceCourseIdEqualTo(experienceCourseId);
+        criteria.andPhoneEqualTo(phone);
+        criteria.andStatusEqualTo((byte) 1);
+        List<TbSignUpExperienceCourseDo> experienceCourseDos = tbSignUpExperienceCourseDoMapper.selectByExample(experienceCourseDoExample);
+        return experienceCourseDos;
+    }
 }
