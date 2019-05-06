@@ -26,3 +26,7 @@
   表sign_up_experience_course 添加 is_payment(tinyint)
 
   student_sign_up、student_course_schedule、 teacher_course_schedule 将class_id改为grade_id
+
+
+####sign_up_experience_course表把student_id改为`phone` varchar(255)
+sign_up_experience_course表加上`phone` varchar(255)
