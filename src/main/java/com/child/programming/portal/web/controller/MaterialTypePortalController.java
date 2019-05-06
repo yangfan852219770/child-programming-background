@@ -1,7 +1,9 @@
 package com.child.programming.portal.web.controller;
 
 import com.child.programming.base.dto.MaterialInfoDto;
+import com.child.programming.base.dto.MaterialTypeInfoDto;
 import com.child.programming.base.service.IMaterialService;
+import com.child.programming.base.service.IMaterialTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,17 +17,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("portal")
-public class MaterialPortalController {
+public class MaterialTypePortalController {
     @Autowired
-    private IMaterialService iMaterialService;
+    private IMaterialTypeService iMaterialtypeService;
 
     /***
-     * 资料列表
+     * 资料类别列表
      * @return
      */
-    @RequestMapping("materialGetList")
-    public List<MaterialInfoDto> getList(Integer typeId){
-
-     return  iMaterialService.getList(typeId);
+    @RequestMapping("materialTypeGetList")
+    public List<MaterialTypeInfoDto> getList(){
+     return  iMaterialtypeService.getList("");
     }
 }

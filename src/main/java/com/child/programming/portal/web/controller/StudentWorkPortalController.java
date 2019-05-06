@@ -56,7 +56,8 @@ public class StudentWorkPortalController {
      */
    @RequestMapping("studentWorkGetList")
     public List<StudentWorkInfoDto> getList(){
-        return studentWorkService.getList("");
+
+       return studentWorkService.getList("");
    }
 
 }

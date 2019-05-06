@@ -34,7 +34,7 @@ public class MaterialServiceImpl implements IMaterialService {
         TbMaterialDoExample tbMaterialDoExample = new TbMaterialDoExample();
         TbMaterialDoExample.Criteria criteria = tbMaterialDoExample.createCriteria();
 
-        tbMaterialDoExample.setOrderByClause("create_time desc");
+        tbMaterialDoExample.setOrderByClause("download_number desc");
         if (!EmptyUtils.intIsEmpty(materialTypeId))
             criteria.andStatusNotEqualTo(Byte.valueOf("0")).andMaterialTypeIdEqualTo(materialTypeId);
         else

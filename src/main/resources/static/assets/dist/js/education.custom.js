@@ -74,7 +74,6 @@ Project Version - v1.0
     $( ".select-ui" ).selectmenu();
     /* 课程列表展示 */
 
-
     /* 教师列表展示 */
     $.ajax({
          url:"portal/teacherGetList"
@@ -101,6 +100,7 @@ Project Version - v1.0
             
         }
     });
+
 })(jQuery);
 $(function () {
     "use strict";
