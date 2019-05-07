@@ -3,24 +3,24 @@ Assan Education template
 Author - design_mylife
 Project Version - v1.0
  */
-var materialList=[];
+var studentWorkList=[];
 var JQ$;
-function  materialListDoM() {
+function  studentWorkListDoM() {
 
-    //资料列表
+    //学生作品列表
     layui.use(['laypage', 'layer'], function(){
         var laypage = layui.laypage
             ,layer = layui.layer;
         //测试数据
-        var data =materialList;
-        $('#materialList').html("");
+        var data =studentWorkList;
+        $('#studentWorkList').html("");
         //调用分页
         laypage.render({
             elem: 'pagination'
             ,count: data.length
-            ,limit:3
+            ,limit:4
             ,jump: function(obj){
-                $('#materialList').html("");
+                $('#studentWorkList').html("");
                 /*  //模拟渲染
                   document.getElementById('pagination').innerHTML = function(){
                       var arr = []
@@ -31,72 +31,32 @@ function  materialListDoM() {
                       return arr.join('');
                   }();*/
                 var arr = []
-                    ,thisData = materialList.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+                    ,thisData = studentWorkList.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
                 if(thisData){
-
                     for(var i=0;i<thisData.length;i++){
+                        $('#studentWorkList').append( '<div class="col-lg-6 mb">'
+                           +' <div class="img-card-alt mb-30">'
+                            +'<div class="img-desc">'
+                            +' <a href="course-single.html" class="h5">'
+                            +' 图形作品'
+                            +' </a>'
+                            +' <p class="pt-2">'
+                            +'  该作品获得本月一等奖'
+                            +'</p>
+                            +'<ul class="list-inline mb-0">'
 
-
-                        if(thisData[i].status==1||thisData[i].status=="1"){
-                            var star="";
-                            for(var j=0;j<thisData[i].downloadNumber;j++){
-                                if(j>=5)break;
-                                star+=  '<i class="fa fa-star"></i>' ;
-                            }
-                            $('#materialList').append(
-                                '<div class="course-list-item mb30">'
-                                +' <div class="row align-items-center">'
-                                +'  <div class="col-md-8 col-sm-12 py-3">'
-                                +'  <a href="#!">'
-                                +'  <h5>'+thisData[i].originName+'</h5>'
-                                +'  </a>'
-                                +'  <p class="mb-0">' +thisData[i].introduction
-                                +'  </p>'
-                                +'  <span class="small text-secondary">'
-                                +star
-                                +'  </span>'
-                                +'  </div>'
-                                +'  <div class="col-md-3 py-2 col-12">'
-                                +'<a target="_blank" download="'+thisData[i].originName+'" href="'+thisData[i].fileUrl+'" class="btn btn-outline-primary btn-lg">'
-                                +'  下载'
-                                +'  </a>'
-                                +'  </div>'
-                                +'  </div>'
-                                +'  </div>'
+                            +'<li class="list-inline-item mr-3">'
+                            +'<i class="fa fa-user mr-2"></i>'
+                            +' <a href="#!">清风若雨</a>'
+                            +' </li>'
+                            +' </ul>'
+                            +'</div>'
+                            +'</div>'
+                            +'</div>'
                             );
-                        }else{
-                            var star="";
-                            for(var j=0;j<thisData[i].downloadNumber;j++){
-                                if(j>=5)break;
-                                star+=  '<i class="fa fa-star"></i>' ;
-                            }
-                            $('#materialList').append(
-                                '<div class="course-list-item mb30">'
-                                +' <div class="row align-items-center">'
-                                +'  <div class="col-md-8 col-sm-12 py-3">'
-                                +'  <a href="#!">'
-                                +'  <h5>'+thisData[i].originName+'</h5>'
-                                +'  </a>'
-                                +'  <p class="mb-0">' +thisData[i].introduction
-                                +'  </p>'
-                                +'  <span class="small text-secondary">'
-                                +star
-                                +'  </span>'
-                                +'  </div>'
-                                +'  <div class="col-md-3 py-2 col-12">'
-                                +'<a target="_blank"  download="'+thisData[i].originName+'" href="'+thisData[i].fileUrl+'" class="btn btn-outline-primary btn-lg">'
-                                +'  下载'
-                                +'  </a>'
-                                +'  </div>'
-                                +'  </div>'
-                                +'<span class="course-label bg-secondary text-white">VIP</span>'
-                                +'  </div>'
-                            );
-                        }
-
                     }
                 }else {
-                    $('#materialList').html("");
+                    $('#studentWorkList').html("");
                 }
             }
         });
@@ -114,9 +74,9 @@ function selectMaterial(typeId){
         ,success:function (res) {
 
             if(res){
-                //给资料赋值
-                materialList=res;
-                materialListDoM();
+                //给学生作品赋值
+                studentWorkList=res;
+                studentWorkListDoM();
                 //window.location.reload();
             }
         }
@@ -194,7 +154,7 @@ function selectMaterial(typeId){
     $( ".select-ui" ).selectmenu();
     /*******************Material START*****************************/
 
-    //资料类型
+    //学生作品类型
 
     $.ajax({
         url:"portal/materialTypeGetList"
@@ -216,7 +176,7 @@ function selectMaterial(typeId){
         }
     });
 
-    //热门资料推送列表
+    //热门学生作品推送列表
 
     $.ajax({
         url:"portal/materialGetList"
@@ -228,8 +188,8 @@ function selectMaterial(typeId){
         ,success:function (res) {
 
             if(res){
-                //给资料赋值
-                materialList=res;
+                //给学生作品赋值
+                studentWorkList=res;
                 for(var i=0;i<res.length;i++){
 
                     if(i==6) return;
@@ -257,8 +217,8 @@ function selectMaterial(typeId){
 
         }
     });
-    //资料列表
-    materialListDoM();
+    //学生作品列表
+    studentWorkListDoM();
 
     /*******************Material END*****************************/
 
