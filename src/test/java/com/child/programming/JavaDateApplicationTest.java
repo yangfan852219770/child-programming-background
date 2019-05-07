@@ -37,4 +37,9 @@ public class JavaDateApplicationTest {
         System.out.println(DateUtil.DateToString(date1,"YYYY-MM-dd HH:mm:ss"));
         System.out.println(DateUtil.DateToString(date2,"YYYY-MM-dd HH:mm:ss"));
     }
+
+    @Test
+    public void stringCompareTest(){
+        System.out.println("四".compareTo("三"));
+    }
 }

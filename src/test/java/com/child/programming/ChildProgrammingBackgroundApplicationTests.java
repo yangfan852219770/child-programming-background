@@ -46,12 +46,17 @@ public class ChildProgrammingBackgroundApplicationTests {
     }
 
     @Test
-    public void courseScheduleTest(){
+    public void generateScheduleTest(){
+        System.out.println("Test");
+        Boolean result = iCourseService.generateCourseSchedule(1, 1);
+        System.out.println(result);
+    }
+
+    @Test
+    public void convertToCourseScheduleTest(){
+        System.out.println("Test");
         TbGradeDo gradeDo = iGradeService.getOneById(2);
         List<CourseScheduleDto> courseScheduleDtoList = iGradeService.convertToCourseSchedule(gradeDo);
-        for (CourseScheduleDto schedule:courseScheduleDtoList
-             ) {
-            System.out.println(schedule);
-        }
+        System.out.println(courseScheduleDtoList);
     }
 }

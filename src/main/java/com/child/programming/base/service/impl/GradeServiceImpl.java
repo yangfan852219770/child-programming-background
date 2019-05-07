@@ -416,10 +416,20 @@ public class GradeServiceImpl implements IGradeService {
             weekendsScheduleDtoList.addAll(schedule.convertToWeekendsSchedule());
 
         // 时间安排排序，从小到大
-        weekendsScheduleDtoList = weekendsScheduleDtoList.stream()
+        /*weekendsScheduleDtoList = weekendsScheduleDtoList.stream()
                 .sorted(Comparator.comparing(WeekendsScheduleDto::getDay)
                 .thenComparing(WeekendsScheduleDto::getStartHour))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
+        Collections.sort(weekendsScheduleDtoList, new Comparator<WeekendsScheduleDto>() {
+            @Override
+            public int compare(WeekendsScheduleDto o1, WeekendsScheduleDto o2) {
+                if (weekMap.get(o1.getDay()).compareTo(weekMap.get(o2.getDay())) < 0)
+                    return -1;
+                if (o1.getStartHour().compareTo(o2.getStartHour()) < 0)
+                    return -1;
+                return 1;
+            }
+        });
         // 将时间安排转化为日期表格式的数据
         List<CourseScheduleDto> courseScheduleDtoList = new ArrayList<>();
         // 计算连个日期间隔天数

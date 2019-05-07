@@ -36,9 +36,10 @@ public class StudentCourseScheduleServiceImpl implements IStudentCourseScheduleS
         if (EmptyUtils.listIsEmpty(courseScheduleDtoList) || EmptyUtils.intIsEmpty(gradeId))
             return false;
         // 缴费、不是中途报名的学生
+        // 无人报名，则不必生成课表
         List<TbStudentSignUpDo> studentSignUpDoList = iSignUpFormalCourseService.getListByGradeId(gradeId);
         if (EmptyUtils.listIsEmpty(studentSignUpDoList))
-            return false;
+            return true;
         List<TbStudentCourseScheduleDo> studentCourseScheduleDoList = new ArrayList<>();
         // TODO 之后分步插入，打印日志
         for (TbStudentSignUpDo studentSignUp:studentSignUpDoList

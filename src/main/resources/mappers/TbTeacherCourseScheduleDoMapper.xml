@@ -12,7 +12,7 @@
     <result column="course_id" jdbcType="INTEGER" property="courseId" />
     <result column="grade_id" jdbcType="INTEGER" property="gradeId" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
-    <result column="period" jdbcType="VARCHAR" property="period" />
+    <result column="period" jdbcType="INTEGER" property="period" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="is_sign_in" jdbcType="TINYINT" property="isSignIn" />
     <result column="is_suspend" jdbcType="TINYINT" property="isSuspend" />
@@ -165,7 +165,7 @@
       create_id, create_time, last_update_id, 
       last_update_time)
     values (#{id,jdbcType=INTEGER}, #{teacherId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, 
-      #{gradeId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{period,jdbcType=VARCHAR}, 
+      #{gradeId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{period,jdbcType=INTEGER},
       #{endTime,jdbcType=TIMESTAMP}, #{isSignIn,jdbcType=TINYINT}, #{isSuspend,jdbcType=TINYINT}, 
       #{isAddClass,jdbcType=TINYINT}, #{signInTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
       #{createId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateId,jdbcType=INTEGER}, 
@@ -245,7 +245,7 @@
         #{startTime,jdbcType=TIMESTAMP},
       </if>
       <if test="period != null">
-        #{period,jdbcType=VARCHAR},
+        #{period,jdbcType=INTEGER},
       </if>
       <if test="endTime != null">
         #{endTime,jdbcType=TIMESTAMP},
@@ -314,7 +314,7 @@
         start_time = #{record.startTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.period != null">
-        period = #{record.period,jdbcType=VARCHAR},
+        period = #{record.period,jdbcType=INTEGER},
       </if>
       <if test="record.endTime != null">
         end_time = #{record.endTime,jdbcType=TIMESTAMP},
@@ -363,7 +363,7 @@
       course_id = #{record.courseId,jdbcType=INTEGER},
       grade_id = #{record.gradeId,jdbcType=INTEGER},
       start_time = #{record.startTime,jdbcType=TIMESTAMP},
-      period = #{record.period,jdbcType=VARCHAR},
+      period = #{record.period,jdbcType=INTEGER},
       end_time = #{record.endTime,jdbcType=TIMESTAMP},
       is_sign_in = #{record.isSignIn,jdbcType=TINYINT},
       is_suspend = #{record.isSuspend,jdbcType=TINYINT},
@@ -399,7 +399,7 @@
         start_time = #{startTime,jdbcType=TIMESTAMP},
       </if>
       <if test="period != null">
-        period = #{period,jdbcType=VARCHAR},
+        period = #{period,jdbcType=INTEGER},
       </if>
       <if test="endTime != null">
         end_time = #{endTime,jdbcType=TIMESTAMP},
@@ -445,7 +445,7 @@
       course_id = #{courseId,jdbcType=INTEGER},
       grade_id = #{gradeId,jdbcType=INTEGER},
       start_time = #{startTime,jdbcType=TIMESTAMP},
-      period = #{period,jdbcType=VARCHAR},
+      period = #{period,jdbcType=INTEGER},
       end_time = #{endTime,jdbcType=TIMESTAMP},
       is_sign_in = #{isSignIn,jdbcType=TINYINT},
       is_suspend = #{isSuspend,jdbcType=TINYINT},

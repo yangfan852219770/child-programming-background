@@ -13,7 +13,7 @@
               create_time, last_update_id, last_update_time
               )
             values
-            <foreach collection="studentCourseScheduleDoList" item="item" index="index" separator=",">
+            <foreach collection="list" item="item" index="index" separator=",">
             (
               #{item.id,jdbcType=INTEGER}, #{item.courseId,jdbcType=INTEGER}, #{item.studentId,jdbcType=INTEGER},
               #{item.gradeId,jdbcType=INTEGER}, #{item.tempGradeId,jdbcType=INTEGER}, #{item.startTime,jdbcType=TIMESTAMP},
