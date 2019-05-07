@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.child.programming.base.mapper.TeacherCourseScheduleCustomMapper" >
+    <insert id="insertBatch" parameterType="java.util.List">
+
+        insert into teacher_course_schedule (id, teacher_id, course_id,
+        grade_id, start_time, period,
+        end_time, is_sign_in, is_suspend,
+        is_add_class, sign_in_time, status,
+        create_id, create_time, last_update_id,
+        last_update_time)
+        values
+        <foreach collection="teacherCourseScheduleDoList" item="item" index="index" separator=",">
+        (
+        #{item.id,jdbcType=INTEGER}, #{item.teacherId,jdbcType=INTEGER}, #{item.courseId,jdbcType=INTEGER},
+        #{item.gradeId,jdbcType=INTEGER}, #{item.startTime,jdbcType=TIMESTAMP}, #{item.period,jdbcType=VARCHAR},
+        #{item.endTime,jdbcType=TIMESTAMP}, #{item.isSignIn,jdbcType=TINYINT}, #{item.isSuspend,jdbcType=TINYINT},
+        #{item.isAddClass,jdbcType=TINYINT}, #{item.signInTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=TINYINT},
+        #{item.createId,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.lastUpdateId,jdbcType=INTEGER},
+        #{item.lastUpdateTime,jdbcType=TIMESTAMP}
+        )
+        </foreach>
+    </insert>
+</mapper>

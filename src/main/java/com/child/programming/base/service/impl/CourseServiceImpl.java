@@ -12,6 +12,8 @@ import com.child.programming.base.model.TbCourseDoExample;
 import com.child.programming.base.model.TbGradeDo;
 import com.child.programming.base.service.ICourseService;
 import com.child.programming.base.service.IGradeService;
+import com.child.programming.base.service.IStudentCourseScheduleService;
+import com.child.programming.base.service.ITeacherCourseScheduleService;
 import com.child.programming.base.util.*;
 import com.child.programming.education.manage.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +30,13 @@ public class CourseServiceImpl implements ICourseService {
     private CourseCustomMapper courseCustomMapper;
     @Autowired
     private TbCourseDoMapper tbCourseDoMapper;
+
     @Autowired
     private IGradeService iGradeService;
+    @Autowired
+    private IStudentCourseScheduleService iStudentCourseScheduleService;
+    @Autowired
+    private ITeacherCourseScheduleService iTeacherCourseScheduleService;
 
     /**
      * @Description:    小程序首页课程列表展示，包括搜索，高级搜索
@@ -262,10 +269,13 @@ public class CourseServiceImpl implements ICourseService {
             List<CourseScheduleDto> courseScheduleDtoList = iGradeService.convertToCourseSchedule(grade);
 
             // 学生课程表处理
-
+            boolean studentResult = iStudentCourseScheduleService.generateSchedule(courseScheduleDtoList, grade.getId(), userId);
             // 老师课程表处理
+            boolean teacherResult = iTeacherCourseScheduleService.generateSchedule(courseScheduleDtoList, userId);
+            if (!studentResult || !teacherResult)
+                return false;
         }
-        return null;
+        return true;
     }
 
     /**

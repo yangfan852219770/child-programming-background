@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.child.programming.base.mapper.StudentCourseScheduleCustomMapper" >
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into student_course_schedule (id, course_id, student_id,
+              grade_id, temp_grade_id, start_time,
+              end_time, period, is_sign_in,
+              is_leave, is_adjust, is_evaluate,
+              is_retroactive, is_suspend, is_add_class,
+              date_for_absence, change_class_time, evaluation_time,
+              sign_in_time, evaluate_text, evaluate_voice_url,
+              evaluate_video_url, status, create_id,
+              create_time, last_update_id, last_update_time
+              )
+            values
+            <foreach collection="studentCourseScheduleDoList" item="item" index="index" separator=",">
+            (
+              #{item.id,jdbcType=INTEGER}, #{item.courseId,jdbcType=INTEGER}, #{item.studentId,jdbcType=INTEGER},
+              #{item.gradeId,jdbcType=INTEGER}, #{item.tempGradeId,jdbcType=INTEGER}, #{item.startTime,jdbcType=TIMESTAMP},
+              #{item.endTime,jdbcType=TIMESTAMP}, #{item.period,jdbcType=INTEGER}, #{item.isSignIn,jdbcType=TINYINT},
+              #{item.isLeave,jdbcType=TINYINT}, #{item.isAdjust,jdbcType=TINYINT}, #{item.isEvaluate,jdbcType=TINYINT},
+              #{item.isRetroactive,jdbcType=TINYINT}, #{item.isSuspend,jdbcType=TINYINT}, #{item.isAddClass,jdbcType=TINYINT},
+              #{item.dateForAbsence,jdbcType=TIMESTAMP}, #{item.changeClassTime,jdbcType=TIMESTAMP}, #{item.evaluationTime,jdbcType=TIMESTAMP},
+              #{item.signInTime,jdbcType=TIMESTAMP}, #{item.evaluateText,jdbcType=VARCHAR}, #{item.evaluateVoiceUrl,jdbcType=VARCHAR},
+              #{item.evaluateVideoUrl,jdbcType=VARCHAR}, #{item.status,jdbcType=TINYINT}, #{item.createId,jdbcType=INTEGER},
+              #{item.createTime,jdbcType=TIMESTAMP}, #{item.lastUpdateId,jdbcType=INTEGER}, #{item.lastUpdateTime,jdbcType=TIMESTAMP}
+            )
+            </foreach>
+    </insert>
+</mapper>

@@ -3,6 +3,7 @@ package com.child.programming;
 import com.child.programming.base.mapper.TbClassroomDoMapper;
 import com.child.programming.base.model.TbClassroomDo;
 import com.child.programming.base.model.TbGradeDo;
+import com.child.programming.base.service.ICourseService;
 import com.child.programming.base.service.IGradeService;
 import com.child.programming.education.manage.dto.CourseScheduleDto;
 import com.child.programming.education.manage.dto.WeekendsScheduleDto;
@@ -24,6 +25,9 @@ public class ChildProgrammingBackgroundApplicationTests {
     private TbClassroomDoMapper classroomDoMapper;
     @Autowired
     private IGradeService iGradeService;
+
+    @Autowired
+    private ICourseService iCourseService;
 
 
     @Test

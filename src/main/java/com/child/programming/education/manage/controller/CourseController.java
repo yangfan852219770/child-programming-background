@@ -38,6 +38,7 @@ public class CourseController {
     @Autowired
     private IGradeService iGradeService;
 
+    private static final Integer startCourseStatus = 2; // 开课状态码
     /**
      * 列表
      * @param name 课程名称
@@ -105,10 +106,14 @@ public class CourseController {
                 courseDo.setStatus(status);
                 // 修改课程状态
                 boolean result = iCourseService.updateCourse(userInfoPojo.getId(), courseDo);
-                // 开课 老师、学生生成课表
-                if (result)
-                    return ResultDto.success();
-                return ResultDto.fail();
+                // 开课 老师、学生生成课表 2 代表开课
+                if (result && startCourseStatus.equals(status)){
+                    boolean scheduleResult = iCourseService.generateCourseSchedule(id, userInfoPojo.getId());
+                    if (scheduleResult)
+                        return ResultDto.success();
+                    return ResultDto.fail("生成课表失败");
+                }
+
             }
             return ResultDto.fail();
         }
