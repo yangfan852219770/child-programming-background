@@ -415,7 +415,7 @@ public class GradeServiceImpl implements IGradeService {
              )
             weekendsScheduleDtoList.addAll(schedule.convertToWeekendsSchedule());
 
-        // 时间安排排序
+        // 时间安排排序，从小到大
         weekendsScheduleDtoList = weekendsScheduleDtoList.stream()
                 .sorted(Comparator.comparing(WeekendsScheduleDto::getDay)
                 .thenComparing(WeekendsScheduleDto::getStartHour))

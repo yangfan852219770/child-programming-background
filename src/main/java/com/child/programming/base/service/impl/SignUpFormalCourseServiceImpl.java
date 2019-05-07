@@ -4,6 +4,7 @@ import com.child.programming.base.dto.SignUpFormalCourseInfoDto;
 import com.child.programming.base.mapper.SignUpFormalCourseCustomMapper;
 import com.child.programming.base.mapper.TbStudentSignUpDoMapper;
 import com.child.programming.base.model.TbStudentSignUpDo;
+import com.child.programming.base.model.TbStudentSignUpDoExample;
 import com.child.programming.base.service.ISignUpFormalCourseService;
 import com.child.programming.base.util.EmptyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,15 @@ public class SignUpFormalCourseServiceImpl implements ISignUpFormalCourseService
         }
 
         return result == idArray.length;
+    }
+
+    @Override
+    public List<TbStudentSignUpDo> getListByGradeId(Integer gradeId) {
+        if (EmptyUtils.intIsEmpty(gradeId))
+            return null;
+        TbStudentSignUpDoExample example = new TbStudentSignUpDoExample();
+        TbStudentSignUpDoExample.Criteria criteria = example.createCriteria();
+        criteria.andGradeIdEqualTo(gradeId).andIsPaymentEqualTo(Byte.valueOf("1")).andIsHalfwayEqualTo(Byte.valueOf("0"));
+        return studentSignUpDoMapper.selectByExample(example);
     }
 }

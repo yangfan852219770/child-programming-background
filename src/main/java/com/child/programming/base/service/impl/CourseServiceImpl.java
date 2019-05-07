@@ -249,7 +249,7 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
-    public Boolean generateCourseSchedule(Integer courseId) {
+    public Boolean generateCourseSchedule(Integer courseId, Integer userId) {
         if (EmptyUtils.intIsEmpty(courseId))
             return false;
         List<TbGradeDo> gradeDoList = iGradeService.getListByCourseId(courseId);
@@ -259,6 +259,11 @@ public class CourseServiceImpl implements ICourseService {
         // 课表处理
         for (TbGradeDo grade:gradeDoList
              ) {
+            List<CourseScheduleDto> courseScheduleDtoList = iGradeService.convertToCourseSchedule(grade);
+
+            // 学生课程表处理
+
+            // 老师课程表处理
         }
         return null;
     }

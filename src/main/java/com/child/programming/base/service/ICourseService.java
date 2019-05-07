@@ -81,7 +81,8 @@ public interface ICourseService {
     /**
      * 生成老师、学生课表
      * @param courseId
+     * @param userId
      * @return
      */
-    Boolean generateCourseSchedule(Integer courseId);
+    Boolean generateCourseSchedule(Integer courseId, Integer userId);
 }
