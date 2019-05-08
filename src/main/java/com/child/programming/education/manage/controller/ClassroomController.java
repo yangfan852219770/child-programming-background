@@ -79,6 +79,7 @@ public class ClassroomController {
 
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && !StringUtils.isEmpty(idsStr)) {
+            // TODO 删除前占用校验
             String[] idArray = idsStr.split(",");
             boolean result = iClassroomService.delete(idArray, userInfoPojo.getId());
             if (result)

@@ -94,7 +94,7 @@ public class ClassroomServiceImpl implements IClassroomService {
         if (!EmptyUtils.intIsEmpty(schoolId)){
             TbClassroomDoExample example = new TbClassroomDoExample();
             TbClassroomDoExample.Criteria criteria = example.createCriteria();
-            criteria.andSchoolIdEqualTo(schoolId);
+            criteria.andSchoolIdEqualTo(schoolId).andStatusEqualTo(Byte.valueOf("1"));
             List<TbClassroomDo> classroomDoList = classroomDoMapper.selectByExample(example);
             List<SelectDto> selectDtoList = new ArrayList<>();
             for (TbClassroomDo classroom:classroomDoList

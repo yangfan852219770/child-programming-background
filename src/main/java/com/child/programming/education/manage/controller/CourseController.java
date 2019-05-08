@@ -113,6 +113,8 @@ public class CourseController {
                         return ResultDto.success();
                     return ResultDto.fail("生成课表失败");
                 }
+                if (result)
+                    return ResultDto.success();
 
             }
             return ResultDto.fail();
