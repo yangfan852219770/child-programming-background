@@ -3,18 +3,21 @@ package com.child.programming.base.service.impl;
 import com.child.programming.base.mapper.StudentCourseScheduleCustomMapper;
 import com.child.programming.base.mapper.TbStudentCourseScheduleDoMapper;
 import com.child.programming.base.model.TbStudentCourseScheduleDo;
+import com.child.programming.base.model.TbStudentCourseScheduleDoExample;
 import com.child.programming.base.model.TbStudentSignUpDo;
 import com.child.programming.base.service.ISignUpFormalCourseService;
 import com.child.programming.base.service.IStudentCourseScheduleService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
 import com.child.programming.education.manage.dto.CourseScheduleDto;
+import com.child.programming.education.manage.dto.StudentCourseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description：
@@ -52,7 +55,8 @@ public class StudentCourseScheduleServiceImpl implements IStudentCourseScheduleS
                 schedule.setCreateId(userId);
                 schedule.setCreateTime(new Date());
                 schedule.setStatus(Byte.valueOf("1"));
-                // TODO 给其余字段，设置默认值
+                schedule.setIsSignIn(Byte.valueOf("0"));
+                // TODO 签到字段，设置默认值 0
                 schedule.setStudentId(studentSignUp.getStudentId());
             }
             studentCourseScheduleDoList.addAll(studentCourseScheduleDoList1);
@@ -60,5 +64,21 @@ public class StudentCourseScheduleServiceImpl implements IStudentCourseScheduleS
         int count = studentCourseScheduleCustomMapper.insertBatch(studentCourseScheduleDoList);
 
         return count == studentCourseScheduleDoList.size();
+    }
+
+    @Override
+    public List<StudentCourseDto> getStudentCourseList(Map map) {
+        return studentCourseScheduleCustomMapper.getStudentCourseList(map);
+    }
+
+    @Override
+    public List<TbStudentCourseScheduleDo> getStudentCourseScheduleList(Integer studentId, Integer courseId) {
+        if (EmptyUtils.intIsEmpty(studentId) || EmptyUtils.intIsEmpty(courseId))
+            return null;
+        TbStudentCourseScheduleDoExample example = new TbStudentCourseScheduleDoExample();
+        example.setOrderByClause("period");
+        TbStudentCourseScheduleDoExample.Criteria criteria = example.createCriteria();
+        criteria.andStudentIdEqualTo(studentId).andCourseIdEqualTo(courseId);
+        return studentCourseScheduleDoMapper.selectByExample(example);
     }
 }

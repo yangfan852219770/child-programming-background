@@ -21,4 +21,17 @@
         )
         </foreach>
     </insert>
+
+    <select id="getTeacherCourseList" parameterType="java.util.Map" resultType="com.child.programming.education.manage.dto.TeacherCourseDto">
+        select t.id AS teacherId, t.name AS teacherName,
+        g.id AS gradeId,g.name AS gradeName,
+        c.id AS courseId,c.name AS courseName
+        from course c
+        LEFT JOIN grade g ON c.id=g.course_id
+        LEFT JOIN teacher t on g.teacher_id=t.id
+        WHERE c.status!=1
+        <if test="teacherName !=null">
+            AND t.name like #{teacherName}
+        </if>
+    </select>
 </mapper>
