@@ -1,6 +1,7 @@
 package com.child.programming.base.service;
 
 import com.child.programming.base.dto.SignUpExperienceCourseInfoDto;
+import com.child.programming.base.model.TbSignUpExperienceCourseDo;
 
 import java.util.List;
 import java.util.Map;
@@ -25,4 +26,12 @@ public interface ISignUpExperienceCourseService {
      * @return
      */
     Boolean delete(String[] idArray, Integer userId);
+
+    /**
+     * 更新
+     * @param signUpExperienceCourseDo
+     * @param userId
+     * @return
+     */
+    Boolean update(TbSignUpExperienceCourseDo signUpExperienceCourseDo, Integer userId);
 }

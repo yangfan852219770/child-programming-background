@@ -4,17 +4,17 @@
     <select id="getList" parameterType="java.util.Map" resultType="com.child.programming.base.dto.SignUpExperienceCourseInfoDto">
         select suec.id, suec.sign_up_time AS signUpTime, suec.is_payment AS isPayment,
         s.name AS studentName, s.id AS studentId, s.guardian_phone studentPhone,
-        ec.title AS experienceCourseName, ec.id AS experienceCourseId,
+        ec.title AS experienceCourseName, ec.id AS experienceCourseId, ec.money AS courseMoney,
         sc.share_counts shareCounts
         from sign_up_experience_course AS suec
         LEFT JOIN experience_course AS ec
         ON ec.id=suec.experience_course_id
         LEFT JOIN student AS s
-        ON s.id=suec.student_id
+        ON s.guardian_phone=suec.phone
         LEFT JOIN share_circle AS sc
         ON sc.course_id=suec.id
         and sc.student_id=s.id
-        where ec.status=1
+        where ec.status!=0
         and suec.status=1
         and s.status=1
         and s.id is not null

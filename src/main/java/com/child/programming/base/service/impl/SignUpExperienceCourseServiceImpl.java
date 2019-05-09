@@ -49,4 +49,13 @@ public class SignUpExperienceCourseServiceImpl implements ISignUpExperienceCours
 
         return result == idArray.length;
     }
+
+    @Override
+    public Boolean update(TbSignUpExperienceCourseDo signUpExperienceCourseDo, Integer userId) {
+        if (null == signUpExperienceCourseDo || null == signUpExperienceCourseDo.getId())
+            return false;
+        signUpExperienceCourseDo.setLastUpdateId(userId);
+        signUpExperienceCourseDo.setLastUpdateTime(new Date());
+        return signUpExperienceCourseDoMapper.updateByPrimaryKeySelective(signUpExperienceCourseDo) > 0;
+    }
 }

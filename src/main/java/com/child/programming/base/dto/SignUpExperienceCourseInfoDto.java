@@ -22,6 +22,8 @@ public class SignUpExperienceCourseInfoDto {
 
     private String experienceCourseName; // 体验课名称
 
+    private Double courseMoney; // 课程价格
+
     private Integer shareCounts; // 分享次数
 
     private Byte isPayment; // 是否付费
