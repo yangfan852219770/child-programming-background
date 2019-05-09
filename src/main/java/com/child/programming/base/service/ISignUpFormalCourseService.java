@@ -1,6 +1,7 @@
 package com.child.programming.base.service;
 
 import com.child.programming.base.dto.SignUpFormalCourseInfoDto;
+import com.child.programming.base.model.TbPaymentRecordDo;
 import com.child.programming.base.model.TbStudentSignUpDo;
 
 import java.util.List;
@@ -33,4 +34,19 @@ public interface ISignUpFormalCourseService {
      * @return
      */
     List<TbStudentSignUpDo> getListByGradeId(Integer gradeId);
+
+    /**
+     * 根据主键查询
+     * @param id
+     * @return
+     */
+    TbStudentSignUpDo getOneById(Integer id);
+
+    /**
+     * 更新
+     * @param studentSignUpDo
+     * @param userId
+     * @return
+     */
+    Boolean update(TbStudentSignUpDo studentSignUpDo, Integer userId);
 }
