@@ -70,6 +70,13 @@ Project Version - v1.0
     /*jquery ui search */
     $( ".select-ui" ).selectmenu();
     /*******************Code START*****************************/
+   var currentUser = window.sessionStorage.getItem("currentUser");
+   if(currentUser){
+       currentUser = JSON.parse(currentUser);
+       $("#login").css("display","none");
+       $("#logout").css("display","block");
+       $("#CurrentUserName").text(currentUser.data.name);
+   }
     layui.use(['laypage', 'layer','element'], function(){
         var laypage = layui.laypage
             ,layer = layui.layer,
@@ -130,7 +137,7 @@ Project Version - v1.0
                                              $("#login").css("display","none");
                                              $("#logout").css("display","block");
 
-
+                                             window.sessionStorage.setItem("currentUser",JSON.stringify(res));
                                              $("#CurrentUserName").text(res.data.name);
                                              layer.close( index);
                                          }else{
@@ -170,6 +177,7 @@ Project Version - v1.0
                                 ,success:function (res) {
                                     if(res){
                                         if(res.status==200||res.status=="200"){
+                                            window.sessionStorage.clear();
                                             $("#login").css("display","block");
                                             $("#logout").css("display","none");
                                             layer.close( index);
