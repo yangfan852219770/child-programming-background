@@ -2,6 +2,8 @@ package com.child.programming.base.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @author zdp
  * @description: TODO
@@ -15,6 +17,10 @@ public class StudentWorkInfoDto {
 
     private Integer teacherId; // TeacherId
 
+    private String studentName; // StudentName
+
+    private String teacherName; // TeacherName
+
     private String workUrl; // WorksUrl
 
     private String workName; // WorkName
@@ -26,6 +32,8 @@ public class StudentWorkInfoDto {
     private Integer collectionNumber;
 
     private String likeCount;
+
+    private String workCreateTime;
 
     private Byte status;
 

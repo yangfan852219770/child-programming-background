@@ -1,10 +1,12 @@
 package com.child.programming.base.service;
 
+import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.dto.StudentInfoDto;
 import com.child.programming.base.model.TbSignUpExperienceCourseDo;
 import com.child.programming.base.model.TbStudentDo;
 import com.child.programming.base.model.TbStudentSignUpDo;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -90,4 +92,20 @@ public interface IStudentService {
      * @Description:    根据课程，手机号查询此体验课是否已经报名
      */
     List<TbSignUpExperienceCourseDo> getsignUpExperienceCourseByExperienceCourseIdAndPhone(int experienceCourseId, String phone);
+
+    /**
+     * 学生登录
+     * @param loginId
+     * @param password
+     * @param session
+     * @return
+     */
+    ResultDto studentLogin(String loginId,String password,HttpSession session);
+
+    /***
+     * 学生退出
+     * @param session
+     * @return
+     */
+    ResultDto studentLogout(HttpSession session);
 }

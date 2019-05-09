@@ -20,13 +20,10 @@
     <!-- Custom CSS File -->
     <link rel="stylesheet" href="assets/dist/css/style.css">
 
-
     <!--悬浮窗-->
     <link rel="stylesheet" href="assets/plugins/float/css/suspension_frame.css">
     <link rel="stylesheet" href="assets/plugins/layui.layim-v3.0.1/layui/css/layui.css">
     <link rel="stylesheet" href="assets/dist/css/Swiper-Sec.css">
-    <link rel="stylesheet" href="assets/plugins/layui2.x/css/layui.css">
-
     <title>贝壳编程官方网站</title>
 </head>
 
@@ -441,6 +438,19 @@
              </div>
 
          </div>
+         <!-- Add Pagination -->
+         <!--<div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">-->
+             <!--<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 1"></span>-->
+             <!--<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2"></span>-->
+             <!--<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 3"></span>-->
+             <!--<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 4"></span>-->
+             <!--<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 5"></span>-->
+             <!--<span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 6"></span>-->
+             <!--<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 7"></span>-->
+             <!--<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 8"></span>-->
+             <!--<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 9"></span>-->
+             <!--<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 10"></span>-->
+         <!--</div>-->
          <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
      </div>
  </div>
@@ -659,50 +669,53 @@
          </div>
      </div>
 
-     <div id="consult" class="pos-rel">
-         <div class="col-lg-2"></div>
-         <div class=" col-lg-10 container pt60 pb60 ">
-             <div class="row align-items-center d-flex flex">
+ <div id="consult" class="pos-rel">
+     <div class="container pt60 pb60">
+         <div class="row align-items-center d-flex flex">
 
-                 <div class="col-md-6 mb-30">
-                     <h4><img src="assets/images/wechat.png" width="20" height="20"> &nbsp;&nbsp;扫码关注公众号，了解更多资讯</h4>
-                     <hr>
-                     <div class="media align-items-center">
-                         <img src="assets/plugins/float/images/06code.jpg" width="300" height="300">
-                     </div>
+             <div class="col-md-6 mb-30">
+                 <h4><img src="assets/images/wechat.png" width="20" height="20"> &nbsp;&nbsp;扫码关注公众号，了解更多资讯</h4>
+                 <hr>
+                 <div class="media align-items-center">
+                     <img src="assets/plugins/float/images/06code.jpg" width="300" height="300">
                  </div>
-                 <!--/.col-->
-                 <div class="col-md-5 mr-auto margin-b-30">
-                     <div  id="consultForm" class="p-4 rounded shadow">
-                         <div role="form">
-                             <div class="form-group">
-
-                                 <input type="text" id="studentName"   class="form-control" placeholder="姓名">
-                             </div>
-                             <div class="form-group">
-                                 <input type="text"  id="studentPhone"  class="form-control" placeholder="电话">
-                             </div>
-
-                             <div class="form-group text-center">
-                                 <button  id="consultFormSubimtBtn" type="button" class="btn btn-lg btn-danger text-white" >立即报名领取免费体验课</button>
-                             </div>
+             </div>
+             <!--/.col-->
+             <div id="consultEnter" class="col-md-5 mr-auto margin-b-30" >
+                 <div class="p-4 rounded shadow">
+                     <form role="form" >
+                         <div class="form-group">
+                             <input id="posterPhone" type="text" class="form-control" placeholder="手机号">
                          </div>
-                     </div>
-                     <div id="consultFormSuccess" style="display: none">
-                         <h4><img src="assets/images/success.png" width="20" height="20"> &nbsp;&nbsp;预约成功，课程顾问将会通过电话联系您。请留意接听 15833655291 的电话。</h4>
-                         <hr>
-                         <div class="text-center">
-                             <img src="assets/images/success.png" >
+                         <div class="form-group form-inline" >
+                             <input id="posterCode" type="text" class="form-control" placeholder="验证码"  >
+                             <button  type="button" id="posterLoadingButton" style="margin-left: 8px" class="btn btn-sm btn-primary ">获取验证码</button>
                          </div>
-                     </div>
-                     <!-- end .smart-wrap section -->
+
+                         <div class="form-group text-center">
+                                 <button id="posterSubmitButton" type="button" class="btn btn-lg btn-danger text-white" >立即报名领取免费体验课</button>
+                         </div>
+                     </form>
                  </div>
+                 <!-- end .smart-wrap section -->
+             </div>
 
+             <div class="col-md-6 mb-30">
+
+                 <h4><img src="assets/images/success.png" width="20" height="20"> &nbsp;&nbsp;预约成功，课程顾问将会通过电话联系您。请留意接听 15833655291 的电话。</h4>
+                 <hr>
+                 <div class="text-center">
+                     <img src="assets/images/success.png" >
+                 </div>
 
              </div>
-         </div>
 
+
+
+         </div>
      </div>
+
+ </div>
  </div>
     <!--footer-->
  <footer class='footer'  >
@@ -729,8 +742,7 @@
     <!--compile plugins-->
  <script src="assets/plugins/float/js/jquery-3.2.1.min.js"></script>
    <script src="assets/dist/js/plugins.js"></script>
- <script src="assets/plugins/layui2.x/layui.js"></script>
- <script src="assets/dist/js/index.posters.js"></script>
+   <script src="assets/dist/js/education.custom.js"></script>
 
     <script src="assets/plugins/float/js/suspension_frame.js"></script>
     <script src="assets/plugins/swiper/swiper.min.js"></script>
@@ -754,6 +766,46 @@
     layui.use('layer', function(){
         var $ = layui.jquery, layer = layui.layer;
 
+        $('#posterLoadingButton').click(function() {
+                $(this).removeClass('btn-primary').addClass('disabled');
+                $(this).html('<span class="red">59</span> 秒后重新获取');
+                var secondObj = $('#posterLoadingButton').find('span');
+                var secondObjVal = secondObj.text();
+                function secondCounter() {
+                    var secondTimer = setTimeout(function() {
+                        secondObjVal--;
+                        secondObj.text(secondObjVal);
+                        secondCounter();
+                    }, 1000);
+                    if (secondObjVal == 0) {
+                        clearTimeout(secondTimer);
+                        $('#posterLoadingButton').text('重新获取校验码');
+                        $('#posterLoadingButton').removeClass('disabled').addClass('btn-primary');
+                    }
+                }
+                secondCounter();
+        });
+
+        $("#posterSubmitButton").click(function(){
+            function fail(dom,msg){
+                dom.css("border","1px solid red");
+                dom.parent().append("<span style='color: red'>"+msg+"</span>");
+                setTimeout(function () {
+                    dom.css("border","");
+                    dom.parent().find("span").css("display","none")
+                },1000);
+            }
+              if($("#posterPhone").val()===""){
+                  fail($("#posterPhone"),"手机号不能为空！");
+              }else
+              if(!(/^1(3|4|5|7|8)\d{9}$/.test($("#posterPhone").val()))){
+                  fail($("#posterPhone"),"手机号不正确，请重新输入！");
+              }
+            if($("#posterCode").val()===""){
+                fail($("#posterCode"),"验证码不能为空！");
+            }
+        });
+
         $("#laymi").click(function () {
             layer.open({
                 type:2,
@@ -762,47 +814,6 @@
             });
         })
 
-        $("#consultFormSubimtBtn").click(function () {
-            var studentName =$("#studentName").val();
-            var studentPhone =$("#studentPhone").val();
-            if(studentName==null||studentName==""){
-                layer.msg('请输入姓名！', {time: 5000, icon:0});
-                return;
-            }
-            if(studentPhone==null||studentPhone==""){
-                layer.msg('请输入电话！', {time: 5000, icon:0});
-                return;
-            }
-            if(/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/.test(studentPhone)){
-
-                $.ajax({
-                    url:"portal/experienceCoursePortalSave"
-                    ,method:"POST"
-                    ,async:false
-                    ,data:{
-                        studentName:studentName,
-                        studentPhone:studentPhone
-                    }
-                    ,success:function (res) {
-                        if(res.status==200||res.status=="200"){
-                            $("#consultForm").css("display","none");
-                            $("#consultFormSuccess").css("display","block");
-                            setTimeout(function () {
-                                $("#consultForm").css("display","block");
-                                $("#consultFormSuccess").css("display","none");
-
-                            },3000);
-
-                        }else{
-                            layer.msg(res.msg, {time: 5000, icon:6});
-                        }
-                    },
-                });
-            }else{
-                layer.msg('请输入合法手机号！', {time: 5000, icon:0});
-            }
-
-        });
     });
 </script>
 </body>

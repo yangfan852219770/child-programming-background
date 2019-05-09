@@ -3,80 +3,55 @@ Assan Education template
 Author - design_mylife
 Project Version - v1.0
  */
-var studentWorkList=[];
-var JQ$;
-function  studentWorkListDoM() {
+var studentWorkId=window.sessionStorage.getItem("studentWorkId");
 
-    //学生作品列表
-    layui.use(['laypage', 'layer'], function(){
-        var laypage = layui.laypage
-            ,layer = layui.layer;
-        //测试数据
-        var data =studentWorkList;
-        $('#studentWorkList').html("");
-        //调用分页
-        laypage.render({
-            elem: 'pagination'
-            ,count: data.length
-            ,limit:4
-            ,jump: function(obj){
-                $('#studentWorkList').html("");
-                /*  //模拟渲染
-                  document.getElementById('pagination').innerHTML = function(){
-                      var arr = []
-                          ,thisData = data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
-                      layui.each(thisData, function(index, item){
-                          arr.push('<li>'+ item +'</li>');
-                      });
-                      return arr.join('');
-                  }();*/
-                var arr = []
-                    ,thisData = studentWorkList.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
-                if(thisData){
-                    for(var i=0;i<thisData.length;i++){
-                        $('#studentWorkList').append( '<div class="col-lg-6 mb">'
-                           +' <div class="img-card-alt mb-30">'
-                            +'<a class="img-thumb" onclick="studentWork('+thisData[i].id +');">'
-                            +'<img src="assets/images/scratchGif.gif" alt="" class="img-fluid">'
-                            +' <span class="thumb-overlay">'
-                            +' <i class="icon-link"></i>'
-                            +' </span>'
-                            +' </a>'
-                            +'<div class="img-desc">'
-                            +' <a href="course-single.html" class="h5">'
-                            +thisData[i].workName
-                            +' </a>'
-                            +' <p class="pt-2">'
-                           +thisData[i].description
-                            +'</p>'
-                            +'<ul class="list-inline mb-0">'
+function scratchPlayer(url) {
+    window.devicePixelRatio = 1;
 
-                            +'<li class="list-inline-item mr-3">'
-                            +'<i class="fa fa-user mr-2"></i>'
-                            +' <a href="#!">'+thisData[i].studentName +'</a>'
-                            +' </li>'
-                            +' </ul>'
-                            +'</div>'
-                            +'</div>'
-                            +'</div>'
-                            );
-                    }
-                }else {
-                    $('#studentWorkList').html("");
-                }
-            }
+    var canvas = document.getElementById('test');
+    var render = new ScratchRender(canvas);
+    var vm = new VirtualMachine();
+    var storage = new ScratchStorage();
+    var mockMouse = data => vm.runtime.postIOData('mouse', {
+        canvasWidth: canvas.width,
+        canvasHeight: canvas.height,
+        ...data,
+});
+    /*   var startVm= document.getElementById("startVm");
+       var endVm =document.getElementById("endVm");
+       startVm.onclick=()=>{
+           vm.start();
+       }*/
+
+    vm.attachStorage(storage);
+    vm.attachRenderer(render);
+    vm.attachV2SVGAdapter(new ScratchSVGRenderer.SVGRenderer());
+    vm.attachV2BitmapAdapter(new ScratchSVGRenderer.BitmapAdapter());
+
+    document.getElementById("startVm").addEventListener('click', e =>{
+        vm.greenFlag(); // 执行程序
+});
+    document.getElementById("endVm").addEventListener('click', e =>{
+        vm.stopAll();
+});
+
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.responseType = 'blob';
+    request.onload = function () {
+        var reader = new FileReader();
+        reader.readAsArrayBuffer(request.response);
+        reader.onload = function (e) {
+            vm.start();
+            vm.loadProject(reader.result)
+                .then(() => {
+                vm.greenFlag(); // 执行程序
         });
-
-    });
-}
-function studentWork(studentWorkId){
-
-    window.sessionStorage.setItem("studentWorkId","");
-   window.sessionStorage.setItem("studentWorkId",studentWorkId);
-   location.href="course-single.html";
+        };
+    };
+    request.send();
 }
 (function ($) {
-    JQ$=$;
     "use strict";
     /**Preloader*/
     $(window).preloader({
@@ -142,29 +117,38 @@ function studentWork(studentWorkId){
     });
     /*jquery ui search */
     $( ".select-ui" ).selectmenu();
-    /*******************studentWork START*****************************/
+    /*******************StudentWorkSingle START*****************************/
 
 
-    //学生作品列表
     $.ajax({
-        url:"portal/studentWorkGetList"
+        url:"portal/studentWorkGetOneById"
         ,method:"POST"
         ,async:false
+        ,data:{
+            studentWorkId:studentWorkId
+        }
         ,success:function (res) {
-
             if(res){
-                //给学生作品赋值
-                studentWorkList=res;
-                //学生作品列表
-                studentWorkListDoM();
+              $("#description").text(res.description);
+                $("#createTime").text(res.workCreateTime);
+                $("#studentName").text(res.studentName);
+                $("#teacherName").text(res.teacherName);
+                $("#workName").text(res.workName);
+                scratchPlayer(res.workUrl);
+            }else {
+                $("#description").text("暂无");
+                $("#createTime").text("暂无");
+                $("#studentName").text("暂无");
+                $("#teacherName").text("暂无");
+                scratchPlayer("");
             }
         }
         ,error:function (res) {
+
         }
     });
 
-
-    /*******************studentWork END*****************************/
+    /*******************StudentWorkSingle END*****************************/
 
 })(jQuery);
 $(function () {

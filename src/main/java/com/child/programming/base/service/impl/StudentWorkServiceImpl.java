@@ -1,15 +1,16 @@
 package com.child.programming.base.service.impl;
 
-import com.child.programming.base.dto.LoginedUserInfoDto;
-import com.child.programming.base.dto.MaterialInfoDto;
-import com.child.programming.base.dto.ResultDto;
-import com.child.programming.base.dto.StudentWorkInfoDto;
+import com.child.programming.base.dto.*;
+import com.child.programming.base.mapper.TbStudentDoMapper;
 import com.child.programming.base.mapper.TbStudentWorkDoMapper;
+import com.child.programming.base.mapper.TbTeacherDoMapper;
 import com.child.programming.base.model.*;
 import com.child.programming.base.service.IStudentWorkService;
 import com.child.programming.base.service.IUploadService;
 import com.child.programming.base.util.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +31,12 @@ public class StudentWorkServiceImpl implements IStudentWorkService {
     private IUploadService iUploadService;
     @Autowired
     private TbStudentWorkDoMapper tbStudentWorkDoMapper;
+    @Autowired
+    private TbStudentDoMapper tbStudentDoMapper;
+    @Autowired
+    private TbTeacherDoMapper tbTeacherDoMapper;
+    @Value("${IMAGE.BASE.MANAGE.URL}")
+    private String baseUrl;
     @Override
     public ResultDto uploadScratch(HttpServletRequest request, HttpSession session) {
         String jsonStr = "";
@@ -38,8 +45,8 @@ public class StudentWorkServiceImpl implements IStudentWorkService {
         TbStudentWorkDo tbStudentWorkDo=new TbStudentWorkDo();
         String uploadPath="";
 
-        LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
-        if(EmptyUtils.objectIsEmpty(userInfoPojo))
+        StudentInfoDto studentInfoDto = HttpSessionUtil.getStudentInfoDto(session);
+        if(EmptyUtils.objectIsEmpty(studentInfoDto))
             return  ResultDto.fail("请先登录之后，发布！");
 
         try {
@@ -60,13 +67,13 @@ public class StudentWorkServiceImpl implements IStudentWorkService {
                 file = Base64Util.base64ToMultipart(base64Code);
         }
         uploadPath=iUploadService.uploadScratch("scratch",file,request);
-        tbStudentWorkDo.setStudentId(userInfoPojo.getId());
+        tbStudentWorkDo.setStudentId(studentInfoDto.getId());
         tbStudentWorkDo.setWorkUrl(uploadPath);
         tbStudentWorkDo.setWorkName(projectName);
         tbStudentWorkDo.setStatus(Byte.valueOf("1"));
-        tbStudentWorkDo.setId(Integer.parseInt(userInfoPojo.getFlexibleProperty()));
+        //tbStudentWorkDo.setId(Integer.parseInt(userInfoPojo.getFlexibleProperty()));
 
-        return  this.save(tbStudentWorkDo,userInfoPojo.getId())?ResultDto.success("创建成功，快去个人中心中查看吧"):ResultDto.fail("创建失败");
+        return  this.save(tbStudentWorkDo,studentInfoDto.getId())?ResultDto.success("发布成功！"):ResultDto.fail("发布失败");
     }
 
     @Override
@@ -84,6 +91,60 @@ public class StudentWorkServiceImpl implements IStudentWorkService {
             return ListUtil.convertElement(tbStudentWorkDos, StudentWorkInfoDto.class);
         else
             return null;
+    }
+
+    @Override
+    public List<StudentWorkInfoDto> getPortalList() {
+        TbStudentWorkDoExample tbStudentWorkDoExample = new TbStudentWorkDoExample();
+        TbStudentWorkDoExample.Criteria criteria = tbStudentWorkDoExample.createCriteria();
+
+        tbStudentWorkDoExample.setOrderByClause("create_time desc");
+            criteria.andStatusEqualTo(Byte.valueOf("2"));
+        List<TbStudentWorkDo> tbStudentWorkDos = tbStudentWorkDoMapper.selectByExample(tbStudentWorkDoExample);
+        if (!EmptyUtils.listIsEmpty(tbStudentWorkDos)) {
+            List<StudentWorkInfoDto> studentWorkInfoDtos= ListUtil.convertElement(tbStudentWorkDos, StudentWorkInfoDto.class);
+            for (StudentWorkInfoDto studentWorkInfoDto:studentWorkInfoDtos
+                 ) {
+                TbStudentDo studentDo=tbStudentDoMapper.selectByPrimaryKey(studentWorkInfoDto.getStudentId());
+                if(EmptyUtils.objectIsEmpty(studentDo))
+                    return null;
+                studentWorkInfoDto.setStudentName(studentDo.getName());
+
+                studentWorkInfoDto.setWorkUrl(baseUrl+studentWorkInfoDto.getWorkUrl());
+            }
+            return studentWorkInfoDtos;
+        } else
+            return null;
+    }
+
+    @Override
+    public StudentWorkInfoDto getOneById(Integer id) {
+        StudentWorkInfoDto studentWorkInfoDto = new StudentWorkInfoDto();
+
+        TbStudentWorkDo studentWorkDo =tbStudentWorkDoMapper.selectByPrimaryKey(id);
+
+        if(EmptyUtils.objectIsEmpty(studentWorkDo))
+            return  null;
+
+        TbStudentDo tbStudentDo  = tbStudentDoMapper.selectByPrimaryKey(studentWorkDo.getStudentId());
+        TbTeacherDo  tbTeacherDo = tbTeacherDoMapper.selectByPrimaryKey(studentWorkDo.getTeacherId());
+        BeanUtils.copyProperties(studentWorkDo,studentWorkInfoDto);
+
+        if(EmptyUtils.objectIsEmpty(studentWorkInfoDto))
+           return null;
+       studentWorkInfoDto.setWorkUrl(baseUrl+studentWorkInfoDto.getWorkUrl());
+       studentWorkInfoDto.setWorkCreateTime(DateUtil.DateToString(studentWorkDo.getCreateTime(),"yyyy-MM-dd"));
+
+        if(EmptyUtils.objectIsEmpty(tbStudentDo))
+            return null;
+        studentWorkInfoDto.setStudentName(tbStudentDo.getName());
+
+        if(EmptyUtils.objectIsEmpty(tbTeacherDo))
+            studentWorkInfoDto.setTeacherName("暂无指导老师");
+        else
+            studentWorkInfoDto.setTeacherName(tbTeacherDo.getName());
+
+       return studentWorkInfoDto;
     }
 
     @Override

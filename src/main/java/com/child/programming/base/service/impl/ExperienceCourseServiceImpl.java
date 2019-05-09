@@ -1,6 +1,7 @@
 package com.child.programming.base.service.impl;
 
 import com.child.programming.base.dto.ExperienceCourseInfoDto;
+import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.mapper.TbExperienceCourseDoMapper;
 import com.child.programming.base.mapper.TbShareCircleDoMapper;
 import com.child.programming.base.model.TbExperienceCourseDo;
@@ -127,5 +128,22 @@ public class ExperienceCourseServiceImpl implements IExperienceCourseService {
         }
 
         return result == idArray.length;
+    }
+
+    @Override
+    public ResultDto consult(String studentName, String studentPhone) {
+        TbExperienceCourseDoExample example = new TbExperienceCourseDoExample();
+
+        TbExperienceCourseDoExample.Criteria criteria = example.createCriteria();
+        criteria.andTelephoneEqualTo(studentPhone);
+        List<TbExperienceCourseDo> tbExperienceCourseDos=experienceCourseDoMapper.selectByExample(example);
+        if(!EmptyUtils.listIsEmpty(tbExperienceCourseDos))
+            return ResultDto.fail("该手机号已经报名，请勿重新报名！");
+
+        TbExperienceCourseDo tbExperienceCourseDo = new TbExperienceCourseDo();
+        tbExperienceCourseDo.setTelephone(studentPhone);
+        tbExperienceCourseDo.setTitle(studentName);
+
+        return this.save(null,tbExperienceCourseDo)?ResultDto.success():ResultDto.fail("报名失败！");
     }
 }

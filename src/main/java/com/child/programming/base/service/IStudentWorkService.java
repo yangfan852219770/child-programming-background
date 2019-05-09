@@ -32,11 +32,18 @@ public interface IStudentWorkService {
     List<StudentWorkInfoDto> getList(String name);
 
     /**
-     * Insert、Update
-     * @param tbStudentWorkDo
-     * @param userId
+     * Portal Query Works
      * @return
      */
+    //TODO There is no paging at present
+    List<StudentWorkInfoDto> getPortalList();
+    /**
+     * Query Student Work By id
+     * @param id
+     * @return
+     */
+    StudentWorkInfoDto getOneById(Integer id);
+
     Boolean save(TbStudentWorkDo tbStudentWorkDo, Integer userId);
 
     /**

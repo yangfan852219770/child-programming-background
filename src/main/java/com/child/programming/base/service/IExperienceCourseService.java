@@ -1,6 +1,7 @@
 package com.child.programming.base.service;
 
 import com.child.programming.base.dto.ExperienceCourseInfoDto;
+import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.model.TbExperienceCourseDo;
 import com.child.programming.base.model.TbShareCircleDo;
 
@@ -43,4 +44,12 @@ public interface IExperienceCourseService {
      * @return
      */
     Boolean delete(String[] idArray, Integer userId);
+
+    /***
+     * 体验课报名
+     * @param studentName
+     * @param studentPhone
+     * @return
+     */
+    ResultDto  consult(String studentName,String studentPhone);
 }

@@ -18,42 +18,17 @@
     <title>贝壳编程官方网站</title>
 </head>
 
-<body data-spy="scroll" data-target="#navbar-scroll" data-offset="75">
+<body data-spy="scroll" data-target="#navbar-scroll" data-offset="75" style="overflow:hidden">
     <!--pre-loader-->
     <div id="preloader">
         <div id="preloader-inner"></div>
     </div>
     <!--pre-loader-->
-    <div class="btn-group"  style=" position:fixed;z-index: 999;margin-left: 82%;margin-top: 20px;" >
+    <div class="btn-group"  style=" position:fixed;z-index: 999;margin-left: 82%; margin-top: -20px;" >
         <a  class="btn-lg btn-danger text-white" href="#consult" style="margin-right:5px; ">详细咨询</a>
 
         <a  class="btn-lg btn-warning text-white" href="index.html" >了解更多</a>
     </div>
-    <nav  id="experience-class"  class="navbar navbar-expand-lg  navbar-light fixed-bottom experience-class-none" style="height: 6rem; ">
-
-        <div style="margin-bottom: 30px;float:left; z-index:999;position:absolute;">
-            <img src="assets/images/experience_class_01.png"  width="700" height="350">
-        </div>
-        <div class="row m-auto "style="background-color: #fff; height: 4rem; width: 100%;border: 1px solid #c3e6cb;border-radius: 10px;padding-top: 10px">
-            <div class="col-lg-5"></div>
-            <div class="col-lg-3">
-                <div class="form-group" style="text-align: center;font-size: 16px;color: #0b0b0b;margin-top: 5px">
-                    免费领取价值
-                    <span style="color: #ff0000 ;font-size: 20px;font-weight: 800">200元</span>
-                    体验课
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="form-group">
-                    <input type="text" id="ooo" class="form-control" placeholder="手机号码">
-                </div>
-            </div>
-            <div class="col-lg-2"  >
-                <button type="submit" class="btn  btn-warning  mr-3 mb-2" style="color: #fff">立即免费体验</button>
-            </div>
-        </div>
-
-    </nav>
     <!--navbar-->
     <nav  class="navbar navbar-expand-lg  navbar-light fixed-top" style="width: 20%;border: none"  >
 
@@ -78,7 +53,7 @@
         </div>
     </nav>
     <!--/.navbar-->
-    <div class="page-header" data-jarallax='{"speed": 0.4}' style='background-image: url("assets/images/bg1.jpg")'>
+   <!-- <div class="page-header" data-jarallax='{"speed": 0.4}' style='background-image: url("assets/images/bg1.jpg")'>
         <div class="bg-overlay"></div>
         <div class="container">
             <div class="row">
@@ -98,52 +73,47 @@
         <svg class="svg-abs svg-f-btm z-index-9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 123" enable-background="new 0 0 1920 123" xml:space="preserve">
             <polygon class="svg-white" opacity="1" points="0,123 1920,123 1920,0 "></polygon>
           </svg>
-    </div>
+    </div>-->
     <!--Page header end-->
 
-    <div class="container pt100 pb70" >
-        <div class="row"  style="margin-left: 80px">
-            <div class="col-lg-9 ml-auto mb30 sticky-content course-detail">
-                <h2 class="mb-4">小童历险记</h2>
+    <div class="container  pb70"  >
+        <div class="row"  style="margin-left: 80px;margin-top: 50px;">
+            <div class="col-lg-9 ml-auto mb30 sticky-content course-detail" >
+                <h2 class="mb-4" id="workName"></h2>
                 <ul class="course-detail-meta row list-unstyled">
                     <li class="col-sm-4 col-md-3 py-2 col-6">
-                        <img src="assets/images/avatar1.jpg" alt="" class="img-fluid rounded-circle mr-3 float-left" width="40">
+                        <i class="fa fa-user float-left w40 rounded-circle bg-gray mr-3"></i>
                         <div class="oHidden">
-                            <small class="d-block pt-1">指导教师</small>
-                            <a href="#!">Liyin Duan.Yan Li</a>
+                            <small class="d-block pt-1" >指导教师</small>
+                            <span  id="teacherName" ></span>
                         </div>
                     </li>
                     <li class="col-sm-4 col-md-3 py-2 col-6">
-                        <i class="fa fa-tag float-left w40 rounded-circle bg-gray mr-3"></i>
-                        <div class="oHidden">
-                            <small class="d-block pt-1">所属分类</small>
-                            <a href="#!">编程</a>
-                        </div>
-                    </li>
-                    <li class="col-sm-4 col-md-3 py-2 col-6">
-                        <i class="fa fa-dollar-sign float-left w40 rounded-circle bg-gray mr-3"></i>
+                        <i class="fa fa-user float-left w40 rounded-circle bg-gray mr-3"></i>
                         <div class="oHidden">
                             <small class="d-block pt-1">作品作者</small>
-                            <a href="#!">清风若雨</a>
+                            <span  id="studentName" ></span>
                         </div>
                     </li>
                     <li class="col-sm-4 col-md-3 py-2 col-6">
                         <i class="fa fa-calendar float-left w40 rounded-circle bg-gray mr-3"></i>
                         <div class="oHidden">
                             <small class="d-block pt-1">创建时间</small>
-                            <span class="text-muted">6 Months</span>
+                            <span  id="createTime" class="text-muted"></span>
+                        </div>
+                    </li>
+                    <li class="col-sm-4 col-md-3 py-2 col-6">
+                        <div class="col-sm-12 btn-group  text-right" >
+                            <button id="startVm" class="btn btn-info">开始</button>
+                            <button id="endVm" class="btn btn-danger ">停止</button>
                         </div>
                     </li>
                 </ul>
                 <div style="position:relative;height:0;padding-bottom:56.25%;text-align: center;" >
-                    <div class="col-sm-12 btn-group align-content-center ">
-                        <button id="startVm" class="btn btn-info btn-rounded">开始</button>
-                        <button id="endVm" class="btn btn-danger btn-rounded">停止</button>
-                    </div>
-                    <canvas id="test" width="500" height="400" style="width: 500px;"></canvas>
+                    <canvas id="test"  class="shadow" width="500" height="500" style="width: 500px; " ></canvas>
 
                 </div>
-                <div class="carouse-detail-content pt-4">
+               <!-- <div class="carouse-detail-content pt-4">
                     <ul class="nav tab-list nav-justified">
                         <li class="nav-item" role="presentation">
                             <a data-toggle="tab" class="nav-link" href="#c-desc">
@@ -155,7 +125,7 @@
 
                         </li>
                     </ul>
-                    <!--tabs nav-->
+                    &lt;!&ndash;tabs nav&ndash;&gt;
                     <div class="tab-content">
                         <div class="tab-pane" id="c-desc">
                             <div class="row">
@@ -264,7 +234,7 @@
                                                     <div class="progress-bar bg-secondary" style="width: 0%"></div>
                                                 </div>
                                 </div>
-                            </div><!--/.row-->
+                            </div>&lt;!&ndash;/.row&ndash;&gt;
                             <div class="media clearfix">
                                 <img src="assets/images/laoshitouxiang.jpeg" class="rounded-circle mr-3 d-flex" width="60" alt="">
                                 <div class="media-body border-bottom">
@@ -280,7 +250,7 @@
 这个孩子不错，真的不错，不是假的！
                                     </p>
                                 </div>
-                            </div><!--/.review-->
+                            </div>&lt;!&ndash;/.review&ndash;&gt;
                             <div class="media clearfix py-3">
                                     <img src="assets/images/laoshitouxiang.jpeg" class="rounded-circle mr-3 d-flex" width="60" alt="">
                                     <div class="media-body border-bottom">
@@ -295,7 +265,7 @@
                                         <p>
                                             这个孩子不错，真的不错，不是假的！                                        </p>
                                     </div>
-                                </div><!--/.review-->
+                                </div>&lt;!&ndash;/.review&ndash;&gt;
                                 <div class="media clearfix">
                                         <img src="assets/images/laoshitouxiang.jpeg" class="rounded-circle mr-3 d-flex" width="60" alt="">
                                         <div class="media-body border-bottom">
@@ -310,15 +280,15 @@
                                             <p>
                                                 这个孩子不错，真的不错，不是假的！                                            </p>
                                         </div>
-                                    </div><!--/.review-->
+                                    </div>&lt;!&ndash;/.review&ndash;&gt;
                         </div>
-                        <!--tab pane-->
+                        &lt;!&ndash;tab pane&ndash;&gt;
                     </div>
-                    <!--tab content-->
-                </div>
+                    &lt;!&ndash;tab content&ndash;&gt;
+                </div>-->
             </div>
-            <div class="col-lg-3 sidebar-left   sticky-sidebar">
-                <div class="sidebar-widget mb30">
+            <div class="col-lg-3 sidebar-left   sticky-sidebar" style="margin-top: 80px;">
+                <!--<div class="sidebar-widget mb30">
                     <h5>热门作品</h5>
                     <ul class="list-unstyled list-links">
                         <li>
@@ -343,7 +313,7 @@
                         </li>
                     </ul>
                 </div>
-                <!--sidebar widget-->
+                &lt;!&ndash;sidebar widget&ndash;&gt;
                 <div class="sidebar-widget mb30">
                     <h5>获奖作品</h5>
                     <ul class="list-unstyled list-links">
@@ -372,91 +342,43 @@
                             </div>
                         </li>
                     </ul>
+                </div>-->
+                <div class="row">
+                    <div class="col-md-12 mb-30">
+                        <h5>作品说明</h5>
+                        <hr>
+                        <p id="description">
+
+                        </p>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class="col-md-6" >
+                        <ul class="list-inline text-sm-center  list-links" style="font-size: 24px !important;border: none;" >
+                            <li class="list-inline-item" >
+                                <a href="assets/plugins/CodeSquare/codeSquare.html">小童编辑器</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6">
+                    <span>&COPY; Copyright 2019.<a href="#!">zdpBuilder</a>
+                    </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
     </div>
     <!--/.call to action-->
-    <!--footer-->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-6 mb30 text-center">
-                    <ul class="list-unstyled list-links ">
-                        <li>
-                            <a href="#!">小童编辑器</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!--row-->
-            <hr>
-            <div class="row text-center">
-                <div class="col-lg-6 mr-auto ml-auto">
-                    <span>&COPY; Copyright 2019.
-                        <a href="#!">zdpBuilder</a>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!--/.footer-->
     <!--compile plugins-->
     <script src="assets/dist/js/plugins.js"></script>
-    <script src="assets/dist/js/education.custom.js"></script>
     <script src="assets/plugins/scratch-player/scripts/scratch-vm.js"></script>
     <script src="assets/plugins/scratch-player/scripts/scratch-storage.js"></script>
     <script src="assets/plugins/scratch-player/scripts/scratch-svg-renderer.js"></script>
     <!-- note: this uses the BUILT version of scratch-render!  make sure to npm run build -->
     <script src="assets/plugins/scratch-player/scripts/scratch-render.js"></script>
-    <script>
-
-        window.devicePixelRatio = 1;
-
-        var canvas = document.getElementById('test');
-        var render = new ScratchRender(canvas);
-        var vm = new VirtualMachine();
-        var storage = new ScratchStorage();
-        var mockMouse = data => vm.runtime.postIOData('mouse', {
-            canvasWidth: canvas.width,
-            canvasHeight: canvas.height,
-            ...data,
-        });
-     /*   var startVm= document.getElementById("startVm");
-        var endVm =document.getElementById("endVm");
-        startVm.onclick=()=>{
-            vm.start();
-        }*/
-
-        vm.attachStorage(storage);
-        vm.attachRenderer(render);
-        vm.attachV2SVGAdapter(new ScratchSVGRenderer.SVGRenderer());
-        vm.attachV2BitmapAdapter(new ScratchSVGRenderer.BitmapAdapter());
-
-        document.getElementById("startVm").addEventListener('click', e => {
-            vm.greenFlag(); // 执行程序
-        });
-        document.getElementById("endVm").addEventListener('click', e => {
-            vm.stopAll();
-        });
-
-        var request = new XMLHttpRequest();
-        request.open('GET', "http://steam.nosdn.127.net/dac8f13d-6796-4552-9352-ecfdfb21f41c.sb3", true);
-        request.responseType = 'blob';
-        request.onload = function () {
-            var reader = new FileReader();
-            reader.readAsArrayBuffer(request.response);
-            reader.onload = function (e) {
-                vm.start();
-                vm.loadProject(reader.result)
-                    .then(() => {
-                        vm.greenFlag(); // 执行程序
-                    });
-            };
-        };
-        request.send();
-    </script>
+    <script src="assets/dist/js/student.work.single.js"></script>
 </body>
 
 </html>

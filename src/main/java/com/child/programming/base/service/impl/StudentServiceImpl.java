@@ -1,5 +1,6 @@
 package com.child.programming.base.service.impl;
 
+import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.dto.StudentInfoDto;
 import com.child.programming.base.mapper.TbCollectCourseDoMapper;
 import com.child.programming.base.mapper.TbSignUpExperienceCourseDoMapper;
@@ -7,11 +8,15 @@ import com.child.programming.base.mapper.TbStudentDoMapper;
 import com.child.programming.base.mapper.TbStudentSignUpDoMapper;
 import com.child.programming.base.model.*;
 import com.child.programming.base.service.IStudentService;
+import com.child.programming.base.util.ConstDataUtil;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
+import com.child.programming.base.util.MD5Util;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -221,5 +226,34 @@ public class StudentServiceImpl  implements IStudentService{
         criteria.andStatusEqualTo((byte) 1);
         List<TbSignUpExperienceCourseDo> experienceCourseDos = tbSignUpExperienceCourseDoMapper.selectByExample(experienceCourseDoExample);
         return experienceCourseDos;
+    }
+
+    @Override
+    public ResultDto studentLogin(String loginId, String password, HttpSession session) {
+        TbStudentDoExample example= new TbStudentDoExample();
+        StudentInfoDto studentInfoDto = new StudentInfoDto();
+        TbStudentDoExample.Criteria criteria =example.createCriteria();
+       criteria.andGuardianPhoneEqualTo(loginId).andStatusEqualTo(Byte.valueOf("1"));
+        List<TbStudentDo> tbStudentDos=tbStudentDoMapper.selectByExample(example);
+        if(!EmptyUtils.listIsEmpty(tbStudentDos)) {
+            BeanUtils.copyProperties(tbStudentDos.get(0),studentInfoDto);
+            if(tbStudentDos.get(0).getPassword().equals(MD5Util.MD5Encode(password))){
+                session.setAttribute(ConstDataUtil.CURRENT_STUDENT_USER,studentInfoDto);
+                return ResultDto.success(studentInfoDto);
+            }else{
+                return  ResultDto.fail("密码输入错误！");
+            }
+
+        } else {
+            session.setAttribute(ConstDataUtil.CURRENT_STUDENT_USER,null);
+
+            return ResultDto.fail("该账户不存在，请仔细检查您的手机号！");
+        }
+    }
+
+    @Override
+    public ResultDto studentLogout(HttpSession session) {
+        session.removeAttribute(ConstDataUtil.CURRENT_STUDENT_USER);
+        return ResultDto.success();
     }
 }

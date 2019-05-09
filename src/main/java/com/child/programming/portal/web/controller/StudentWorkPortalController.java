@@ -57,7 +57,18 @@ public class StudentWorkPortalController {
    @RequestMapping("studentWorkGetList")
     public List<StudentWorkInfoDto> getList(){
 
-       return studentWorkService.getList("");
+       return studentWorkService.getPortalList();
    }
+
+    /***
+     * 通过id
+     * @return
+     */
+    @RequestMapping("studentWorkGetOneById")
+    public StudentWorkInfoDto studentWorkGetOneById(Integer studentWorkId ){
+
+        return studentWorkService.getOneById(studentWorkId);
+    }
+
 
 }

@@ -101,6 +101,53 @@ Project Version - v1.0
         }
     });
 
+    layui.use(['laypage', 'layer'], function() {
+        var laypage = layui.laypage
+            , layer = layui.layer;
+
+        $("#consultFormSubimtBtn").click(function () {
+            var studentName =$("#studentName").val();
+            var studentPhone =$("#studentPhone").val();
+            if(studentName==null||studentName==""){
+                layer.msg('请输入姓名！', {time: 5000, icon:0});
+                return;
+            }
+            if(studentPhone==null||studentPhone==""){
+                layer.msg('请输入电话！', {time: 5000, icon:0});
+                return;
+            }
+            if(/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/.test(studentPhone)){
+
+                $.ajax({
+               url:"portal/experienceCoursePortalSave"
+               ,method:"POST"
+               ,async:false
+               ,data:{
+                        studentName:studentName,
+                        studentPhone:studentPhone
+                    }
+               ,success:function (res) {
+                        if(res.status==200||res.status=="200"){
+                            $("#consultForm").css("display","none");
+                            $("#consultFormSuccess").css("display","block");
+                            setTimeout(function () {
+                                $("#consultForm").css("display","block");
+                                $("#consultFormSuccess").css("display","none");
+
+                            },3000);
+
+                        }else{
+                            layer.msg(res.msg, {time: 5000, icon:6});
+                        }
+               },
+           });
+            }else{
+                layer.msg('请输入合法手机号！', {time: 5000, icon:0});
+            }
+
+        });
+    });
+
 })(jQuery);
 $(function () {
     "use strict";

@@ -3,80 +3,10 @@ Assan Education template
 Author - design_mylife
 Project Version - v1.0
  */
-var studentWorkList=[];
-var JQ$;
-function  studentWorkListDoM() {
 
-    //学生作品列表
-    layui.use(['laypage', 'layer'], function(){
-        var laypage = layui.laypage
-            ,layer = layui.layer;
-        //测试数据
-        var data =studentWorkList;
-        $('#studentWorkList').html("");
-        //调用分页
-        laypage.render({
-            elem: 'pagination'
-            ,count: data.length
-            ,limit:4
-            ,jump: function(obj){
-                $('#studentWorkList').html("");
-                /*  //模拟渲染
-                  document.getElementById('pagination').innerHTML = function(){
-                      var arr = []
-                          ,thisData = data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
-                      layui.each(thisData, function(index, item){
-                          arr.push('<li>'+ item +'</li>');
-                      });
-                      return arr.join('');
-                  }();*/
-                var arr = []
-                    ,thisData = studentWorkList.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
-                if(thisData){
-                    for(var i=0;i<thisData.length;i++){
-                        $('#studentWorkList').append( '<div class="col-lg-6 mb">'
-                           +' <div class="img-card-alt mb-30">'
-                            +'<a class="img-thumb" onclick="studentWork('+thisData[i].id +');">'
-                            +'<img src="assets/images/scratchGif.gif" alt="" class="img-fluid">'
-                            +' <span class="thumb-overlay">'
-                            +' <i class="icon-link"></i>'
-                            +' </span>'
-                            +' </a>'
-                            +'<div class="img-desc">'
-                            +' <a href="course-single.html" class="h5">'
-                            +thisData[i].workName
-                            +' </a>'
-                            +' <p class="pt-2">'
-                           +thisData[i].description
-                            +'</p>'
-                            +'<ul class="list-inline mb-0">'
 
-                            +'<li class="list-inline-item mr-3">'
-                            +'<i class="fa fa-user mr-2"></i>'
-                            +' <a href="#!">'+thisData[i].studentName +'</a>'
-                            +' </li>'
-                            +' </ul>'
-                            +'</div>'
-                            +'</div>'
-                            +'</div>'
-                            );
-                    }
-                }else {
-                    $('#studentWorkList').html("");
-                }
-            }
-        });
-
-    });
-}
-function studentWork(studentWorkId){
-
-    window.sessionStorage.setItem("studentWorkId","");
-   window.sessionStorage.setItem("studentWorkId",studentWorkId);
-   location.href="course-single.html";
-}
 (function ($) {
-    JQ$=$;
+
     "use strict";
     /**Preloader*/
     $(window).preloader({
@@ -142,30 +72,34 @@ function studentWork(studentWorkId){
     });
     /*jquery ui search */
     $( ".select-ui" ).selectmenu();
-    /*******************studentWork START*****************************/
+    /* 课程列表展示 */
 
-
-    //学生作品列表
+    /* 教师列表展示 */
     $.ajax({
-        url:"portal/studentWorkGetList"
+         url:"portal/teacherGetList"
         ,method:"POST"
         ,async:false
         ,success:function (res) {
-
             if(res){
-                //给学生作品赋值
-                studentWorkList=res;
-                //学生作品列表
-                studentWorkListDoM();
+                 for(var i=0;i<res.length;i++){
+                     $('#teacherPortalShow').append(
+                         '<div class="swiper-slide" >'
+                         +'<img src="'+ res[i].photoUrl+'" alt=""  style="" width="200" height="200"/>'
+                         +'<div  style="margin-top: 10px;text-align: center;color: #333;font-size: 16px">'
+                         +'<h5>'+res[i].name+'</h5>'
+                         +' <p>'+res[i].introduction+'</p>'
+                         + '</div>'
+                         + '</div>'
+                     );
+                 }
+            }else {
+                $('#teacherPortalShow').html("");
             }
         }
         ,error:function (res) {
+            
         }
     });
-
-
-    /*******************studentWork END*****************************/
-
 })(jQuery);
 $(function () {
     "use strict";
