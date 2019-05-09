@@ -207,7 +207,12 @@ public class StudentAppController {
      */
     @RequestMapping("signUpCourse")
     public ResultDto signUpCourse(int gradeId, int studentId, String druingDate) {
-
+        int index = druingDate.indexOf("~");
+        String startDate = druingDate.substring(0, index);
+        String endDate = druingDate.substring(index+1, druingDate.length());
+        if (DateUtil.compareDate(DateUtil.StringToDate(endDate, "yyyy-MM-dd"), new Date()) >= 0) {
+            return ResultDto.success((Object)3);
+        }
         //是否已经报名过
         List<TbStudentSignUpDo> studentSignUpDoList = iStudentService.getStudentSignUpByClassIdAndStudentId(gradeId, studentId);
         if (studentSignUpDoList != null && studentSignUpDoList.size() > 0) {
@@ -221,9 +226,6 @@ public class StudentAppController {
             studentSignUpDo.setIsPayment((byte) 0);
             studentSignUpDo.setStatus((byte) 1);
             try {
-                int index = druingDate.indexOf("~");
-                String startDate = druingDate.substring(0, index);
-                System.out.println(startDate);
                 if (DateUtil.compareDate(DateUtil.StringToDate(startDate, "yyyy-MM-dd"), new Date()) >= 0) {
                     studentSignUpDo.setIsHalfway((byte) 1);
                 } else {
@@ -241,33 +243,6 @@ public class StudentAppController {
         return new ResultDto(ResponseUtil.FAIL_0, "报名失败");
     }
 
-   /* *//**
-     * @Description: 报名体验课
-     *//*
-    @RequestMapping("signUpExperienceCourse")
-    public ResultDto signUpExperienceCourse(int experienceCourseId, int studentId) {
-        //查询是否已经报名
-        List<TbSignUpExperienceCourseDo> signUpExperienceCourseDos = iStudentService.getsignUpExperienceCourseByExperienceCourseIdAndStudentId(experienceCourseId,studentId);
-        if (signUpExperienceCourseDos!=null && signUpExperienceCourseDos.size()>0){
-            return ResultDto.success((Object)2);
-        }else{
-            TbSignUpExperienceCourseDo signUpExperienceCourseDo = new TbSignUpExperienceCourseDo();
-            signUpExperienceCourseDo.setStudentId(studentId);
-            signUpExperienceCourseDo.setExperienceCourseId(experienceCourseId);
-            signUpExperienceCourseDo.setStatus((byte) 1);
-            signUpExperienceCourseDo.setIsPayment((byte) 0);
-            signUpExperienceCourseDo.setSignUpTime(new Date());
-            signUpExperienceCourseDo.setCreateId(studentId);
-            signUpExperienceCourseDo.setCreateTime(new Date());
-            int result = iStudentService.signUpExperienceCourse(signUpExperienceCourseDo);
-            if (result > 0) {
-                return ResultDto.success((Object)1);
-            }
-        }
-        return new ResultDto(ResponseUtil.FAIL_0, "报名失败");
-
-    }
-*/
     /**
      * @Description: 报名体验课
      */

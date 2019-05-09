@@ -212,7 +212,7 @@ WHERE
     LEFT JOIN course c on c.id= g.course_id and c.`status`=1
     LEFT JOIN teacher t on t.id = g.teacher_id AND t.`status`=1
     WHERE
-    ssu.`status`=1 AND g.end_date &lt;= now() AND ssu.student_id = #{studentId}
+    ssu.`status`=1 AND ssu.is_payment=1 AND ssu.student_id = #{studentId}
     ORDER BY ssu.sign_up_time desc
     <if test="startRow != null and pageSize != null and pageSize != 0">
       limit #{startRow},#{pageSize}
