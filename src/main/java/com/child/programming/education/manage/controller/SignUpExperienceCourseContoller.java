@@ -5,7 +5,6 @@ import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.dto.SignUpExperienceCourseInfoDto;
 import com.child.programming.base.model.TbPaymentRecordDo;
 import com.child.programming.base.model.TbSignUpExperienceCourseDo;
-import com.child.programming.base.model.TbStudentSignUpDo;
 import com.child.programming.base.service.IPaymentRecordService;
 import com.child.programming.base.service.ISignUpExperienceCourseService;
 import com.child.programming.base.util.EmptyUtils;

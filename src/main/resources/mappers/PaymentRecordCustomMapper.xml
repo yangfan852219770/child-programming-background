@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.child.programming.base.mapper.PaymentRecordCustomMapper" >
+  <select id="getFormalRecord" parameterType="java.util.Map" resultType="com.child.programming.education.manage.dto.PaymentRecordInfoDto">
+    SELECT pr.id AS id,pr.pay_money AS payMoney, pr.pay_time AS payTime, pr.type AS courseType,
+    s.id AS studentId,s.name AS studentName,
+    c.id AS courseId,c.name AS courseName
+    FROM payment_record pr
+    LEFT JOIN student s ON pr.student_id=s.id
+    LEFT JOIN course c ON pr.course_id=c.id
+    where pr.type=1
+    <if test="studentName !=null">
+      AND s.name like #{studentName}
+    </if>
+  </select>
+
+  <select id="getExperienceRecord" parameterType="java.util.Map" resultType="com.child.programming.education.manage.dto.PaymentRecordInfoDto">
+    SELECT pr.id AS id,pr.pay_money AS payMoney, pr.pay_time AS payTime, pr.type AS courseType,
+    s.id AS studentId,s.name AS studentName,
+    ec.id AS courseId,ec.title AS courseName
+    FROM payment_record pr
+    LEFT JOIN student s ON pr.student_id=s.id
+    LEFT JOIN experience_course ec ON pr.course_id=ec.id
+    where pr.type=2
+    <if test="studentName !=null">
+      AND s.name like #{studentName}
+    </if>
+  </select>
+</mapper>

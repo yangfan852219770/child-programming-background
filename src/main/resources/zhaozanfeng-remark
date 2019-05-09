@@ -34,3 +34,4 @@ sign_up_experience_course表加上`phone` varchar(255)
 
 student_course_schedule 添加course_id、student_id
 teacher_course_schedule 添加course_id、teacher_id
+payment_record 添加type(tinyint)

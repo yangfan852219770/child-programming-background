@@ -1,7 +1,6 @@
 package com.child.programming.base.service;
 
 import com.child.programming.base.dto.SignUpFormalCourseInfoDto;
-import com.child.programming.base.model.TbPaymentRecordDo;
 import com.child.programming.base.model.TbStudentSignUpDo;
 
 import java.util.List;
