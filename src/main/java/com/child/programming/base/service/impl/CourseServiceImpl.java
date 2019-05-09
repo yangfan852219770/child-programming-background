@@ -278,6 +278,21 @@ public class CourseServiceImpl implements ICourseService {
         return true;
     }
 
+    @Override
+    public CourseArrange getCourseDetailByGradeId(int gradeId) {
+        CourseArrange courseArrange = courseCustomMapper.getCourseDetailByGradeId(gradeId);
+        String weekendsSchedule = courseArrange.getWeekendsSchedule();
+        List<GradeWeekendsScheduleDto> weekendsSchedules = JSONUtil.parseArray(weekendsSchedule,GradeWeekendsScheduleDto.class);
+        String weekendsScheduleString="";
+        for (GradeWeekendsScheduleDto weekends:weekendsSchedules) {
+            String weekwnd = "周"+weekends.getDay()+" "+weekends.getStartHour()+"-"+weekends.getEndHour();
+            weekendsScheduleString = weekendsScheduleString + weekwnd +",";
+        }
+        weekendsScheduleString = weekendsScheduleString.substring(0,weekendsScheduleString.length() - 1);
+        courseArrange.setWeekendsSchedule(weekendsScheduleString);
+        return courseArrange;
+    }
+
     /**
      * 查询列表时，对时间安排赋值
      * @param courseSaveDtoList

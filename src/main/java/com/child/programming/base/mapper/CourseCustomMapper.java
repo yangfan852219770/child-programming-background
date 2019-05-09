@@ -25,4 +25,6 @@ public interface CourseCustomMapper {
     List<SignUpCourseDto> getStudentCourseListByDate(Map map);
 
     List<TbCourseDo> getStudentCollectCourseList(Map map);
+
+    CourseArrange getCourseDetailByGradeId(int gradeId);
 }

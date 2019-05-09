@@ -96,9 +96,9 @@ public class StudentAppController {
             //更新
             studentDto.setId(studentDtoOld.getId());
             studentDto.setOpenid(studentDtoOld.getOpenid());
-            tokenDto.setAccessToken(getAccessToken());
-            String token = wxTokenUtil.generateToken(tokenDto);
-            studentDto.setAccentToken(token);
+//            tokenDto.setAccessToken(getAccessToken());
+//            String token = wxTokenUtil.generateToken(tokenDto);
+//            studentDto.setAccentToken(token);
             studentDto.setLastUpdateTime(new Date());
             studentDto.setStatus(studentDtoOld.getStatus());
             int result = iStudentService.updateStudentByOpenId(studentDto);
@@ -109,9 +109,9 @@ public class StudentAppController {
             //添加
             //studentDto.setId(studentDto.getId());
             studentDto.setOpenid(studentDto.getOpenid());
-            tokenDto.setAccessToken(getAccessToken());
-            String token = wxTokenUtil.generateToken(tokenDto);
-            studentDto.setAccentToken(token);
+//            tokenDto.setAccessToken(getAccessToken());
+//            String token = wxTokenUtil.generateToken(tokenDto);
+//            studentDto.setAccentToken(token);
             studentDto.setCreateTime(new Date());
             studentDto.setStatus((byte) 1);
             int result = iStudentService.addStudent(studentDto);
@@ -127,6 +127,11 @@ public class StudentAppController {
      */
     @RequestMapping("addStudentInfo")
     public ResultDto addUser(@RequestParam("file") MultipartFile uploadFile, TbStudentDo studentDto) {
+        TbStudentDo studentDtoOld = iStudentService.getStudentByOpenId(studentDto.getOpenid());
+        if (studentDtoOld!=null){
+            iStudentService.updateStudentByOpenId(studentDto);
+            return ResultDto.success(studentDto);
+        }
         try {
             //1、给上传的图片生成新的文件名
             //1.1获取原始文件名
@@ -145,11 +150,11 @@ public class StudentAppController {
             if (result) {
                 //2、把前端输入信息，包括图片的url保存到数据库
                 studentDto.setPhotoUrl(baseUrl + filePath + "/" + newName);
-                int updateStudentResult = iStudentService.updateStudentByOpenId(studentDto);
-                System.out.println(updateStudentResult);
-                if (updateStudentResult > 0) {
-                    TbStudentDo studentDtoOld = iStudentService.getStudentByOpenId(studentDto.getOpenid());
-                    return ResultDto.success(studentDtoOld);
+                studentDto.setStatus((byte) 1);
+                int addStudentResult = iStudentService.addStudent(studentDto);
+                if (addStudentResult > 0) {
+//                    TbStudentDo studentDtoOld = iStudentService.getStudentByOpenId(studentDto.getOpenid());
+                    return ResultDto.success(studentDto);
                 }
             }
         } catch (Exception e) {

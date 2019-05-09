@@ -130,5 +130,13 @@ public class CourseAppController {
         return ResultDto.success(null);
     }
 
+    /**
+     * @Description:    根据班级id查询课程安排详细信息
+     */
+    @RequestMapping("getCourseDetailByGradeId")
+    public ResultDto getCourseDetailByGradeId(int gradeId){
+        CourseArrange courseArranges = iCourseService.getCourseDetailByGradeId(gradeId);
+        return ResultDto.success(courseArranges);
+    }
 
 }

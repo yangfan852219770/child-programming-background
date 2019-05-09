@@ -293,6 +293,25 @@ WHERE
     </if>
   </select>
 
+  <select id="getCourseDetailByGradeId" parameterType="Integer" resultType="com.child.programming.app.web.dto.CourseArrange">
+    SELECT
+      g.id as id,
+      CONCAT(s.address,s.`name`,c. CODE) as gradeAddress,
+      g.`name` as gradeName,
+      t.`name` as teacherName,
+      g.max_capacity as capacity,
+      g.current_period as currentPeriod,
+      CONCAT(DATE_FORMAT(g.start_date,'%Y-%m-%d'),'~',DATE_FORMAT(g.end_date,'%Y-%m-%d')) as druingDate,
+      g.weekends_schedule as weekendsSchedule
+    FROM
+      grade g
+        LEFT JOIN classroom c ON c.id = g.classroom_id and c.`status`=1
+        LEFT JOIN school s ON s.id = c.school_id and s.`status` =1
+        LEFT JOIN teacher t on t.id = g.teacher_id and t.`status`=1
+    WHERE
+      g.`status`=1 AND
+      g.id = #{gradeId}
+  </select>
 
 
 

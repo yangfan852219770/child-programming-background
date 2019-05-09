@@ -85,4 +85,6 @@ public interface ICourseService {
      * @return
      */
     Boolean generateCourseSchedule(Integer courseId, Integer userId);
+
+    CourseArrange getCourseDetailByGradeId(int gradeId);
 }
