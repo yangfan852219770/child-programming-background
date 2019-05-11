@@ -1,6 +1,8 @@
 package com.child.programming.base.service.impl;
 
 import com.child.programming.base.dto.MaterialInfoDto;
+import com.child.programming.base.dto.ResultDto;
+import com.child.programming.base.dto.StudentInfoDto;
 import com.child.programming.base.mapper.TbMaterialDoMapper;
 import com.child.programming.base.mapper.TbMaterialTypeDoMapper;
 import com.child.programming.base.model.TbMaterialDo;
@@ -8,9 +10,11 @@ import com.child.programming.base.model.TbMaterialDoExample;
 import com.child.programming.base.model.TbMaterialTypeDo;
 import com.child.programming.base.model.TbMaterialTypeDoExample;
 import com.child.programming.base.service.IMaterialService;
+import com.child.programming.base.service.IStudentService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -27,7 +31,10 @@ public class MaterialServiceImpl implements IMaterialService {
     private TbMaterialDoMapper tbMaterialDoMapper;
     @Autowired
     private TbMaterialTypeDoMapper tbMaterialTypeDoMapper;
-
+    @Autowired
+    private IStudentService iStudentService;
+    @Value("${IMAGE.BASE.MANAGE.URL}")
+    private String baseUrl;
     @Override
     public List<MaterialInfoDto> getList(Integer materialTypeId) {
 
@@ -114,5 +121,39 @@ public class MaterialServiceImpl implements IMaterialService {
         }
 
         return result == idArray.length;
+    }
+
+    @Override
+    public ResultDto portalSave(Integer id) {
+      TbMaterialDo tbMaterialDo=  tbMaterialDoMapper.selectByPrimaryKey(id);
+
+      if(EmptyUtils.objectIsEmpty(tbMaterialDo))
+          return ResultDto.fail();
+      tbMaterialDo.setDownloadNumber(tbMaterialDo.getDownloadNumber()+1);
+      return  tbMaterialDoMapper.updateByPrimaryKeySelective(tbMaterialDo)>0?ResultDto.success():ResultDto.fail();
+    }
+
+    @Override
+    public ResultDto portalVipCheck(Integer id,String phone) {
+
+        boolean flag=false;
+        TbMaterialDo tbMaterialDo= tbMaterialDoMapper.selectByPrimaryKey(id);
+       if(EmptyUtils.objectIsEmpty(tbMaterialDo))
+        return ResultDto.fail("不存在该资料");
+       List<StudentInfoDto>  studentInfoDtos = iStudentService.getList("");
+       if(EmptyUtils.listIsEmpty(studentInfoDtos))
+           return  ResultDto.fail("VIP下载暂未开通");
+        for (StudentInfoDto studentInfoDto:studentInfoDtos
+             ) {
+            if(studentInfoDto.getGuardianPhone().equals(phone))
+                flag=true;
+        }
+        if(flag) {
+            tbMaterialDo.setFileUrl(baseUrl+tbMaterialDo.getFileUrl());
+            return ResultDto.success(tbMaterialDo);
+
+        }
+        else
+            return ResultDto.fail("输入手机号没有权限下载！");
     }
 }

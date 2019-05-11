@@ -4,7 +4,7 @@ Author - design_mylife
 Project Version - v1.0
  */
 var materialList=[];
-var JQ$;
+var JQ$,_layer;
 function  materialListDoM() {
 
     //资料列表
@@ -57,7 +57,7 @@ function  materialListDoM() {
                                 +'  </span>'
                                 +'  </div>'
                                 +'  <div class="col-md-3 py-2 col-12">'
-                                +'<a target="_blank" download="'+thisData[i].originName+'" href="'+thisData[i].fileUrl+'" class="btn btn-outline-primary btn-lg">'
+                                +'<a  onclick="downloadNumberUpdate('+thisData[i].id +')" target="_blank" download="'+thisData[i].originName+'" href="'+thisData[i].fileUrl+'" class="btn btn-outline-primary btn-lg">'
                                 +'  下载'
                                 +'  </a>'
                                 +'  </div>'
@@ -84,7 +84,8 @@ function  materialListDoM() {
                                 +'  </span>'
                                 +'  </div>'
                                 +'  <div class="col-md-3 py-2 col-12">'
-                                +'<a target="_blank"  download="'+thisData[i].originName+'" href="'+thisData[i].fileUrl+'" class="btn btn-outline-primary btn-lg">'
+
+                                +'<a  onclick="vipDownLoad('+thisData[i].id +')"  class="btn btn-outline-primary btn-lg">'
                                 +'  下载'
                                 +'  </a>'
                                 +'  </div>'
@@ -124,6 +125,62 @@ function selectMaterial(typeId){
 
         }
     });
+}
+function downloadNumberUpdate(id) {
+    JQ$.ajax({
+        url:"portal/materialSave"
+        ,method:"POST"
+        ,async:false
+        ,data:{
+            id:id
+        }
+    });
+}
+function vipDownLoad(id){
+
+    _layer.prompt({
+            title: '输入手机号，并确认进行下载',
+            formType: 0},
+            function(phone, index){
+                if(/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/.test(phone)) {
+
+
+                    JQ$.ajax({
+                        url: "portal/portalVipCheck"
+                        , method: "POST"
+                        , async: false
+                        , data: {
+                            id: id,
+                            phone: phone
+                        }
+                        , success: function (res) {
+                            if (res) {
+                                if (res.status == 200 || res.status == "200") {
+                                    var data = res.data;
+                                    //下载
+                                    var aDownLoad = document.getElementById("aDownLoad");
+                                    aDownLoad.download = data.originName;
+                                    aDownLoad.href = data.fileUrl;
+                                    aDownLoad.onclick = downloadNumberUpdate(data.id);
+                                    document.getElementById("aDownLoad").click();
+
+                                    _layer.close(index);
+                                } else {
+                                    _layer.msg(res.msg, {time: 1000, icon: 5});
+                                }
+                            } else {
+                                _layer.msg(res.msg, {time: 1000, icon: 5});
+
+                            }
+                        }
+                        , error: function () {
+
+                        }
+                    });
+                }else {
+                    _layer.msg("请输入合法手机号！", {time: 1000, icon: 0});
+                }
+        });
 }
 (function ($) {
     JQ$=$;
@@ -193,9 +250,11 @@ function selectMaterial(typeId){
     /*jquery ui search */
     $( ".select-ui" ).selectmenu();
     /*******************Material START*****************************/
-
+    layui.use(['laypage', 'layer'], function() {
+        var layer = layui.layer;
+        _layer=layer;
+    });
     //资料类型
-
     $.ajax({
         url:"portal/materialTypeGetList"
         ,method:"POST"
@@ -233,20 +292,36 @@ function selectMaterial(typeId){
                 for(var i=0;i<res.length;i++){
 
                     if(i==6) return;
+                   if(res[i].status==2||res[i].status=="2"){
+                       if(res[i].downloadNumber>20){
+                           $('#materialPush').append(
+                               '<li>'
+                               +'<a   onclick="vipDownLoad('+res[i].id +')"  >' +res[i].originName +'  <span class="badge rounded bg-secondary text-white d-inline-block ml-2"> <i class="fa fa-arrow-up" ></i></span>'
+                               +' </a>'
+                               +' </li>'
+                           );
+                       }else{
+                           $('#materialPush').append(
+                               '<li>'
+                               +'<a  onclick="vipDownLoad('+res[i].id +')"  >'+res[i].originName +' </a>'
+                               +' </li>');
+                       }
+                   }else{
+                       if(res[i].downloadNumber>20){
+                           $('#materialPush').append(
+                               '<li>'
+                               +'<a   onclick="downloadNumberUpdate('+res[i].id +')" target="_blank"  download="'+res[i].originName+'" href="'+res[i].fileUrl+'">' +res[i].originName +'  <span class="badge rounded bg-secondary text-white d-inline-block ml-2"> <i class="fa fa-arrow-up" ></i></span>'
+                               +' </a>'
+                               +' </li>'
+                           );
+                       }else{
+                           $('#materialPush').append(
+                               '<li>'
+                               +'<a onclick="downloadNumberUpdate('+res[i].id +')"  target="_blank" href="'+res[i].fileUrl+'" download="'+res[i].originName+'">'+res[i].originName +' </a>'
+                               +' </li>');
+                       }
+                   }
 
-                    if(res[i].downloadNumber>20){
-                        $('#materialPush').append(
-                            '<li>'
-                            +'<a target="_blank"  download="'+res[i].originName+'" href="'+res[i].fileUrl+'">' +res[i].originName +'  <span class="badge rounded bg-secondary text-white d-inline-block ml-2"> <i class="fa fa-arrow-up" ></i></span>'
-                            +' </a>'
-                            +' </li>'
-                        );
-                    }else{
-                        $('#materialPush').append(
-                            '<li>'
-                            +'<a target="_blank" href="'+res[i].fileUrl+'" download="'+res[i].originName+'">'+res[i].originName +' </a>'
-                            +' </li>');
-                    }
 
                 }
             }else {

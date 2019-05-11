@@ -54,13 +54,6 @@ public interface IStudentWorkService {
      */
     Boolean delete(String[] idArray, Integer userId);
 
-    /***
-     * 将作品Id 封装到SessionKey 中
-     * @param studentWorkId
-     * @param session
-     * @return
-     */
-    Boolean sessionKeyUpdate(String studentWorkId, HttpSession session);
 
     /**
      * 推送作品
@@ -70,4 +63,19 @@ public interface IStudentWorkService {
      */
     Boolean pushStudentWork(TbStudentWorkDo tbStudentWorkDo, Integer userId);
 
+    /**
+     * 作品保存
+     * @param tbStudentWorkDo
+     * @param session
+     * @return
+     */
+    ResultDto portalSave(TbStudentWorkDo tbStudentWorkDo,HttpServletRequest request,HttpSession session);
+
+    /**
+     * 得到前台登陆者的作品列表
+     * @param workName
+     * @param session
+     * @return
+     */
+    List<StudentWorkInfoDto> getCurrentStudentWorkGetList(String workName,HttpSession session);
 }

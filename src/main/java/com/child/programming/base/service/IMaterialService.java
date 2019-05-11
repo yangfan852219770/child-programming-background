@@ -1,6 +1,7 @@
 package com.child.programming.base.service;
 
 import com.child.programming.base.dto.MaterialInfoDto;
+import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.model.TbMaterialDo;
 
 import java.util.List;
@@ -34,8 +35,8 @@ public interface IMaterialService {
      */
     Boolean delete(String[] idArray, Integer userId);
 
-    /***
-     * 单个、批量推送
+    /**
+     * 下载次数保存
      * @param idArray
      * @param status
      * @param userId
@@ -43,4 +44,18 @@ public interface IMaterialService {
      */
     Boolean push(String[] idArray,String status, Integer userId);
 
+    /***
+     * 资料保存
+     * @param id
+     * @return
+     */
+    ResultDto portalSave(Integer id);
+
+    /***
+     * Vip 校验
+     * @param id
+     * @param phone
+     * @return
+     */
+    ResultDto portalVipCheck(Integer id,String phone);
 }

@@ -1,6 +1,7 @@
 package com.child.programming.portal.web.controller;
 
 import com.child.programming.base.dto.MaterialInfoDto;
+import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.service.IMaterialService;
 import com.child.programming.base.util.EmptyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,15 @@ public class MaterialPortalController {
             materialInfoDto.setFileUrl(baseUrl+materialInfoDto.getFileUrl());
         }
      return  list;
+    }
+    @RequestMapping("materialSave")
+    public ResultDto materialSave(Integer id){
+
+        return  iMaterialService.portalSave( id);
+    }
+
+    @RequestMapping("portalVipCheck")
+    public ResultDto portalVipCheck(Integer id,String phone){
+        return iMaterialService.portalVipCheck(id,phone);
     }
 }

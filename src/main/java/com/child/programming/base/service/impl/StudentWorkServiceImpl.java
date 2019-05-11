@@ -41,9 +41,6 @@ public class StudentWorkServiceImpl implements IStudentWorkService {
     public ResultDto uploadScratch(HttpServletRequest request, HttpSession session) {
         String jsonStr = "";
         MultipartFile file=null;
-        String projectName="";
-        TbStudentWorkDo tbStudentWorkDo=new TbStudentWorkDo();
-        String uploadPath="";
 
         StudentInfoDto studentInfoDto = HttpSessionUtil.getStudentInfoDto(session);
         if(EmptyUtils.objectIsEmpty(studentInfoDto))
@@ -61,19 +58,13 @@ public class StudentWorkServiceImpl implements IStudentWorkService {
             Map<String, String> map = NewJsonUtils.json2Map(jsonStr);
             // 获取base64的图片编码
             String base64Code = map.get("file");
-            projectName=map.get("projectName");
+            //projectName=map.get("projectTitle");
             // 将base64转化
             if (!EmptyUtils.stringIsEmpty(base64Code))
                 file = Base64Util.base64ToMultipart(base64Code);
         }
-        uploadPath=iUploadService.uploadScratch("scratch",file,request);
-        tbStudentWorkDo.setStudentId(studentInfoDto.getId());
-        tbStudentWorkDo.setWorkUrl(uploadPath);
-        tbStudentWorkDo.setWorkName(projectName);
-        tbStudentWorkDo.setStatus(Byte.valueOf("1"));
-        //tbStudentWorkDo.setId(Integer.parseInt(userInfoPojo.getFlexibleProperty()));
-
-        return  this.save(tbStudentWorkDo,studentInfoDto.getId())?ResultDto.success("发布成功！"):ResultDto.fail("发布失败");
+        session.setAttribute(ConstDataUtil.CURRENT_USER_SCRATCH_WORK_FILE,file);
+        return  ResultDto.success("发布成功！");
     }
 
     @Override
@@ -109,7 +100,7 @@ public class StudentWorkServiceImpl implements IStudentWorkService {
                 if(EmptyUtils.objectIsEmpty(studentDo))
                     return null;
                 studentWorkInfoDto.setStudentName(studentDo.getName());
-
+                studentWorkInfoDto.setCoverUrl(baseUrl+studentWorkInfoDto.getCoverUrl());
                 studentWorkInfoDto.setWorkUrl(baseUrl+studentWorkInfoDto.getWorkUrl());
             }
             return studentWorkInfoDtos;
@@ -133,6 +124,7 @@ public class StudentWorkServiceImpl implements IStudentWorkService {
         if(EmptyUtils.objectIsEmpty(studentWorkInfoDto))
            return null;
        studentWorkInfoDto.setWorkUrl(baseUrl+studentWorkInfoDto.getWorkUrl());
+       studentWorkInfoDto.setCoverUrl(studentWorkInfoDto.getCoverUrl());
        studentWorkInfoDto.setWorkCreateTime(DateUtil.DateToString(studentWorkDo.getCreateTime(),"yyyy-MM-dd"));
 
         if(EmptyUtils.objectIsEmpty(tbStudentDo))
@@ -186,21 +178,65 @@ public class StudentWorkServiceImpl implements IStudentWorkService {
     }
 
     @Override
-    public Boolean sessionKeyUpdate(String studentWorkId, HttpSession session) {
-        LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
-        if(EmptyUtils.objectIsEmpty(userInfoPojo))
-            return false;
-        userInfoPojo.setFlexibleProperty(studentWorkId);
-        session.setAttribute(ConstDataUtil.CURRENT_USER,userInfoPojo);
-        return  true;
-    }
-
-    @Override
     public Boolean pushStudentWork(TbStudentWorkDo tbStudentWorkDo, Integer userId) {
        if(EmptyUtils.objectIsEmpty(tbStudentWorkDo))
            return  false;
        tbStudentWorkDo.setStatus(Byte.valueOf("2"));
        tbStudentWorkDo.setTeacherId(userId);
       return this.save(tbStudentWorkDo,userId);
+    }
+
+    @Override
+    public ResultDto portalSave(TbStudentWorkDo tbStudentWorkDo,HttpServletRequest request, HttpSession session) {
+
+
+
+        StudentInfoDto studentInfoDto = HttpSessionUtil.getStudentInfoDto(session);
+        if(EmptyUtils.objectIsEmpty(studentInfoDto))
+            return  ResultDto.fail("请先登录之后，发布！");
+
+        if(EmptyUtils.intIsEmpty(tbStudentWorkDo.getId())){
+
+            MultipartFile file =HttpSessionUtil.getCurrentUserScratchFile(session);
+            if(EmptyUtils.objectIsEmpty(file))
+                return  ResultDto.fail("未接受到作品文件！");
+
+            String uploadPath=iUploadService.uploadScratch("scratch",file,request);
+            tbStudentWorkDo.setStudentId(studentInfoDto.getId());
+            tbStudentWorkDo.setWorkUrl(uploadPath);
+        }
+
+        return this.save(tbStudentWorkDo,studentInfoDto.getId())?ResultDto.success("发布成功！"):ResultDto.fail("发布失败！");
+    }
+
+    @Override
+    public List<StudentWorkInfoDto> getCurrentStudentWorkGetList(String workName, HttpSession session) {
+
+        StudentInfoDto studentInfoDto = HttpSessionUtil.getStudentInfoDto(session);
+        if(EmptyUtils.objectIsEmpty(studentInfoDto))
+            return null;
+
+        TbStudentWorkDoExample tbStudentWorkDoExample = new TbStudentWorkDoExample();
+        TbStudentWorkDoExample.Criteria criteria = tbStudentWorkDoExample.createCriteria();
+
+        tbStudentWorkDoExample.setOrderByClause("create_time desc");
+        criteria.andStatusEqualTo(Byte.valueOf("1"));
+        criteria.andStudentIdEqualTo(studentInfoDto.getId());
+
+        if(!EmptyUtils.stringIsEmpty(workName)){
+            criteria.andWorkNameLike("%"+workName+"%");
+        }
+        List<TbStudentWorkDo> tbStudentWorkDos = tbStudentWorkDoMapper.selectByExample(tbStudentWorkDoExample);
+        if (!EmptyUtils.listIsEmpty(tbStudentWorkDos)) {
+            List<StudentWorkInfoDto> studentWorkInfoDtos= ListUtil.convertElement(tbStudentWorkDos, StudentWorkInfoDto.class);
+            for (StudentWorkInfoDto studentWorkInfoDto:studentWorkInfoDtos
+                    ) {
+                studentWorkInfoDto.setStudentName(studentInfoDto.getName());
+                studentWorkInfoDto.setCoverUrl(baseUrl+studentWorkInfoDto.getCoverUrl());
+                studentWorkInfoDto.setWorkUrl(baseUrl+studentWorkInfoDto.getWorkUrl());
+            }
+            return studentWorkInfoDtos;
+        } else
+            return null;
     }
 }

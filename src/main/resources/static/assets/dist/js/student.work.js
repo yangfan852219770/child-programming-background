@@ -37,13 +37,13 @@ function  studentWorkListDoM() {
                         $('#studentWorkList').append( '<div class="col-lg-6 mb">'
                            +' <div class="img-card-alt mb-30">'
                             +'<a class="img-thumb" onclick="studentWork('+thisData[i].id +');">'
-                            +'<img src="assets/images/scratchGif.gif" alt="" class="img-fluid">'
+                            +'<img src="'+thisData[i].coverUrl+'" alt="" class="img-fluid">'
                             +' <span class="thumb-overlay">'
-                            +' <i class="icon-link"></i>'
+                            +' <i class="icon-play"></i>'
                             +' </span>'
                             +' </a>'
                             +'<div class="img-desc">'
-                            +' <a href="course-single.html" class="h5">'
+                            +' <a href="student-work-single.html" class="h5">'
                             +thisData[i].workName
                             +' </a>'
                             +' <p class="pt-2">'
@@ -73,7 +73,7 @@ function studentWork(studentWorkId){
 
     window.sessionStorage.setItem("studentWorkId","");
    window.sessionStorage.setItem("studentWorkId",studentWorkId);
-   location.href="course-single.html";
+   location.href="student-work-single.html";
 }
 (function ($) {
     JQ$=$;

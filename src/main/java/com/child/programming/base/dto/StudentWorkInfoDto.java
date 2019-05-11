@@ -35,6 +35,8 @@ public class StudentWorkInfoDto {
 
     private String workCreateTime;
 
+    private String coverUrl;
+
     private Byte status;
 
 }

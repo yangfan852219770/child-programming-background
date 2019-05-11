@@ -137,7 +137,11 @@
               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
               selectByExampleQueryId="true">
        </table>-->
-        <table tableName="student" domainObjectName="TbStudentDo" enableCountByExample="true"
+        <table tableName="student_work" domainObjectName="TbStudentWorkDo" enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true">
+        </table>
+        <table tableName="material" domainObjectName="TbMaterialDo" enableCountByExample="true"
                enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true">
         </table>

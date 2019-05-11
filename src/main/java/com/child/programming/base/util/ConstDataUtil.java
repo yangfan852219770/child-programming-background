@@ -18,4 +18,6 @@ public class ConstDataUtil {
 
     public final static String CURRENT_STUDENT_USER = "currentStudentUser"; // session中存放用户的key
 
+    public final static String CURRENT_USER_SCRATCH_WORK_FILE = "currentUserScratchWorkFile"; // 用于用户Scratch作品文件在Session中缓存
+
 }

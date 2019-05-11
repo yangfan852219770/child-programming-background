@@ -81,6 +81,6 @@ public class StudentWorkControllor {
 
     @RequestMapping("/demoShow")
     private  String  demoShow(){
-        return "scratcthPlayer.html";
+        return "scratcth-payer.html";
     }
 }

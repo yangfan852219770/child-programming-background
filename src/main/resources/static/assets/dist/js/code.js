@@ -3,6 +3,7 @@ Assan Education template
 Author - design_mylife
 Project Version - v1.0
  */
+
 (function ($) {
     "use strict";
     /**Preloader*/
@@ -242,7 +243,7 @@ Project Version - v1.0
                                             +' </span>'
                                             +' </a>'
                                             +'<div class="img-desc">'
-                                            +' <a href="course-single.html" class="h5">'
+                                            +' <a href="student-work-single.html" class="h5">'
                                             +thisData[i].workName
                                             +' </a>'
                                             +' <p class="pt-2">'
@@ -319,3 +320,8 @@ $(function () {
         sr.reveal('.sr-ease-in-out-back', { easing: 'cubic-bezier(0.680, -0.550, 0.265, 1.550)' });
     }
 });
+
+window.onbeforeunload =function() {
+    // code...
+    return null;
+}
