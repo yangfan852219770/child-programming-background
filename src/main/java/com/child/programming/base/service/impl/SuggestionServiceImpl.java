@@ -29,4 +29,24 @@ public class SuggestionServiceImpl implements ISuggestionService {
         List<SuggestinInfoDto> suggestinInfoDtoList = ListUtil.convertElement(suggestionDoList, SuggestinInfoDto.class);
         return suggestinInfoDtoList;
     }
+
+    @Override
+    public List<TbSuggestionDo> getSuggesstionByStudentId(int studentId) {
+        TbSuggestionDoExample example = new TbSuggestionDoExample();
+        example.setOrderByClause("create_time desc");
+        TbSuggestionDoExample.Criteria criteria = example.createCriteria();
+        criteria.andCreateIdEqualTo(studentId);
+        criteria.andStatusEqualTo((byte) 1);
+        List<TbSuggestionDo> suggestionDoList = suggestionDoMapper.selectByExample(example);
+        return suggestionDoList;
+    }
+
+    @Override
+    public Boolean saveSuggesstion(TbSuggestionDo tbSuggestionDo) {
+        int result = suggestionDoMapper.insert(tbSuggestionDo);
+        if (result>0){
+            return true;
+        }
+        return false;
+    }
 }

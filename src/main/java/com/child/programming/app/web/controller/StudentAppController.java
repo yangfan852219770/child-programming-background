@@ -6,7 +6,9 @@ import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.model.TbSignUpExperienceCourseDo;
 import com.child.programming.base.model.TbStudentDo;
 import com.child.programming.base.model.TbStudentSignUpDo;
+import com.child.programming.base.model.TbSuggestionDo;
 import com.child.programming.base.service.IStudentService;
+import com.child.programming.base.service.ISuggestionService;
 import com.child.programming.base.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,6 +56,8 @@ public class StudentAppController {
 
     @Autowired
     private IStudentService iStudentService;
+    @Autowired
+    private ISuggestionService iSuggestionService;
 
     /**
      * @Description: 获取OpenId
@@ -299,6 +303,29 @@ public class StudentAppController {
             }
         }
         return new ResultDto(ResponseUtil.FAIL_0, "报名失败");
+    }
+
+    /**
+     * @Description: 自己的意见反馈
+     */
+    @RequestMapping("getSuggesstionByStudentId")
+    public ResultDto getSuggesstionByStudentId(int studentId) {
+       List<TbSuggestionDo> suggestionDos = iSuggestionService.getSuggesstionByStudentId(studentId);
+        return ResultDto.success(suggestionDos);
+    }
+
+    /**
+     * @Description: 自己的意见反馈
+     */
+    @RequestMapping("saveSuggesstion")
+    public ResultDto saveSuggesstion(int studentId,String content) {
+        TbSuggestionDo tbSuggestionDo = new TbSuggestionDo();
+        tbSuggestionDo.setCommentText(content);
+        tbSuggestionDo.setCreateId(studentId);
+        tbSuggestionDo.setCreateTime(new Date());
+        tbSuggestionDo.setStatus((byte) 1);
+        Boolean result = iSuggestionService.saveSuggesstion(tbSuggestionDo);
+        return ResultDto.success(result);
     }
 
 

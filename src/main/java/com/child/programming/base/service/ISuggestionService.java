@@ -1,6 +1,7 @@
 package com.child.programming.base.service;
 
 import com.child.programming.base.dto.SuggestinInfoDto;
+import com.child.programming.base.model.TbSuggestionDo;
 
 import java.util.List;
 
@@ -14,4 +15,12 @@ public interface ISuggestionService {
      * @return
      */
     List<SuggestinInfoDto> getAll();
+
+    /**
+     * 自己的意见反馈
+     * @return
+     */
+    List<TbSuggestionDo> getSuggesstionByStudentId(int studentId);
+
+    Boolean saveSuggesstion(TbSuggestionDo tbSuggestionDo);
 }
