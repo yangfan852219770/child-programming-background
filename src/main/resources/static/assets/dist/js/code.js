@@ -182,6 +182,8 @@ Project Version - v1.0
                                             $("#login").css("display","block");
                                             $("#logout").css("display","none");
                                             layer.close( index);
+                                            window.location.href="code-square.html";
+
                                         }else{
                                             layer.msg('退出失败！', {time: 2000, icon:5});
                                         }
