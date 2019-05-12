@@ -3,7 +3,7 @@ package com.child.programming.education.manage.dto;
 import lombok.Data;
 
 /**
- * @Description：
+ * @Description：老师课程列表信息
  * @Author：yangfan
  **/
 @Data

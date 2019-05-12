@@ -2,10 +2,7 @@ package com.child.programming.base.service;
 
 import com.child.programming.base.dto.GradeInfoDto;
 import com.child.programming.base.model.TbGradeDo;
-import com.child.programming.education.manage.dto.CourseScheduleDto;
-import com.child.programming.education.manage.dto.CourseTimeScheduleDto;
-import com.child.programming.education.manage.dto.InitGradeInfoDto;
-import com.child.programming.education.manage.dto.SelectDto;
+import com.child.programming.education.manage.dto.*;
 
 import java.util.List;
 import java.util.Map;
@@ -125,4 +122,11 @@ public interface IGradeService {
      * @return
      */
     List<CourseScheduleDto> convertToCourseSchedule(TbGradeDo gradeDo);
+
+    /**
+     * 删除教室时，是否有班级占用校验
+     * @param idArray
+     * @return
+     */
+    List<ValidateDeleteDto> validateByClassroomIds(String[] idArray);
 }

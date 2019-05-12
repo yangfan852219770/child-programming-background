@@ -5,8 +5,11 @@ import com.child.programming.base.dto.LoginedUserInfoDto;
 import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.model.TbClassroomDo;
 import com.child.programming.base.service.IClassroomService;
+import com.child.programming.base.service.IGradeService;
+import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.HttpSessionUtil;
 import com.child.programming.base.util.ResponseUtil;
+import com.child.programming.education.manage.dto.ValidateDeleteDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -28,6 +31,8 @@ import java.util.Map;
 public class ClassroomController {
     @Autowired
     private IClassroomService iClassroomService;
+    @Autowired
+    private IGradeService iGradeService;
 
     /**
      * 列表
@@ -81,6 +86,9 @@ public class ClassroomController {
         if (null != userInfoPojo && !StringUtils.isEmpty(idsStr)) {
             // TODO 删除前占用校验
             String[] idArray = idsStr.split(",");
+            List<ValidateDeleteDto> validateDeleteDtoList = iGradeService.validateByClassroomIds(idArray);
+            if (EmptyUtils.listIsNotEmpty(validateDeleteDtoList))
+                return ResultDto.fail(ResponseUtil.FAIL_MSG, validateDeleteDtoList);
             boolean result = iClassroomService.delete(idArray, userInfoPojo.getId());
             if (result)
                 return ResultDto.success();

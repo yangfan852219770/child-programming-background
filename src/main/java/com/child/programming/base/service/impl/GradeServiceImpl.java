@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @Description：
@@ -460,6 +459,30 @@ public class GradeServiceImpl implements IGradeService {
             }
         }
         return courseScheduleDtoList;
+    }
+
+    @Override
+    public List<ValidateDeleteDto> validateByClassroomIds(String[] idArray) {
+        if (EmptyUtils.arrayIsEmpty(idArray))
+            return null;
+        List<Integer> classroomIdList = ListUtil.stringArrayToIntegerList(idArray);
+        if (EmptyUtils.listIsEmpty(classroomIdList))
+            return null;
+        TbGradeDoExample example = new TbGradeDoExample();
+        TbGradeDoExample.Criteria criteria = example.createCriteria();
+        criteria.andClassroomIdIn(classroomIdList).andStatusEqualTo(Byte.valueOf("1"));
+        List<TbGradeDo> gradeDoList = tbGradeDoMapper.selectByExample(example);
+        if (EmptyUtils.listIsEmpty(gradeDoList))
+            return null;
+        List<ValidateDeleteDto> gradeDtoList = new ArrayList<>();
+        for (TbGradeDo g:gradeDoList
+             ) {
+            ValidateDeleteDto validateDeleteDto = new ValidateDeleteDto();
+            validateDeleteDto.setId(g.getId());
+            validateDeleteDto.setName(g.getName());
+            gradeDtoList.add(validateDeleteDto);
+        }
+        return gradeDtoList;
     }
 
     /**
