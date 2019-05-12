@@ -108,4 +108,8 @@ public class StudentWorkPortalController {
         return studentWorkService.delete(idArr,studentInfoDto.getId())?ResultDto.success("删除成功！"):ResultDto.fail("删除失败！");
     }
 
+    @RequestMapping("getStudentWorkInSession")
+    public StudentWorkInfoDto getStudentWorkInSession(HttpSession session){
+        return  studentWorkService.getStudentWorkInSession(session);
+    }
 }

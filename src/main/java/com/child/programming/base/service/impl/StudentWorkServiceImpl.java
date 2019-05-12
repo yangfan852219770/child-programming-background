@@ -239,4 +239,19 @@ public class StudentWorkServiceImpl implements IStudentWorkService {
         } else
             return null;
     }
+
+    @Override
+    public void saveStudentWorkToSession(StudentWorkInfoDto studentWorkInfoDto,HttpSession session) {
+
+        session.setAttribute(ConstDataUtil.STUDENT_WORK,studentWorkInfoDto);
+    }
+
+    @Override
+    public StudentWorkInfoDto getStudentWorkInSession(HttpSession session) {
+
+        StudentWorkInfoDto studentWorkInfoDto= HttpSessionUtil.getStudentWorkInfoDto(session);
+        if(EmptyUtils.objectIsEmpty(studentWorkInfoDto))
+            return null;
+        return  this.getOneById(studentWorkInfoDto.getId());
+    }
 }

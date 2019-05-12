@@ -79,8 +79,10 @@ public class StudentWorkControllor {
         return ResultDto.fail();
     }
 
-    @RequestMapping("/demoShow")
-    private  String  demoShow(){
-        return "scratcth-payer.html";
+    @RequestMapping("/saveStudentWorkToSession")
+    @ResponseBody
+    private  void  saveStudentWorkToSession(@RequestBody StudentWorkInfoDto studentWorkInfoDto,HttpSession session){
+
+        studentWorkService.saveStudentWorkToSession(studentWorkInfoDto,session);
     }
 }

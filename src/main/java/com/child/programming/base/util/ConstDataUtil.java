@@ -20,4 +20,7 @@ public class ConstDataUtil {
 
     public final static String CURRENT_USER_SCRATCH_WORK_FILE = "currentUserScratchWorkFile"; // 用于用户Scratch作品文件在Session中缓存
 
+    public final static String STUDENT_WORK = "StudentWork"; // 用于将学生作品储存到Session缓存中
+
+
 }

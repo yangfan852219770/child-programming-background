@@ -2,6 +2,7 @@ package com.child.programming.base.util;
 
 import com.child.programming.base.dto.LoginedUserInfoDto;
 import com.child.programming.base.dto.StudentInfoDto;
+import com.child.programming.base.dto.StudentWorkInfoDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -29,5 +30,8 @@ public class HttpSessionUtil {
         return (MultipartFile) session.getAttribute(ConstDataUtil.CURRENT_USER_SCRATCH_WORK_FILE);
     }
 
+    public static StudentWorkInfoDto getStudentWorkInfoDto(HttpSession session){
+        return (StudentWorkInfoDto) session.getAttribute(ConstDataUtil.STUDENT_WORK);
+    }
 
 }

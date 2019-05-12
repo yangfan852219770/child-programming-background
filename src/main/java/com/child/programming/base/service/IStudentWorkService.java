@@ -78,4 +78,18 @@ public interface IStudentWorkService {
      * @return
      */
     List<StudentWorkInfoDto> getCurrentStudentWorkGetList(String workName,HttpSession session);
+
+    /**
+     * 将Student Work 暂时保存到Session中，以达到两个跨域页面的通讯
+     * @param studentWorkInfoDto
+     * @return
+     */
+    void saveStudentWorkToSession(StudentWorkInfoDto studentWorkInfoDto,HttpSession session);
+
+    /***
+     * 得到放入session中的 work 对象
+     * @param session
+     * @return
+     */
+    StudentWorkInfoDto  getStudentWorkInSession(HttpSession session);
 }

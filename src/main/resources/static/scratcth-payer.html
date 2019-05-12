@@ -18,333 +18,308 @@
     <title>贝壳编程官方网站</title>
 </head>
 
-<body data-spy="scroll" data-target="#navbar-scroll" data-offset="75">
-    <!--pre-loader-->
-    <div id="preloader">
-        <div id="preloader-inner"></div>
-    </div>
-    <!--pre-loader-->
-    <div class="container pt100 pb70" >
-        <div class="row"  style="margin-left: 80px">
-            <div class="col-lg-12 ml-auto mb30 sticky-content course-detail">
-                <h2 class="mb-4">小童历险记</h2>
-                <ul class="course-detail-meta row list-unstyled">
-                    <li class="col-sm-4 col-md-3 py-2 col-6">
-                        <img src="assets/images/avatar1.jpg" alt="" class="img-fluid rounded-circle mr-3 float-left" width="40">
-                        <div class="oHidden">
-                            <small class="d-block pt-1">指导教师</small>
-                            <a href="#!">Liyin Duan.Yan Li</a>
+<body data-spy="scroll" data-target="#navbar-scroll" data-offset="75" style="overflow: hidden">
+<!--pre-loader-->
+<div id="preloader">
+    <div id="preloader-inner"></div>
+</div>
+
+<div class="container  pb70"  >
+    <div class="row"  style="margin-left: 80px;margin-top: 50px;" >
+        <div class="col-lg-9 ml-auto mb30 sticky-content course-detail"  >
+            <h2 class="mb-4" id="workName"></h2>
+            <ul class="course-detail-meta row list-unstyled">
+                <li class="col-sm-4 col-md-3 py-2 col-6">
+                    <i class="fa fa-user float-left w40 rounded-circle bg-gray mr-3"></i>
+                    <div class="oHidden">
+                        <small class="d-block pt-1" >指导教师</small>
+                        <span  id="teacherName" ></span>
+                    </div>
+                </li>
+                <li class="col-sm-4 col-md-3 py-2 col-6">
+                    <i class="fa fa-user float-left w40 rounded-circle bg-gray mr-3"></i>
+                    <div class="oHidden">
+                        <small class="d-block pt-1">作品作者</small>
+                        <span  id="studentName" ></span>
+                    </div>
+                </li>
+                <li class="col-sm-4 col-md-3 py-2 col-6">
+                    <i class="fa fa-calendar float-left w40 rounded-circle bg-gray mr-3"></i>
+                    <div class="oHidden">
+                        <small class="d-block pt-1">创建时间</small>
+                        <span  id="createTime" class="text-muted"></span>
+                    </div>
+                </li>
+                <li class="col-sm-4 col-md-3 py-2 col-6">
+                    <div class="col-sm-12 btn-group  text-right" >
+                        <button id="startVm" class="btn btn-info">开始</button>
+                        <button id="endVm" class="btn btn-danger ">停止</button>
+                    </div>
+                </li>
+            </ul>
+            <div style="position:relative;height:0;padding-bottom:56.25%;text-align: center;" >
+                <canvas id="test"  class="shadow" width="500" height="500" style="width: 500px; " ></canvas>
+
+            </div>
+            <!-- <div class="carouse-detail-content pt-4">
+                 <ul class="nav tab-list nav-justified">
+                     <li class="nav-item" role="presentation">
+                         <a data-toggle="tab" class="nav-link" href="#c-desc">
+                             <i class="far fa-sticky-note mr-2"></i> 描述</a>
+                     </li>
+                     <li class="nav-item" role="presentation">
+                         <a data-toggle="tab" class="nav-link active" href="#c-reviews">
+                             <i class="fa fa-thumbs-up mr-2"></i> 获赞数</a>
+
+                     </li>
+                 </ul>
+                 &lt;!&ndash;tabs nav&ndash;&gt;
+                 <div class="tab-content">
+                     <div class="tab-pane" id="c-desc">
+                         <div class="row">
+                             <div class="col-md-8 mb-30">
+                                 <h5>01 - 非常好好</h5>
+                                 <hr>
+                                 <p>
+                                    描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                     描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                 </p>
+                                 <br>
+                                 <h5>02 - 不错</h5>
+                                 <hr>
+                                 <p>
+                                     描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                     描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                 </p>
+                             </div>
+                             <div class="col-md-4 mb-30">
+                                 <h5>作品属性</h5>
+                                 <hr>
+                                 <ul class="list-features list-unstyled">
+                                     <li>
+                                         <span class="float-right">6 Months</span>
+                                         <i class="icon-calendar-31 mr-2 text-secondary"></i>
+                                         <span class="text-secondary">创建时间</span>
+                                     </li>
+                                     <li>
+                                         <span class="float-right">清风若雨</span>
+                                         <i class="icon-flag mr-2 text-secondary"></i>
+                                         <span class="text-secondary">作者</span>
+                                     </li>
+                                     <li>
+                                         <span class="float-right">143</span>
+                                         <i class="icon-users mr-2 text-secondary"></i>
+                                         <span class="text-secondary">被关注的数</span>
+                                     </li>
+                                     <li>
+                                         <span class="float-right">Liyin Duan.Yan Li</span>
+                                         <i class="icon-magic-wand mr-2 text-secondary"></i>
+                                         <span class="text-secondary">指导教师</span>
+                                     </li>
+                                 </ul>
+                                 <br>
+                                 <a href="#!" class="btn btn-secondary btn-lg">
+                                     <i class="fa fa-user-circle mr-2"></i> 关注作者
+                                 </a>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="tab-pane  active show" id="c-reviews">
+                         <div class="row mb-4 align-items-center">
+                             <div class="col-md-5 mb-30">
+                                 <div class="p-4 border-right border-top border-bottom border-left text-center bg-white rounded text-dark">
+                                     <div class="display-3 text-secondary">4.85</div>
+                                     <h4>
+                                        总评分
+                                     </h4>
+                                     <span class="text-muted">243 赞</span>
+                                 </div>
+                             </div>
+                             <div class="col-md-7 mb-30">
+                                 <div class="clearfix mb-2">
+                                     <span class="float-right">
+                                         225
+                                     </span>
+                                     <span> 5 Star</span>
+                                 </div>
+                                 <div class="progress mb-3" style="height: 2px;">
+                                     <div class="progress-bar bg-secondary" style="width: 100%"></div>
+                                 </div>
+                                 <div class="clearfix mb-2">
+                                     <span class="float-right">
+                                         10
+                                     </span>
+                                     <span> 4 Star</span>
+                                 </div>
+                                 <div class="progress mb-3" style="height: 2px;">
+                                     <div class="progress-bar bg-secondary" style="width: 15%"></div>
+                                 </div>
+                                 <div class="clearfix mb-2">
+                                         <span class="float-right">
+                                             5
+                                         </span>
+                                         <span> 3 Star</span>
+                                     </div>
+                                     <div class="progress mb-3" style="height: 2px;">
+                                         <div class="progress-bar bg-secondary" style="width: 5%"></div>
+                                     </div>
+                                     <div class="clearfix mb-2">
+                                             <span class="float-right">
+                                                 2
+                                             </span>
+                                             <span> 2 Star</span>
+                                         </div>
+                                         <div class="progress mb-3" style="height: 2px;">
+                                             <div class="progress-bar bg-secondary" style="width: 2%"></div>
+                                         </div>
+                                         <div class="clearfix mb-2">
+                                                 <span class="float-right">
+                                                     0
+                                                 </span>
+                                                 <span> 1 Star</span>
+                                             </div>
+                                             <div class="progress mb-3" style="height: 2px;">
+                                                 <div class="progress-bar bg-secondary" style="width: 0%"></div>
+                                             </div>
+                             </div>
+                         </div>&lt;!&ndash;/.row&ndash;&gt;
+                         <div class="media clearfix">
+                             <img src="assets/images/laoshitouxiang.jpeg" class="rounded-circle mr-3 d-flex" width="60" alt="">
+                             <div class="media-body border-bottom">
+                                 <h6>张老师</h6>
+                                 <p class="text-secondary mb-0">
+                                     <i class="icon-star"></i>
+                                     <i class="icon-star"></i>
+                                     <i class="icon-star"></i>
+                                     <i class="icon-star"></i>
+                                     <i class="icon-star"></i>
+                                 </p>
+                                 <p>
+这个孩子不错，真的不错，不是假的！
+                                 </p>
+                             </div>
+                         </div>&lt;!&ndash;/.review&ndash;&gt;
+                         <div class="media clearfix py-3">
+                                 <img src="assets/images/laoshitouxiang.jpeg" class="rounded-circle mr-3 d-flex" width="60" alt="">
+                                 <div class="media-body border-bottom">
+                                     <h6>王老师</h6>
+                                     <p class="text-secondary mb-0">
+                                         <i class="icon-star"></i>
+                                         <i class="icon-star"></i>
+                                         <i class="icon-star"></i>
+                                         <i class="icon-star"></i>
+                                         <i class="icon-star"></i>
+                                     </p>
+                                     <p>
+                                         这个孩子不错，真的不错，不是假的！                                        </p>
+                                 </div>
+                             </div>&lt;!&ndash;/.review&ndash;&gt;
+                             <div class="media clearfix">
+                                     <img src="assets/images/laoshitouxiang.jpeg" class="rounded-circle mr-3 d-flex" width="60" alt="">
+                                     <div class="media-body border-bottom">
+                                         <h6>孙老师</h6>
+                                         <p class="text-secondary mb-0">
+                                             <i class="icon-star"></i>
+                                             <i class="icon-star"></i>
+                                             <i class="icon-star"></i>
+                                             <i class="icon-star"></i>
+                                             <i class="icon-star"></i>
+                                         </p>
+                                         <p>
+                                             这个孩子不错，真的不错，不是假的！                                            </p>
+                                     </div>
+                                 </div>&lt;!&ndash;/.review&ndash;&gt;
+                     </div>
+                     &lt;!&ndash;tab pane&ndash;&gt;
+                 </div>
+                 &lt;!&ndash;tab content&ndash;&gt;
+             </div>-->
+        </div>
+        <div class="col-lg-3 sidebar-left  " style="margin-top: 80px;">
+            <!--<div class="sidebar-widget mb30">
+                <h5>热门作品</h5>
+                <ul class="list-unstyled list-links">
+                    <li>
+                        <a href="#!">猩猩的眼泪
+                            <span class="badge rounded bg-secondary text-white d-inline-block ml-2"> <i class="fa fa-arrow-up" ></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#!">流浪地球
+                            <span class="badge rounded bg-secondary text-white d-inline-block ml-2"> <i class="fa fa-arrow-up" ></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#!">疯狂的外星人</a>
+                    </li>
+                    <li>
+                        <a href="#!">我爱我家</a>
+                    </li>
+                    <li>
+                        <a href="#!">我爱自己<span class="badge rounded bg-secondary text-white d-inline-block ml-2"> <i class="fa fa-arrow-up" ></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            &lt;!&ndash;sidebar widget&ndash;&gt;
+            <div class="sidebar-widget mb30">
+                <h5>获奖作品</h5>
+                <ul class="list-unstyled list-links">
+                    <li class="media">
+                        <img src="assets/images/img1.jpg" class="img-fluid" alt="">
+                        <div class="media-body">
+                            <a href="#!">我的爸爸
+                                <small class="text-muted d-block">2019年01月01日</small>
+                            </a>
                         </div>
                     </li>
-                    <li class="col-sm-4 col-md-3 py-2 col-6">
-                        <i class="fa fa-tag float-left w40 rounded-circle bg-gray mr-3"></i>
-                        <div class="oHidden">
-                            <small class="d-block pt-1">所属分类</small>
-                            <a href="#!">编程</a>
+                    <li class="media">
+                        <img src="assets/images/img1.jpg" class="img-fluid" alt="">
+                        <div class="media-body">
+                            <a href="#!">我的爷爷
+                                <small class="text-muted d-block">2019年01月01日</small>
+                            </a>
                         </div>
                     </li>
-                    <li class="col-sm-4 col-md-3 py-2 col-6">
-                        <i class="fa fa-dollar-sign float-left w40 rounded-circle bg-gray mr-3"></i>
-                        <div class="oHidden">
-                            <small class="d-block pt-1">作品作者</small>
-                            <a href="#!">清风若雨</a>
-                        </div>
-                    </li>
-                    <li class="col-sm-4 col-md-3 py-2 col-6">
-                        <i class="fa fa-calendar float-left w40 rounded-circle bg-gray mr-3"></i>
-                        <div class="oHidden">
-                            <small class="d-block pt-1">创建时间</small>
-                            <span class="text-muted">6 Months</span>
+                    <li class="media">
+                        <img src="assets/images/img1.jpg" class="img-fluid" alt="">
+                        <div class="media-body">
+                            <a href="#!">我的奶娘
+                                <small class="text-muted d-block">2019年01月01日</small>
+                            </a>
                         </div>
                     </li>
                 </ul>
-                <div style="position:relative;height:0;padding-bottom:56.25%;text-align: center;" >
-                    <!--<iframe src="https://www.youtube.com/embed/U6QMlmIeIG8?ecver=2" style="position:absolute;width:100%;height:100%;left:0" width="640"
-                        height="360" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
-
-                    <div class="col-sm-12 btn-group align-content-center ">
-                        <button id="startVm" class="btn btn-info btn-rounded">开始</button>
-                        <button id="endVm" class="btn btn-danger btn-rounded">停止</button>
-                    </div>
-                    <canvas id="test" width="500" height="400" style="width: 500px;"></canvas>
-
-                </div>
-                <div class="carouse-detail-content pt-4">
-                    <ul class="nav tab-list nav-justified">
-                        <li class="nav-item" role="presentation">
-                            <a data-toggle="tab" class="nav-link" href="#c-desc">
-                                <i class="far fa-sticky-note mr-2"></i> 描述</a>
-                        </li>
-                        <!--<li class="nav-item" role="presentation">-->
-                            <!--<a data-toggle="tab" class="nav-link" href="#c-curriculum">-->
-                                <!--<i class="fa fa-clock mr-2"></i> 制作过程</a>-->
-                        <!--</li>-->
-                        <li class="nav-item" role="presentation">
-                            <a data-toggle="tab" class="nav-link active" href="#c-reviews">
-                                <i class="fa fa-thumbs-up mr-2"></i> 获赞数</a>
-
-                        </li>
-                    </ul>
-                    <!--tabs nav-->
-                    <div class="tab-content">
-                        <div class="tab-pane" id="c-desc">
-                            <div class="row">
-                                <div class="col-md-8 mb-30">
-                                    <h5>01 - 非常好好</h5>
-                                    <hr>
-                                    <p>
-                                       描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
-                                        描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
-                                    </p>
-                                    <br>
-                                    <h5>02 - 不错</h5>
-                                    <hr>
-                                    <p>
-                                        描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
-                                        描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
-                                    </p>
-                                <!--    <blockquote class="blockquote">
-                                        " Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-                                        dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                                        scrambled it to make a type specimen book. "
-                                        <div class="blockquote-footer text-dark">Beni Thomason</div>
-                                    </blockquote>-->
-                                </div>
-                                <div class="col-md-4 mb-30">
-                                    <h5>作品属性</h5>
-                                    <hr>
-                                    <ul class="list-features list-unstyled">
-                                        <li>
-                                            <span class="float-right">6 Months</span>
-                                            <i class="icon-calendar-31 mr-2 text-secondary"></i>
-                                            <span class="text-secondary">创建时间</span>
-                                        </li>
-                                        <!--<li>
-                                            <span class="float-right">Mon-Fri - 8Am-11pm</span>
-                                            <i class="icon-clock mr-2 text-secondary"></i>
-                                            <span class="text-secondary">Time</span>
-                                        </li>-->
-                                        <li>
-                                            <span class="float-right">清风若雨</span>
-                                            <i class="icon-flag mr-2 text-secondary"></i>
-                                            <span class="text-secondary">作者</span>
-                                        </li>
-                                        <li>
-                                            <span class="float-right">143</span>
-                                            <i class="icon-users mr-2 text-secondary"></i>
-                                            <span class="text-secondary">被关注的数</span>
-                                        </li>
-                                        <li>
-                                            <span class="float-right">Liyin Duan.Yan Li</span>
-                                            <i class="icon-magic-wand mr-2 text-secondary"></i>
-                                            <span class="text-secondary">指导教师</span>
-                                        </li>
-                                    </ul>
-                                    <br>
-                                    <a href="#!" class="btn btn-secondary btn-lg">
-                                        <i class="fa fa-user-circle mr-2"></i> 关注作者
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane  active show" id="c-reviews">
-                            <div class="row mb-4 align-items-center">
-                                <div class="col-md-5 mb-30">
-                                    <div class="p-4 border-right border-top border-bottom border-left text-center bg-white rounded text-dark">
-                                        <div class="display-3 text-secondary">4.85</div>
-                                        <h4>
-                                           总评分
-                                        </h4>
-                                        <span class="text-muted">243 赞</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-7 mb-30">
-                                    <div class="clearfix mb-2">
-                                        <span class="float-right">
-                                            225
-                                        </span>
-                                        <span> 5 Star</span>
-                                    </div>
-                                    <div class="progress mb-3" style="height: 2px;">
-                                        <div class="progress-bar bg-secondary" style="width: 100%"></div>
-                                    </div>
-                                    <div class="clearfix mb-2">
-                                        <span class="float-right">
-                                            10
-                                        </span>
-                                        <span> 4 Star</span>
-                                    </div>
-                                    <div class="progress mb-3" style="height: 2px;">
-                                        <div class="progress-bar bg-secondary" style="width: 15%"></div>
-                                    </div>
-                                    <div class="clearfix mb-2">
-                                            <span class="float-right">
-                                                5
-                                            </span>
-                                            <span> 3 Star</span>
-                                        </div>
-                                        <div class="progress mb-3" style="height: 2px;">
-                                            <div class="progress-bar bg-secondary" style="width: 5%"></div>
-                                        </div>
-                                        <div class="clearfix mb-2">
-                                                <span class="float-right">
-                                                    2
-                                                </span>
-                                                <span> 2 Star</span>
-                                            </div>
-                                            <div class="progress mb-3" style="height: 2px;">
-                                                <div class="progress-bar bg-secondary" style="width: 2%"></div>
-                                            </div>
-                                            <div class="clearfix mb-2">
-                                                    <span class="float-right">
-                                                        0
-                                                    </span>
-                                                    <span> 1 Star</span>
-                                                </div>
-                                                <div class="progress mb-3" style="height: 2px;">
-                                                    <div class="progress-bar bg-secondary" style="width: 0%"></div>
-                                                </div>
-                                </div>
-                            </div><!--/.row-->
-                            <div class="media clearfix">
-                                <img src="assets/images/laoshitouxiang.jpeg" class="rounded-circle mr-3 d-flex" width="60" alt="">
-                                <div class="media-body border-bottom">
-                                    <h6>张老师</h6>
-                                    <p class="text-secondary mb-0">
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                    </p>
-                                    <p>
-这个孩子不错，真的不错，不是假的！
-                                    </p>
-                                </div>
-                            </div><!--/.review-->
-                            <div class="media clearfix py-3">
-                                    <img src="assets/images/laoshitouxiang.jpeg" class="rounded-circle mr-3 d-flex" width="60" alt="">
-                                    <div class="media-body border-bottom">
-                                        <h6>王老师</h6>
-                                        <p class="text-secondary mb-0">
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                        </p>
-                                        <p>
-                                            这个孩子不错，真的不错，不是假的！                                        </p>
-                                    </div>
-                                </div><!--/.review-->
-                                <div class="media clearfix">
-                                        <img src="assets/images/laoshitouxiang.jpeg" class="rounded-circle mr-3 d-flex" width="60" alt="">
-                                        <div class="media-body border-bottom">
-                                            <h6>孙老师</h6>
-                                            <p class="text-secondary mb-0">
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                                <i class="icon-star"></i>
-                                            </p>
-                                            <p>
-                                                这个孩子不错，真的不错，不是假的！                                            </p>
-                                        </div>
-                                    </div><!--/.review-->
-                        </div>
-                        <!--tab pane-->
-                    </div>
-                    <!--tab content-->
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-
-    <!--footer-->
-    <footer class="footer">
-        <div class="container">
+            </div>-->
             <div class="row">
+                <div class="col-md-12 mb-30">
+                    <h5>作品说明</h5>
+                    <hr>
+                    <p id="description">
 
-
-
-
-                <div class="col-lg-12 col-md-6 mb30 text-center">
-                    <ul class="list-unstyled list-links ">
-                        <li>
-                            <a href="#!">小童编辑器</a>
-                        </li>
-                    </ul>
+                    </p>
                 </div>
             </div>
-            <!--row-->
-            <hr>
-            <div class="row text-center">
-                <div class="col-lg-6 mr-auto ml-auto">
-                    <span>&COPY; Copyright 2019.
-                        <a href="#!">zdpBuilder</a>
+            <div class='row'>
+
+                <div class="col-md-12">
+                    <span>&COPY; Copyright 2019.<a href="#!">zdpBuilder</a>
                     </span>
                 </div>
             </div>
         </div>
-    </footer>
-    <!--/.footer-->
-    <!--compile plugins-->
-    <script src="assets/dist/js/plugins.js"></script>
-    <script src="assets/dist/js/education.custom.js"></script>
-    <script src="assets/plugins/scratch-player/scripts/scratch-vm.js"></script>
-    <script src="assets/plugins/scratch-player/scripts/scratch-storage.js"></script>
-    <script src="assets/plugins/scratch-player/scripts/scratch-svg-renderer.js"></script>
-    <!-- note: this uses the BUILT version of scratch-render!  make sure to npm run build -->
-    <script src="assets/plugins/scratch-player/scripts/scratch-render.js"></script>
-    <script>
+    </div>
 
-        window.devicePixelRatio = 1;
-
-        var canvas = document.getElementById('test');
-        var render = new ScratchRender(canvas);
-        var vm = new VirtualMachine();
-        var storage = new ScratchStorage();
-        var mockMouse = data => vm.runtime.postIOData('mouse', {
-            canvasWidth: canvas.width,
-            canvasHeight: canvas.height,
-            ...data,
-        });
-     /*   var startVm= document.getElementById("startVm");
-        var endVm =document.getElementById("endVm");
-        startVm.onclick=()=>{
-            vm.start();
-        }*/
-
-        vm.attachStorage(storage);
-        vm.attachRenderer(render);
-        vm.attachV2SVGAdapter(new ScratchSVGRenderer.SVGRenderer());
-        vm.attachV2BitmapAdapter(new ScratchSVGRenderer.BitmapAdapter());
-
-        document.getElementById("startVm").addEventListener('click', e => {
-            vm.greenFlag(); // 执行程序
-        });
-        document.getElementById("endVm").addEventListener('click', e => {
-            vm.stopAll();
-        });
-
-        var request = new XMLHttpRequest();
-        request.open('GET', "http://steam.nosdn.127.net/dac8f13d-6796-4552-9352-ecfdfb21f41c.sb3", true);
-        request.responseType = 'blob';
-        request.onload = function () {
-            var reader = new FileReader();
-            reader.readAsArrayBuffer(request.response);
-            reader.onload = function (e) {
-                vm.start();
-                vm.loadProject(reader.result)
-                    .then(() => {
-                        vm.greenFlag(); // 执行程序
-                    });
-            };
-        };
-        request.send();
-    </script>
+</div>
+<!--/.call to action-->
+<!--compile plugins-->
+<script src="assets/dist/js/plugins.js"></script>
+<script src="assets/plugins/scratch-player/scripts/scratch-vm.js"></script>
+<script src="assets/plugins/scratch-player/scripts/scratch-storage.js"></script>
+<script src="assets/plugins/scratch-player/scripts/scratch-svg-renderer.js"></script>
+<!-- note: this uses the BUILT version of scratch-render!  make sure to npm run build -->
+<script src="assets/plugins/scratch-player/scripts/scratch-render.js"></script>
+<script src="assets/dist/js/scratch-player.js"></script>
 </body>
 
 </html>
