@@ -5,7 +5,7 @@
         SELECT ssu.id,ssu.is_payment AS isPayment,ssu.is_halfway AS isHalfway,ssu.sign_up_time as signUpTime,
         s.id AS studentId,s.name AS studentName,s.guardian_phone AS studentPhone,
         g.id AS gradeId,g.name AS gradeName,
-        c.id AS courseId,c.name AS courseName,c.money AS courseMoney
+        c.id AS courseId,c.name AS courseName,c.money AS courseMoney, c.status AS courseStatus
         FROM student_sign_up AS ssu
         LEFT JOIN student AS s
         on ssu.student_id=s.id

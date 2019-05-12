@@ -84,7 +84,7 @@ public class ClassroomController {
 
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && !StringUtils.isEmpty(idsStr)) {
-            // TODO 删除前占用校验
+            // 删除前占用校验
             String[] idArray = idsStr.split(",");
             List<ValidateDeleteDto> validateDeleteDtoList = iGradeService.validateByClassroomIds(idArray);
             if (EmptyUtils.listIsNotEmpty(validateDeleteDtoList))

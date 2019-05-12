@@ -28,6 +28,8 @@ public class SignUpFormalCourseInfoDto {
 
     private Double courseMoney; // 课程价格
 
+    private Integer courseStatus; // 课程状态
+
     private Date signUpTime; // 报名时间
 
     private Byte isPayment; // 是否付费

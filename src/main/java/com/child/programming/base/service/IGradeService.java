@@ -129,4 +129,11 @@ public interface IGradeService {
      * @return
      */
     List<ValidateDeleteDto> validateByClassroomIds(String[] idArray);
+
+    /**
+     * 删除老师时，是否有班级占用
+     * @param idArray
+     * @return
+     */
+    List<ValidateDeleteDto> validateByTeacherIds(String[] idArray);
 }

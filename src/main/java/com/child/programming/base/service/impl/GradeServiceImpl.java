@@ -485,6 +485,30 @@ public class GradeServiceImpl implements IGradeService {
         return gradeDtoList;
     }
 
+    @Override
+    public List<ValidateDeleteDto> validateByTeacherIds(String[] idArray) {
+        if (EmptyUtils.arrayIsEmpty(idArray))
+            return null;
+        List<Integer> teacherIdList = ListUtil.stringArrayToIntegerList(idArray);
+        if (EmptyUtils.listIsEmpty(teacherIdList))
+            return null;
+        TbGradeDoExample example = new TbGradeDoExample();
+        TbGradeDoExample.Criteria criteria = example.createCriteria();
+        criteria.andTeacherIdIn(teacherIdList).andStatusEqualTo(Byte.valueOf("1"));
+        List<TbGradeDo> gradeDoList = tbGradeDoMapper.selectByExample(example);
+        if (EmptyUtils.listIsEmpty(gradeDoList))
+            return null;
+        List<ValidateDeleteDto> gradeDtoList = new ArrayList<>();
+        for (TbGradeDo g:gradeDoList
+        ) {
+            ValidateDeleteDto validateDeleteDto = new ValidateDeleteDto();
+            validateDeleteDto.setId(g.getId());
+            validateDeleteDto.setName(g.getName());
+            gradeDtoList.add(validateDeleteDto);
+        }
+        return gradeDtoList;
+    }
+
     /**
      * 将TbGradeDo中要校验的时间进行对象转换
      *

@@ -5,9 +5,12 @@ import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.dto.ShiroDto;
 import com.child.programming.base.dto.TeacherInfoDto;
 import com.child.programming.base.model.TbTeacherDo;
+import com.child.programming.base.service.IGradeService;
 import com.child.programming.base.service.ITeacherService;
+import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.HttpSessionUtil;
 import com.child.programming.base.util.ResponseUtil;
+import com.child.programming.education.manage.dto.ValidateDeleteDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +32,8 @@ public class TeacherController {
 
     @Autowired
     private ITeacherService iTeacherService;
+    @Autowired
+    private IGradeService iGradeService;
 
     /**
      * 列表
@@ -65,7 +70,6 @@ public class TeacherController {
      * @param session
      * @return
      */
-    // TODO 有班级占用的无法删除
     @RequestMapping(value = "delete", method = RequestMethod.GET)
     public ResultDto delete(@RequestParam(value = "idsStr", required = true)String idsStr,
                             HttpSession session) {
@@ -74,6 +78,10 @@ public class TeacherController {
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && !StringUtils.isEmpty(idsStr)) {
             String[] idArray = idsStr.split(",");
+            // 删除前占用校验
+            List<ValidateDeleteDto> validateDeleteDtoList = iGradeService.validateByTeacherIds(idArray);
+            if (EmptyUtils.listIsNotEmpty(validateDeleteDtoList))
+                return ResultDto.fail(ResponseUtil.FAIL_MSG, validateDeleteDtoList);
             boolean result = iTeacherService.delete(idArray, userInfoPojo.getId());
             if (result)
                 return ResultDto.success();
