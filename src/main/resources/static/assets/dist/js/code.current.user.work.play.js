@@ -174,11 +174,11 @@ function scratchPlayer(url) {
                         var loginId = $("#loginId").val();
                         var password = $("#password").val();
                         if(loginId==null||loginId==""){
-                            layer.msg('请输入手机号！', {time: 5000, icon:0});
+                            layer.msg('请输入手机号！', {time: 2000, icon:0});
                             return;
                         }
                         if(password==null||password==""){
-                            layer.msg('请输入密码！', {time: 5000, icon:0});
+                            layer.msg('请输入密码！', {time: 2000, icon:0});
                             return;
                         }
                         if(/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/.test(loginId)){
@@ -201,20 +201,20 @@ function scratchPlayer(url) {
                                             $("#CurrentUserName").text(res.data.name);
                                             layer.close( index);
                                         }else{
-                                            layer.msg(res.msg, {time: 5000, icon:5});
+                                            layer.msg(res.msg, {time: 2000, icon:5});
                                         }
 
                                     }else{
-                                        layer.msg('登录失败！', {time: 5000, icon:5});
+                                        layer.msg('登录失败！', {time: 2000, icon:5});
 
                                     }
                                 }
                                 ,error:function (res) {
-                                    layer.msg('登录失败！', {time: 5000, icon:5});
+                                    layer.msg('登录失败！', {time: 2000, icon:5});
                                 }
                             });
                         }else{
-                            layer.msg('请输入正确手机号！', {time: 5000, icon:0});
+                            layer.msg('请输入正确手机号！', {time: 2000, icon:0});
                             return;
                         }
                     });
@@ -242,16 +242,16 @@ function scratchPlayer(url) {
                                 $("#logout").css("display","none");
                                 layer.close( index);
                             }else{
-                                layer.msg('退出失败！', {time: 5000, icon:5});
+                                layer.msg('退出失败！', {time: 2000, icon:5});
                             }
 
                         }else{
-                            layer.msg('退出失败！', {time: 5000, icon:5});
+                            layer.msg('退出失败！', {time: 2000, icon:5});
 
                         }
                     }
                     ,error:function (res) {
-                        layer.msg('退出失败！', {time: 5000, icon:5});
+                        layer.msg('退出失败！', {time: 2000, icon:5});
                     }
                 });
 

@@ -105,7 +105,7 @@ Project Version - v1.0
             ,done: function(res){
                if(res.status==200||res.status=="200"){
                    $("#coverUrl").val(res.msg);
-                   layer.msg('上传成功！', {time: 5000, icon:6});
+                   layer.msg('上传成功！', {time: 2000, icon:6});
                  var  photoUrl='http://localhost:8080/child-programming-background/upload_files/'+res.msg;
                    $("#preImg").html('<img style=" margin:20px 10px 0 10px;"src="'+photoUrl +'" width="240" height="250"/>');
 

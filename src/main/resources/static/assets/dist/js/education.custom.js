@@ -109,11 +109,11 @@ Project Version - v1.0
             var studentName =$("#studentName").val();
             var studentPhone =$("#studentPhone").val();
             if(studentName==null||studentName==""){
-                layer.msg('请输入姓名！', {time: 5000, icon:0});
+                layer.msg('请输入姓名！', {time: 2000, icon:0});
                 return;
             }
             if(studentPhone==null||studentPhone==""){
-                layer.msg('请输入电话！', {time: 5000, icon:0});
+                layer.msg('请输入电话！', {time: 2000, icon:0});
                 return;
             }
             if(/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/.test(studentPhone)){
@@ -137,12 +137,12 @@ Project Version - v1.0
                             },3000);
 
                         }else{
-                            layer.msg(res.msg, {time: 5000, icon:6});
+                            layer.msg(res.msg, {time: 1000, icon:6});
                         }
                },
            });
             }else{
-                layer.msg('请输入合法手机号！', {time: 5000, icon:0});
+                layer.msg('请输入合法手机号！', {time: 2000, icon:0});
             }
 
         });
@@ -209,3 +209,14 @@ var swiper = new Swiper('.swiper-container', {
     },
 });
 
+layui.use('layer', function(){
+    var $ = layui.jquery, layer = layui.layer;
+
+    $("#laymi").click(function () {
+        layer.open({
+            type:2,
+            content:'assets/plugins/layui.layim-v3.0.1/demo/mobile.html',
+            area: ['70%', '80%']
+        });
+    })
+});
