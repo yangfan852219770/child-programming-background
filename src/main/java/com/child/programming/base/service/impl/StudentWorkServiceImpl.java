@@ -204,6 +204,9 @@ public class StudentWorkServiceImpl implements IStudentWorkService {
             String uploadPath=iUploadService.uploadScratch("scratch",file,request);
             tbStudentWorkDo.setStudentId(studentInfoDto.getId());
             tbStudentWorkDo.setWorkUrl(uploadPath);
+            if(EmptyUtils.stringIsEmpty(tbStudentWorkDo.getCoverUrl()))
+                tbStudentWorkDo.setCoverUrl("default/scratch_work_default.jpg");
+
         }
 
         return this.save(tbStudentWorkDo,studentInfoDto.getId())?ResultDto.success("发布成功！"):ResultDto.fail("发布失败！");

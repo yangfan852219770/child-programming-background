@@ -18,7 +18,7 @@ function  studentWorkListDoM() {
         laypage.render({
             elem: 'pagination'
             ,count: data.length
-            ,limit:4
+            ,limit:3
             ,jump: function(obj){
                 $('#studentWorkList').html("");
                 /*  //模拟渲染
@@ -34,10 +34,10 @@ function  studentWorkListDoM() {
                     ,thisData = studentWorkList.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
                 if(thisData){
                     for(var i=0;i<thisData.length;i++){
-                        $('#studentWorkList').append( '<div class="col-lg-6 mb">'
+                        $('#studentWorkList').append( '<div class="col-lg-4 mb">'
                            +' <div class="img-card-alt mb-30">'
-                            +'<a class="img-thumb" onclick="studentWork('+thisData[i].id +');">'
-                            +'<img src="'+thisData[i].coverUrl+'" alt="" class="img-fluid">'
+                            +'<a class="img-thumb" onclick="studentWork('+thisData[i].id +');" style="background-color:rgba(255,255,255,1)">'
+                            +'<img src="'+thisData[i].coverUrl+'" alt="" class="img-fluid"  height="200">'
                             +' <span class="thumb-overlay">'
                             +' <i class="icon-play"></i>'
                             +' </span>'
