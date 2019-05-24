@@ -2,8 +2,10 @@ package com.child.programming.base.service.impl;
 
 import com.child.programming.base.mapper.TbTeacherCourseScheduleDoMapper;
 import com.child.programming.base.mapper.TeacherCourseScheduleCustomMapper;
+import com.child.programming.base.model.TbStudentSignUpDo;
 import com.child.programming.base.model.TbTeacherCourseScheduleDo;
 import com.child.programming.base.model.TbTeacherCourseScheduleDoExample;
+import com.child.programming.base.service.ISignUpFormalCourseService;
 import com.child.programming.base.service.ITeacherCourseScheduleService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
@@ -27,6 +29,9 @@ public class TeacherCourseScheduleServiceImpl implements ITeacherCourseScheduleS
     @Autowired
     private TeacherCourseScheduleCustomMapper teacherCourseScheduleCustomMapper;
 
+    @Autowired
+    private ISignUpFormalCourseService iSignUpFormalCourseService;
+
     @Override
     public Boolean generateSchedule(List<CourseScheduleDto> courseScheduleDtoList, Integer userId) {
         if (EmptyUtils.listIsEmpty(courseScheduleDtoList))
@@ -34,9 +39,14 @@ public class TeacherCourseScheduleServiceImpl implements ITeacherCourseScheduleS
         List<TbTeacherCourseScheduleDo> teacherCourseScheduleDoList = ListUtil.convertElement(courseScheduleDtoList, TbTeacherCourseScheduleDo.class);
         if (EmptyUtils.listIsEmpty(teacherCourseScheduleDoList))
             return false;
+        // 未有人报名的不生成课表
+        Integer gradeId = courseScheduleDtoList.get(0).getGradeId();
+        List<TbStudentSignUpDo> studentSignUpDoList = iSignUpFormalCourseService.getListPayByGradeId(gradeId);
+        if (EmptyUtils.listIsEmpty(studentSignUpDoList))
+            return true;
         for (TbTeacherCourseScheduleDo schedule:teacherCourseScheduleDoList
              ) {
-            schedule.setCourseId(userId);
+            schedule.setCreateId(userId);
             schedule.setCreateTime(new Date());
             schedule.setStatus(Byte.valueOf("0"));
             schedule.setIsSignIn(Byte.valueOf("0"));

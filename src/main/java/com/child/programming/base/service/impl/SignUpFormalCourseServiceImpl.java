@@ -5,6 +5,7 @@ import com.child.programming.base.mapper.SignUpFormalCourseCustomMapper;
 import com.child.programming.base.mapper.TbStudentSignUpDoMapper;
 import com.child.programming.base.model.TbStudentSignUpDo;
 import com.child.programming.base.model.TbStudentSignUpDoExample;
+import com.child.programming.base.model.TbSuggestionDoExample;
 import com.child.programming.base.service.IGradeService;
 import com.child.programming.base.service.ISignUpFormalCourseService;
 import com.child.programming.base.util.EmptyUtils;
@@ -81,5 +82,13 @@ public class SignUpFormalCourseServiceImpl implements ISignUpFormalCourseService
         studentSignUpDo.setLastUpdateId(userId);
         studentSignUpDo.setLastUpdateTime(new Date());
         return studentSignUpDoMapper.updateByPrimaryKeySelective(studentSignUpDo) > 0;
+    }
+
+    @Override
+    public List<TbStudentSignUpDo> getListPayByGradeId(Integer gradeId) {
+        TbStudentSignUpDoExample example = new TbStudentSignUpDoExample();
+        TbStudentSignUpDoExample.Criteria criteria = example.createCriteria();
+        criteria.andGradeIdEqualTo(gradeId).andIsPaymentEqualTo(Byte.valueOf("1"));
+        return studentSignUpDoMapper.selectByExample(example);
     }
 }

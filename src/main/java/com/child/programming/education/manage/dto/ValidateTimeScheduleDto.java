@@ -18,6 +18,8 @@ import java.util.List;
 @Log4j2
 public class ValidateTimeScheduleDto {
 
+    private String gradeName; // 班级名称
+
     private Integer teacherId; // 老师id
 
     private Integer classroomId; // 教室id
@@ -45,7 +47,7 @@ public class ValidateTimeScheduleDto {
                     String result = sourceSchedule.detectConflict(targeSchedule);
                     // 有冲突
                     if(!"0".equals(result)){
-                        return result;
+                        return this.gradeName + result;
                     }
                 }
             }

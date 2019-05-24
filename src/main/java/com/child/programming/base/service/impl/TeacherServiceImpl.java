@@ -190,4 +190,19 @@ public class TeacherServiceImpl implements ITeacherService {
         shiroDto.setRoleName(tbRoleDo.getName());
         return shiroDto;
     }
+
+    @Override
+    public Boolean validateLoginId(Integer id, String loginId) {
+        // 没有账号，不必校验
+        if(EmptyUtils.stringIsEmpty(loginId))
+            return true;
+        TbTeacherDoExample example = new TbTeacherDoExample();
+        TbTeacherDoExample.Criteria criteria = example.createCriteria();
+        criteria.andLoginIdEqualTo(loginId).andStatusEqualTo(Byte.valueOf("1"));
+        // 编辑时，排除自身
+        if (null != id)
+            criteria.andIdNotEqualTo(id);
+        List<TbTeacherDo> teacherDoList = tbTeacherDoMapper.selectByExample(example);
+        return EmptyUtils.listIsEmpty(teacherDoList);
+    }
 }

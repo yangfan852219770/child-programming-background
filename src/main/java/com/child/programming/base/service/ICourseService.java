@@ -87,4 +87,11 @@ public interface ICourseService {
     Boolean generateCourseSchedule(Integer courseId, Integer userId);
 
     CourseArrange getCourseDetailByGradeId(int gradeId);
+
+    /**
+     * 通过课程id,获取结课课程
+     * @param courseId
+     * @return
+     */
+    TbCourseDo getEndCourseById(Integer courseId);
 }

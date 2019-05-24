@@ -58,6 +58,7 @@ public class ClassroomController {
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && null != classroomDo){
 
+            // 教室编码校验，同一个学校的编码不得重复
             boolean validateResult = iClassroomService.validateCode(classroomDo.getId(),classroomDo.getCode(), classroomDo.getSchoolId());
             if (validateResult){
                 boolean result = iClassroomService.save(classroomDo,userInfoPojo.getId());

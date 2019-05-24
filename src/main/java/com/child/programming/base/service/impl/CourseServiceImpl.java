@@ -38,6 +38,8 @@ public class CourseServiceImpl implements ICourseService {
     @Autowired
     private ITeacherCourseScheduleService iTeacherCourseScheduleService;
 
+    private static final Integer endCourseStatus = 3; // 结课状态
+
     /**
      * @Description:    小程序首页课程列表展示，包括搜索，高级搜索
      * @param homePageHeighSerachParam 查询的参数
@@ -291,6 +293,17 @@ public class CourseServiceImpl implements ICourseService {
         weekendsScheduleString = weekendsScheduleString.substring(0,weekendsScheduleString.length() - 1);
         courseArrange.setWeekendsSchedule(weekendsScheduleString);
         return courseArrange;
+    }
+
+    @Override
+    public TbCourseDo getEndCourseById(Integer courseId) {
+        if (null != courseId)
+            return null;
+        TbCourseDoExample example = new TbCourseDoExample();
+        TbCourseDoExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(courseId).andStatusEqualTo(endCourseStatus);
+        List<TbCourseDo> courseDoList = tbCourseDoMapper.selectByExample(example);
+        return EmptyUtils.listIsNotEmpty(courseDoList) ? courseDoList.get(0) : null;
     }
 
     /**

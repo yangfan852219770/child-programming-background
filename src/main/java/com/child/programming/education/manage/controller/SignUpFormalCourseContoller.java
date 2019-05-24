@@ -99,6 +99,7 @@ public class SignUpFormalCourseContoller {
         paymentRecordDo.setStudentId(studentId);
         paymentRecordDo.setCourseId(courseId);
         paymentRecordDo.setPayMoney(courseMoney);
+        paymentRecordDo.setType(Byte.valueOf("1"));
 
         boolean saveResult = iPaymentRecordService.insert(paymentRecordDo, userInfoPojo.getId());
         // 更改报名缴费状态

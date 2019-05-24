@@ -48,4 +48,11 @@ public interface ISignUpFormalCourseService {
      * @return
      */
     Boolean update(TbStudentSignUpDo studentSignUpDo, Integer userId);
+
+    /**
+     * 未有人缴费，则不必生成课表
+     * @param gradeId
+     * @return
+     */
+    List<TbStudentSignUpDo> getListPayByGradeId(Integer gradeId);
 }

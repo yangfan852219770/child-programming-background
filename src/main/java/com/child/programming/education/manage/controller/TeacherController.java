@@ -56,6 +56,11 @@ public class TeacherController {
     public ResultDto save(HttpSession session, @RequestBody TbTeacherDo teacherDo){
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && null != teacherDo){
+
+            // 登陆账号可用否校验
+            boolean validateResult = iTeacherService.validateLoginId(teacherDo.getId(), teacherDo.getLoginId());
+            if (!validateResult)
+                return ResultDto.fail("该账号已被占用!");
             boolean result = iTeacherService.save(teacherDo,userInfoPojo.getId());
             if (result)
                 return ResultDto.success();

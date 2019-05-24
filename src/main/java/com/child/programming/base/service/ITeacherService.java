@@ -73,4 +73,12 @@ public interface ITeacherService {
      * @return
      */
     ShiroDto getTeacherByLoginId(String loginId);
+
+    /**
+     * 校验登陆账号是否重复
+     * @param id 主键
+     * @param loginId
+     * @return true 可用
+     */
+    Boolean validateLoginId(Integer id, String loginId);
 }
