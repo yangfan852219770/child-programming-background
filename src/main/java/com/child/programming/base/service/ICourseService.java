@@ -6,10 +6,12 @@ import com.child.programming.app.web.dto.SignUpCourseDto;
 import com.child.programming.base.dto.CourseInfoDto;
 import com.child.programming.base.model.TbCourseDo;
 import com.child.programming.base.model.TbGradeDo;
+import com.child.programming.education.manage.dto.CourseDetailDto;
 import com.child.programming.education.manage.dto.CourseSaveDto;
 import com.child.programming.education.manage.dto.CourseTimeScheduleDto;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ICourseService {
     /**
@@ -94,4 +96,11 @@ public interface ICourseService {
      * @return
      */
     TbCourseDo getEndCourseById(Integer courseId);
+
+    /**
+     * 获取课程详细信息
+     * @param gradeIdSet
+     * @return
+     */
+    List<CourseDetailDto> getCourseDetaiListByGradeIdSet(Set gradeIdSet);
 }

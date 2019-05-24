@@ -272,10 +272,12 @@ public class CourseServiceImpl implements ICourseService {
 
             // 学生课程表处理
             boolean studentResult = iStudentCourseScheduleService.generateSchedule(courseScheduleDtoList, grade.getId(), userId);
-            // 老师课程表处理
-            boolean teacherResult = iTeacherCourseScheduleService.generateSchedule(courseScheduleDtoList, userId);
-            if (!studentResult || !teacherResult)
-                return false;
+            if(studentResult){
+                // 老师课程表处理
+                boolean teacherResult = iTeacherCourseScheduleService.generateSchedule(courseScheduleDtoList, userId);
+                if (!teacherResult)
+                    return false;
+            }
         }
         return true;
     }
@@ -304,6 +306,11 @@ public class CourseServiceImpl implements ICourseService {
         criteria.andIdEqualTo(courseId).andStatusEqualTo(endCourseStatus);
         List<TbCourseDo> courseDoList = tbCourseDoMapper.selectByExample(example);
         return EmptyUtils.listIsNotEmpty(courseDoList) ? courseDoList.get(0) : null;
+    }
+
+    @Override
+    public List<CourseDetailDto> getCourseDetaiListByGradeIdSet(Set gradeIdSet) {
+        return courseCustomMapper.getCourseDetaiListByGradeIdSet(gradeIdSet);
     }
 
     /**

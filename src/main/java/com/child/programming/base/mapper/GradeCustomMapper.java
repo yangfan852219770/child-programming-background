@@ -19,4 +19,5 @@ public interface GradeCustomMapper {
      * @return
      */
     List<GradeInfoDto> getList(Map map);
+
 }

@@ -41,7 +41,7 @@ public class GradeWeekendsScheduleDto {
                         || target.getStartHour().compareTo(this.endHour) > 0)
                             continue;
                         // 执行此处，说明不满足上述条件，有冲突
-                        return "星期" + day + "时间安排有冲突!";
+                        return "星期" + sourceDay + "时间安排有冲突!";
                     }
                 }
             }

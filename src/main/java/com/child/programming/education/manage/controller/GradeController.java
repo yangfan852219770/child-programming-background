@@ -63,18 +63,18 @@ public class GradeController {
     public ResultDto save(HttpSession session, @RequestBody TbGradeDo gradeDo){
         LoginedUserInfoDto userInfoPojo = HttpSessionUtil.getLoginedUserInfo(session);
         if (null != userInfoPojo && null != gradeDo){
+            // 校验先不用
+            /*
             Integer value = iGradeService.validateCapacity(gradeDo.getClassroomId(), gradeDo.getMaxCapacity());
-            // 可以添加
-            if (value == -1) {
-                boolean result = iGradeService.save(gradeDo,userInfoPojo.getId());
-                if (result)
-                    return ResultDto.success();
-            }
-            // 无法添加
+            无法添加
             if (value > 0) {
                 return ResultDto.fail("教室最大容量为:"+value);
             }
-
+            */
+            // 可以添加
+            boolean result = iGradeService.save(gradeDo,userInfoPojo.getId());
+            if (result)
+                return ResultDto.success();
         }
 
         return ResultDto.fail();

@@ -2,10 +2,9 @@ package com.child.programming.base.service;
 
 import com.child.programming.base.model.TbStudentCourseScheduleDo;
 import com.child.programming.education.manage.dto.CourseScheduleDto;
-import com.child.programming.education.manage.dto.StudentCourseDto;
+import com.child.programming.education.manage.dto.StudentScheduleDto;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Description：
@@ -23,18 +22,10 @@ public interface IStudentCourseScheduleService {
     Boolean generateSchedule(List<CourseScheduleDto> courseScheduleDtoList, Integer gradeId, Integer userId);
 
     /**
-     * 获取学生课程信息
-     * @param map
-     * @return
-     */
-    List<StudentCourseDto> getStudentCourseList(Map map);
-
-    /**
      * 获取学生课程表信息
      * @param studentId
-     * @param courseId
      * @return
      */
-    List<TbStudentCourseScheduleDo> getStudentCourseScheduleList(Integer studentId, Integer courseId);
+    List<StudentScheduleDto> getStudentCourseScheduleList(Integer studentId);
 
 }

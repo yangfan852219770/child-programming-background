@@ -48,7 +48,7 @@ public class ChildProgrammingBackgroundApplicationTests {
     @Test
     public void generateScheduleTest(){
         System.out.println("Test");
-        Boolean result = iCourseService.generateCourseSchedule(1, 1);
+        Boolean result = iCourseService.generateCourseSchedule(2, 1);
         System.out.println(result);
     }
 

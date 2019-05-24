@@ -177,9 +177,9 @@ public class GradeServiceImpl implements IGradeService {
     }
 
     @Override
-    public String validateTimeScheduleConflict(List<CourseTimeScheduleDto> timeSchedule, Integer courseId) {
-        if (EmptyUtils.listIsNotEmpty(timeSchedule)) {
-            for (CourseTimeScheduleDto courseTimeSchedule : timeSchedule
+    public String validateTimeScheduleConflict(List<CourseTimeScheduleDto> timeScheduleList, Integer courseId) {
+        if (EmptyUtils.listIsNotEmpty(timeScheduleList)) {
+            for (CourseTimeScheduleDto courseTimeSchedule : timeScheduleList
             ) {
                 TbGradeDo gradeDo = getOneById(courseTimeSchedule.getGradeId());
 
@@ -188,10 +188,10 @@ public class GradeServiceImpl implements IGradeService {
                     continue;
 
                 // 有课的不能再安排课程,防止重复安排课程
-                // TODO 后期不在此处校验
-                if (EmptyUtils.intIsNotEmpty(gradeDo.getCourseId()))
+                // 已在改为有课程的班级，无法选择
+               /* if (EmptyUtils.intIsNotEmpty(gradeDo.getCourseId()))
                     if (!gradeDo.getCourseId().equals(courseId))
-                        return gradeDo.getName() + "已经安排课程，不能重复安排!";
+                        return gradeDo.getName() + "已经安排课程，不能重复安排!";*/
 
 
                 // 代码复用性
@@ -207,12 +207,11 @@ public class GradeServiceImpl implements IGradeService {
                 // 移除已经结课的时间安排
                 removeEndCourse(teacherGradeList);
                 removeEndCourse(classroomGradeList);
-                //TODO 编辑时 查出的班级安排，在提交数据中也出现，则按照提交数据的安排
 
                 // 校验数据中，如果存在一个老师教不同班级的情况，也要放入老师安排数组中
-                teacherGradeList = addGradeByTeacherId(teacherGradeList, timeSchedule, gradeDo.getTeacherId(), gradeDo.getId());
+                teacherGradeList = addGradeByTeacherId(teacherGradeList, timeScheduleList, gradeDo.getTeacherId(), gradeDo.getId());
                 // 教室同理
-                classroomGradeList = addGradeByClassroomId(classroomGradeList, timeSchedule, gradeDo.getClassroomId(), gradeDo.getId());
+                classroomGradeList = addGradeByClassroomId(classroomGradeList, timeScheduleList, gradeDo.getClassroomId(), gradeDo.getId());
 
                 // 两个集合都是空，说明无冲突
                 if (EmptyUtils.listIsEmpty(teacherGradeList) && EmptyUtils.listIsEmpty(classroomGradeList))
@@ -234,14 +233,18 @@ public class GradeServiceImpl implements IGradeService {
                 String validateTeacherResult = detectTimeScheduleConflict(teacherTimeScheduleList, validateTimeScheduleDto);
                 // 老师时间安排有冲突
                 if (!"0".equals(validateTeacherResult)) {
-
+                    TbTeacherDo teacherDo = iTeacherService.getOneById(gradeDo.getTeacherId());
+                    if(teacherDo != null)
+                        return teacherDo.getName() + "教授的" +gradeDo.getName() + "与" + validateTeacherResult;
                     return gradeDo.getName() + "与" + validateTeacherResult;
                 }
 
                 // 教室时间校验
                 String validateClassroomResult = detectTimeScheduleConflict(classroomTimeScheduleList, validateTimeScheduleDto);
                 if (!"0".equals(validateClassroomResult)) {
-
+                    TbClassroomDo classroomDo = iClassroomService.getOneById(gradeDo.getClassroomId());
+                    if (classroomDo != null)
+                        return "在编码为"+classroomDo.getCode() + "教室上课的"+gradeDo.getName() + "与" + validateClassroomResult;
                     return gradeDo.getName() + "与" + validateClassroomResult;
                 }
             }
@@ -327,7 +330,7 @@ public class GradeServiceImpl implements IGradeService {
     }
 
     @Override
-    public CourseTimeScheduleDto convertToCourseTimeSchedule(TbGradeDo gradeDo) {
+        public CourseTimeScheduleDto convertToCourseTimeSchedule(TbGradeDo gradeDo) {
         //TODO 此处应加上对gradeDo为空的判断
         CourseTimeScheduleDto courseTimeScheduleDto = new CourseTimeScheduleDto();
 
@@ -574,6 +577,9 @@ public class GradeServiceImpl implements IGradeService {
             validateTimeScheduleDto.setStartDate(DateUtil.stringToDateByDefaultDayFormat(courseTimeScheduleDto.getDateRange().getStartDate()));
             validateTimeScheduleDto.setEndDate(DateUtil.stringToDateByDefaultDayFormat(courseTimeScheduleDto.getDateRange().getEndDate()));
 
+            LabelInValueDto labelInValueDto = courseTimeScheduleDto.getGradeSelect();
+            if (null != labelInValueDto)
+                validateTimeScheduleDto.setGradeName(labelInValueDto.getLabel());
             // 一周时间安排
             if (EmptyUtils.listIsEmpty(courseTimeScheduleDto.getChildrenData()))
                 return null;

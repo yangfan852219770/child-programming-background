@@ -10,13 +10,11 @@ import com.child.programming.base.service.ITeacherCourseScheduleService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
 import com.child.programming.education.manage.dto.CourseScheduleDto;
-import com.child.programming.education.manage.dto.TeacherCourseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Description：
@@ -57,18 +55,13 @@ public class TeacherCourseScheduleServiceImpl implements ITeacherCourseScheduleS
     }
 
     @Override
-    public List<TeacherCourseDto> getTeacherCourseList(Map map) {
-        return teacherCourseScheduleCustomMapper.getTeacherCourseList(map);
-    }
-
-    @Override
-    public List<TbTeacherCourseScheduleDo> getTeacherCourseScheduleList(Integer teacherId, Integer courseId, Integer gradeId) {
-        if (EmptyUtils.intIsEmpty(teacherId) || EmptyUtils.intIsEmpty(courseId) || EmptyUtils.intIsEmpty(gradeId))
+    public List<TbTeacherCourseScheduleDo> getTeacherCourseScheduleList(Integer teacherId) {
+        if (EmptyUtils.intIsEmpty(teacherId))
             return null;
         TbTeacherCourseScheduleDoExample example = new TbTeacherCourseScheduleDoExample();
         example.setOrderByClause("period");
         TbTeacherCourseScheduleDoExample.Criteria criteria = example.createCriteria();
-        criteria.andTeacherIdEqualTo(teacherId).andCourseIdEqualTo(courseId).andGradeIdEqualTo(gradeId);
+        criteria.andTeacherIdEqualTo(teacherId);
         return teacherCourseScheduleDoMapper.selectByExample(example);
     }
 }

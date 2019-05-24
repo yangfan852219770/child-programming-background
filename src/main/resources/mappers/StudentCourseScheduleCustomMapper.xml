@@ -28,20 +28,4 @@
             </foreach>
     </insert>
 
-    <select id="getStudentCourseList" parameterType="java.util.Map" resultType="com.child.programming.education.manage.dto.StudentCourseDto">
-        select s.id AS studentId,s.name AS studentName,
-        g.id AS gradeId,g.name AS gradeName,
-        c.id AS courseId,c.name AS courseName
-        from student_sign_up AS ssu
-        LEFT JOIN grade g ON ssu.grade_id=g.id
-        LEFT JOIN course c ON g.course_id=c.id
-        LEFT JOIN student s ON ssu.student_id=s.id
-        WHERE c.status!=1 AND ssu.is_payment=1
-        <if test="gradeId !=null">
-           AND g.id=#{gradeId}
-        </if>
-        <if test="studentName !=null">
-            AND s.name like #{studentName}
-        </if>
-    </select>
 </mapper>

@@ -313,6 +313,21 @@ WHERE
       g.id = #{gradeId}
   </select>
 
+  <select id="getCourseDetaiListByGradeIdSet" parameterType="java.util.Set" resultType="com.child.programming.education.manage.dto.CourseDetailDto">
+    SELECT gra.id AS gradeId,gra.name AS gradeName,
+    cou.id AS courseId,cou.name AS courseName,
+    cla.id AS classroomId,cla.code AS classroomCode,
+    sch.id AS schoolId,sch.name AS schoolName
+    from grade AS gra
+    LEFT JOIN course AS cou ON gra.course_id=cou.id
+    LEFT JOIN classroom AS cla  ON gra.classroom_id=cla.id
+    LEFT JOIN school AS sch ON cla.school_id=sch.id
+    where gra.status=1
+    AND gra.id IN
+    <foreach collection="collection" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
 
+  </select>
 
 </mapper>

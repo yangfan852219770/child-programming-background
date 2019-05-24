@@ -5,19 +5,18 @@ import com.child.programming.base.mapper.TbStudentCourseScheduleDoMapper;
 import com.child.programming.base.model.TbStudentCourseScheduleDo;
 import com.child.programming.base.model.TbStudentCourseScheduleDoExample;
 import com.child.programming.base.model.TbStudentSignUpDo;
+import com.child.programming.base.service.ICourseService;
 import com.child.programming.base.service.ISignUpFormalCourseService;
 import com.child.programming.base.service.IStudentCourseScheduleService;
 import com.child.programming.base.util.EmptyUtils;
 import com.child.programming.base.util.ListUtil;
+import com.child.programming.education.manage.dto.CourseDetailDto;
 import com.child.programming.education.manage.dto.CourseScheduleDto;
-import com.child.programming.education.manage.dto.StudentCourseDto;
+import com.child.programming.education.manage.dto.StudentScheduleDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description：
@@ -32,6 +31,8 @@ public class StudentCourseScheduleServiceImpl implements IStudentCourseScheduleS
 
     @Autowired
     private ISignUpFormalCourseService iSignUpFormalCourseService;
+    @Autowired
+    private ICourseService iCourseService;
 
     // TODO 批量操作，事务处理
     @Override
@@ -67,18 +68,46 @@ public class StudentCourseScheduleServiceImpl implements IStudentCourseScheduleS
     }
 
     @Override
-    public List<StudentCourseDto> getStudentCourseList(Map map) {
-        return studentCourseScheduleCustomMapper.getStudentCourseList(map);
-    }
-
-    @Override
-    public List<TbStudentCourseScheduleDo> getStudentCourseScheduleList(Integer studentId, Integer courseId) {
-        if (EmptyUtils.intIsEmpty(studentId) || EmptyUtils.intIsEmpty(courseId))
+    public List<StudentScheduleDto> getStudentCourseScheduleList(Integer studentId) {
+        if (EmptyUtils.intIsEmpty(studentId))
             return null;
         TbStudentCourseScheduleDoExample example = new TbStudentCourseScheduleDoExample();
         example.setOrderByClause("period");
         TbStudentCourseScheduleDoExample.Criteria criteria = example.createCriteria();
-        criteria.andStudentIdEqualTo(studentId).andCourseIdEqualTo(courseId);
-        return studentCourseScheduleDoMapper.selectByExample(example);
+        criteria.andStudentIdEqualTo(studentId);
+        List<TbStudentCourseScheduleDo> studentCourseScheduleDoList = studentCourseScheduleDoMapper.selectByExample(example);
+        if (EmptyUtils.listIsEmpty(studentCourseScheduleDoList))
+            return null;
+
+        // 将gradeId 放入set中
+        Set<Integer> gradeIdSet = new LinkedHashSet<>();
+        for (TbStudentCourseScheduleDo s:studentCourseScheduleDoList
+             ) {
+            if (null != s.getGradeId())
+                gradeIdSet.add(s.getGradeId());
+            if (null != s.getTempGradeId())
+                gradeIdSet.add(s.getTempGradeId());
+        }
+        if (gradeIdSet.isEmpty())
+            return null;
+        // 根据gradeId 查询相关校区、教室、课程信息
+        List<CourseDetailDto> courseDetailDtoList = iCourseService.getCourseDetaiListByGradeIdSet(gradeIdSet);
+        if (EmptyUtils.listIsEmpty(courseDetailDtoList))
+            return null;
+
+        List<StudentScheduleDto> studentScheduleDtoList = new ArrayList<>();
+        for (TbStudentCourseScheduleDo s:studentCourseScheduleDoList
+             ) {
+            for (CourseDetailDto c:courseDetailDtoList
+                 ) {
+                if (s.getGradeId().equals(c.getGradeId())){
+                    StudentScheduleDto studentScheduleDto = new StudentScheduleDto();
+                    studentScheduleDto.setStudentCourseSchedule(s);
+                    studentScheduleDto.setCourseDetail(c);
+                    studentScheduleDtoList.add(studentScheduleDto);
+                }
+            }
+        }
+        return studentScheduleDtoList;
     }
 }
