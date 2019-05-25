@@ -28,11 +28,13 @@ public interface ISignUpFormalCourseService {
     Boolean delete(String[] idArray, Integer userId);
 
     /**
-     * 查询缴费、不是中途报名
+     * 根据条件查询
      * @param gradeId
+     * @param isPayment
+     * @param isHalfway
      * @return
      */
-    List<TbStudentSignUpDo> getListByGradeId(Integer gradeId);
+    List<TbStudentSignUpDo> getListByWhere(Integer gradeId, Byte isPayment, Byte isHalfway);
 
     /**
      * 根据主键查询

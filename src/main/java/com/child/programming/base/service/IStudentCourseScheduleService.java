@@ -19,7 +19,7 @@ public interface IStudentCourseScheduleService {
      * @param userId
      * @return
      */
-    Boolean generateSchedule(List<CourseScheduleDto> courseScheduleDtoList, Integer gradeId, Integer userId);
+    Boolean generateBatchSchedule(List<CourseScheduleDto> courseScheduleDtoList, Integer gradeId, Integer userId);
 
     /**
      * 获取学生课程表信息
@@ -27,5 +27,14 @@ public interface IStudentCourseScheduleService {
      * @return
      */
     List<StudentScheduleDto> getStudentCourseScheduleList(Integer studentId);
+
+    /**
+     * 生成单个学生课表
+     * @param courseScheduleDtoList
+     * @param studentId
+     * @param userId
+     * @return
+     */
+    Boolean generateOneSchedule(List<CourseScheduleDto> courseScheduleDtoList, Integer studentId, Integer userId);
 
 }

@@ -5,6 +5,7 @@ import com.child.programming.base.dto.ResultDto;
 import com.child.programming.base.dto.SignUpFormalCourseInfoDto;
 import com.child.programming.base.model.TbPaymentRecordDo;
 import com.child.programming.base.model.TbStudentSignUpDo;
+import com.child.programming.base.service.ICourseService;
 import com.child.programming.base.service.IPaymentRecordService;
 import com.child.programming.base.service.ISignUpFormalCourseService;
 import com.child.programming.base.util.EmptyUtils;
@@ -34,6 +35,11 @@ public class SignUpFormalCourseContoller {
     private ISignUpFormalCourseService iSignUpFormalCourseService;
     @Autowired
     private IPaymentRecordService iPaymentRecordService;
+    @Autowired
+    private ICourseService iCourseService;
+
+    // 中途缴费
+    private static final Byte PAY_HALFWAY = 1;
 
     /**
      * 学生报名正式课列表
@@ -43,10 +49,12 @@ public class SignUpFormalCourseContoller {
      */
     @RequestMapping(value = "getList", method = RequestMethod.GET)
     public List<SignUpFormalCourseInfoDto> getList(@RequestParam(value = "studentName", required = false)String studentName,
-                                                   @RequestParam(value = "isPayment", required = false)String isPayment){
+                                                   @RequestParam(value = "isPayment", required = false)Byte isPayment,
+                                                   @RequestParam(value="isHalfway", required = false)Byte isHalfway){
         Map map = new HashMap();
         map.put("studentName", studentName);
         map.put("isPayment", isPayment);
+        map.put("isHalfway", isHalfway);
         return iSignUpFormalCourseService.getList(map);
     }
 
@@ -104,8 +112,14 @@ public class SignUpFormalCourseContoller {
         boolean saveResult = iPaymentRecordService.insert(paymentRecordDo, userInfoPojo.getId());
         // 更改报名缴费状态
         if (saveResult){
-            TbStudentSignUpDo studentSignUpDo = new TbStudentSignUpDo();
-            studentSignUpDo.setId(signUpId);
+            TbStudentSignUpDo studentSignUpDo = iSignUpFormalCourseService.getOneById(signUpId);
+            if (null == studentSignUpDo)
+                return ResultDto.fail("缴费失败!");
+
+            // 中途报名，生成单个学生课程表
+            if (PAY_HALFWAY.equals(studentSignUpDo.getIsHalfway()))
+                iCourseService.generateOneCourseSchedule(studentSignUpDo.getGradeId(),
+                    studentSignUpDo.getStudentId(), userInfoPojo.getId());
             studentSignUpDo.setIsPayment(Byte.valueOf("1"));
             boolean result = iSignUpFormalCourseService.update(studentSignUpDo, userInfoPojo.getId());
             if (result)

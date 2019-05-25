@@ -108,7 +108,7 @@ public class CourseController {
                 boolean result = iCourseService.updateCourse(userInfoPojo.getId(), courseDo);
                 // 开课 老师、学生生成课表 2 代表开课
                 if (result && startCourseStatus.equals(status)){
-                    boolean scheduleResult = iCourseService.generateCourseSchedule(id, userInfoPojo.getId());
+                    boolean scheduleResult = iCourseService.generateBatchCourseSchedule(id, userInfoPojo.getId());
                     if (scheduleResult)
                         return ResultDto.success();
                     return ResultDto.fail("生成课表失败");

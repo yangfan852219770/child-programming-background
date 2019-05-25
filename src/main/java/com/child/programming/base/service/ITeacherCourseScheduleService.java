@@ -2,6 +2,7 @@ package com.child.programming.base.service;
 
 import com.child.programming.base.model.TbTeacherCourseScheduleDo;
 import com.child.programming.education.manage.dto.CourseScheduleDto;
+import com.child.programming.education.manage.dto.TeacherScheduleDto;
 
 import java.util.List;
 
@@ -24,5 +25,5 @@ public interface ITeacherCourseScheduleService {
      * @param teacherId
      * @return
      */
-    List<TbTeacherCourseScheduleDo> getTeacherCourseScheduleList(Integer teacherId);
+    List<TeacherScheduleDto> getTeacherCourseScheduleList(Integer teacherId);
 }

@@ -3,6 +3,7 @@ package com.child.programming.education.manage.controller;
 import com.child.programming.base.model.TbTeacherCourseScheduleDo;
 import com.child.programming.base.service.ITeacherCourseScheduleService;
 import com.child.programming.base.util.EmptyUtils;
+import com.child.programming.education.manage.dto.TeacherScheduleDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,7 @@ public class TeacherCourseScheduleController {
      * @return
      */
     @RequestMapping(value = "getTeacherCourseScheduleList", method = RequestMethod.GET)
-    public List<TbTeacherCourseScheduleDo> getTeacherCourseScheduleList(@RequestParam(value = "teacherId", required = true)Integer teacherId){
+    public List<TeacherScheduleDto> getTeacherCourseScheduleList(@RequestParam(value = "teacherId", required = true)Integer teacherId){
         if (EmptyUtils.intIsEmpty(teacherId))
             return null;
         return iTeacherCourseScheduleService.getTeacherCourseScheduleList(teacherId);

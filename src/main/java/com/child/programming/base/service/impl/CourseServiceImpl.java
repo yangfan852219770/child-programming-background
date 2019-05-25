@@ -258,7 +258,7 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
-    public Boolean generateCourseSchedule(Integer courseId, Integer userId) {
+    public Boolean generateBatchCourseSchedule(Integer courseId, Integer userId) {
         if (EmptyUtils.intIsEmpty(courseId))
             return false;
         List<TbGradeDo> gradeDoList = iGradeService.getListByCourseId(courseId);
@@ -271,7 +271,7 @@ public class CourseServiceImpl implements ICourseService {
             List<CourseScheduleDto> courseScheduleDtoList = iGradeService.convertToCourseSchedule(grade);
 
             // 学生课程表处理
-            boolean studentResult = iStudentCourseScheduleService.generateSchedule(courseScheduleDtoList, grade.getId(), userId);
+            boolean studentResult = iStudentCourseScheduleService.generateBatchSchedule(courseScheduleDtoList, grade.getId(), userId);
             if(studentResult){
                 // 老师课程表处理
                 boolean teacherResult = iTeacherCourseScheduleService.generateSchedule(courseScheduleDtoList, userId);
@@ -311,6 +311,23 @@ public class CourseServiceImpl implements ICourseService {
     @Override
     public List<CourseDetailDto> getCourseDetaiListByGradeIdSet(Set gradeIdSet) {
         return courseCustomMapper.getCourseDetaiListByGradeIdSet(gradeIdSet);
+    }
+
+    @Override
+    public Boolean generateOneCourseSchedule(Integer gradeId, Integer studentId, Integer userId) {
+        if (EmptyUtils.intIsEmpty(gradeId) || EmptyUtils.intIsEmpty(studentId))
+            return false;
+        TbGradeDo gradeDo = iGradeService.getOneById(gradeId);
+        if (null == gradeDo)
+            return false;
+        List<CourseScheduleDto> courseScheduleDtoList = iGradeService.convertToCourseSchedule(gradeDo);
+        // 生成学生课程表
+        boolean studentResult = iStudentCourseScheduleService.generateOneSchedule(courseScheduleDtoList, studentId, userId);
+        // TODO 老师课程表?
+        /* 如果在开课之后，由于没人报名，该老师便不会生成课表。
+           中途报名该班级时，老师需要重新生成课表
+         */
+        return studentResult;
     }
 
     /**

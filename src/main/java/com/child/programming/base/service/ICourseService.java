@@ -81,12 +81,12 @@ public interface ICourseService {
     Boolean updateCourse(Integer userId, TbCourseDo courseDo);
 
     /**
-     * 生成老师、学生课表
+     * 批量生成老师、学生课表
      * @param courseId
      * @param userId
      * @return
      */
-    Boolean generateCourseSchedule(Integer courseId, Integer userId);
+    Boolean generateBatchCourseSchedule(Integer courseId, Integer userId);
 
     CourseArrange getCourseDetailByGradeId(int gradeId);
 
@@ -103,4 +103,13 @@ public interface ICourseService {
      * @return
      */
     List<CourseDetailDto> getCourseDetaiListByGradeIdSet(Set gradeIdSet);
+
+    /**
+     * 单个生成课表
+     * @param gradeId
+     * @param studentId
+     * @param userId
+     * @return
+     */
+    Boolean generateOneCourseSchedule(Integer gradeId, Integer studentId, Integer userId);
 }

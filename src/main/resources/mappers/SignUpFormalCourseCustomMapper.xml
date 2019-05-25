@@ -25,5 +25,8 @@
         <if test="isPayment != null">
             and ssu.is_payment=#{isPayment}
         </if>
+        <if test="isHalfway != null">
+            and ssu.is_halfway=#{isHalfway}
+        </if>
     </select>
 </mapper>

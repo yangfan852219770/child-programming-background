@@ -59,12 +59,17 @@ public class SignUpFormalCourseServiceImpl implements ISignUpFormalCourseService
     }
 
     @Override
-    public List<TbStudentSignUpDo> getListByGradeId(Integer gradeId) {
+    public List<TbStudentSignUpDo> getListByWhere(Integer gradeId, Byte isPayment, Byte isHalfway){
         if (EmptyUtils.intIsEmpty(gradeId))
             return null;
         TbStudentSignUpDoExample example = new TbStudentSignUpDoExample();
         TbStudentSignUpDoExample.Criteria criteria = example.createCriteria();
-        criteria.andGradeIdEqualTo(gradeId).andIsPaymentEqualTo(Byte.valueOf("1")).andIsHalfwayEqualTo(Byte.valueOf("0"));
+        if (null != gradeId)
+            criteria.andGradeIdEqualTo(gradeId);
+        if (null != isPayment)
+            criteria.andIsPaymentEqualTo(isPayment);
+        if (null != isHalfway)
+            criteria.andIsHalfwayEqualTo(isHalfway);
         return studentSignUpDoMapper.selectByExample(example);
     }
 

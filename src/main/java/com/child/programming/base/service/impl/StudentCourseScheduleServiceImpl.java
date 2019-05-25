@@ -36,12 +36,12 @@ public class StudentCourseScheduleServiceImpl implements IStudentCourseScheduleS
 
     // TODO 批量操作，事务处理
     @Override
-    public Boolean generateSchedule(List<CourseScheduleDto> courseScheduleDtoList, Integer gradeId, Integer userId) {
+    public Boolean generateBatchSchedule(List<CourseScheduleDto> courseScheduleDtoList, Integer gradeId, Integer userId) {
         if (EmptyUtils.listIsEmpty(courseScheduleDtoList) || EmptyUtils.intIsEmpty(gradeId))
             return false;
         // 缴费、不是中途报名的学生
         // 无人报名，则不必生成课表
-        List<TbStudentSignUpDo> studentSignUpDoList = iSignUpFormalCourseService.getListByGradeId(gradeId);
+        List<TbStudentSignUpDo> studentSignUpDoList = iSignUpFormalCourseService.getListByWhere(gradeId, Byte.valueOf("1"), Byte.valueOf("0"));
         if (EmptyUtils.listIsEmpty(studentSignUpDoList))
             return true;
         List<TbStudentCourseScheduleDo> studentCourseScheduleDoList = new ArrayList<>();
@@ -64,6 +64,26 @@ public class StudentCourseScheduleServiceImpl implements IStudentCourseScheduleS
         }
         int count = studentCourseScheduleCustomMapper.insertBatch(studentCourseScheduleDoList);
 
+        return count == studentCourseScheduleDoList.size();
+    }
+
+    @Override
+    public Boolean generateOneSchedule(List<CourseScheduleDto> courseScheduleDtoList, Integer studentId, Integer userId) {
+        if (EmptyUtils.listIsEmpty(courseScheduleDtoList) || EmptyUtils.intIsEmpty(studentId))
+            return false;
+        List<TbStudentCourseScheduleDo> studentCourseScheduleDoList = ListUtil.convertElement(courseScheduleDtoList, TbStudentCourseScheduleDo.class);
+        if (EmptyUtils.listIsEmpty(studentCourseScheduleDoList))
+            return false;
+        for (TbStudentCourseScheduleDo schedule:studentCourseScheduleDoList
+        ) {
+            schedule.setCreateId(userId);
+            schedule.setCreateTime(new Date());
+            schedule.setStatus(Byte.valueOf("1"));
+            schedule.setIsSignIn(Byte.valueOf("0"));
+            // TODO 签到字段，设置默认值 0
+            schedule.setStudentId(studentId);
+        }
+        int count = studentCourseScheduleCustomMapper.insertBatch(studentCourseScheduleDoList);
         return count == studentCourseScheduleDoList.size();
     }
 
@@ -100,12 +120,25 @@ public class StudentCourseScheduleServiceImpl implements IStudentCourseScheduleS
              ) {
             for (CourseDetailDto c:courseDetailDtoList
                  ) {
-                if (s.getGradeId().equals(c.getGradeId())){
+                // TODO 调课，需重新查询调课后的课表
+                if (Byte.valueOf("1").equals(s.getIsAdjust()) && s.getTempGradeId().equals(c.getGradeId())){
                     StudentScheduleDto studentScheduleDto = new StudentScheduleDto();
+
                     studentScheduleDto.setStudentCourseSchedule(s);
                     studentScheduleDto.setCourseDetail(c);
+
                     studentScheduleDtoList.add(studentScheduleDto);
+                    break;
+                } else if (s.getGradeId().equals(c.getGradeId())){
+                    StudentScheduleDto studentScheduleDto = new StudentScheduleDto();
+
+                    studentScheduleDto.setStudentCourseSchedule(s);
+                    studentScheduleDto.setCourseDetail(c);
+
+                    studentScheduleDtoList.add(studentScheduleDto);
+                    break;
                 }
+
             }
         }
         return studentScheduleDtoList;
